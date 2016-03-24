@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+#wrapper form {
+	margin: 0 auto;
+	display: block;
+}
+
+#wrapper form table {
+	margin: 0 auto;
+}
+
+#wrapper form table tr td {
+	font-size: 1.8em;
+}
+
+#wrapper form table tr td  * {
+	width: 100%;
+}
+
+form table tr td input {
+	
+}
