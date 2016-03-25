@@ -19,7 +19,7 @@ header nav ul {
 }
 
 header nav ul li {
-	margin-top: 22px;
+	margin-top: 20px;
 }
 
 header nav ul li#searchBar, header nav ul li#logo {
