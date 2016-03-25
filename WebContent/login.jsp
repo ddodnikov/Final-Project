@@ -7,39 +7,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
 <link type="text/css" rel="stylesheet" href="styles/register.css" />
-<title>Register form</title>
+<title>Log in form</title>
 </head>
 <body>
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-			<form action="./Register" method="post">
+			<form action="./Login" method="post">
 				<table cellpadding="10">
 					<tr>
 						<td colspan=2><label for="email">Email:</label></br> <input
 							type="email" name="email" /></td>
 					</tr>
 					<tr>
-						<td><label for="password1">Choose password:</label></br> <input
-							type="password" name="password1" /></td>
-						<td><label for="password2">Repeat password:</label></br> <input
-							type="password" name="password2" /></td>
+						<td><label for="password1">Password:</label></br> <input
+							type="password" name="password" /></td>
 					</tr>
 					<tr>
-						<td colspan="2"><input type="submit" value="Register!" /></td>
+						<td colspan="2"><input type="submit" value="LOG IN" /></td>
 					</tr>
 				</table>
 
-				<% if(request.getAttribute("usedEmailError") != null) { %>
-					<p style="color: red"> <%=  request.getAttribute("usedEmailError") %>
-				<% } %>
-				
-				<% if(request.getAttribute("shortPassword") != null) { %>
-					<p style="color: red"> <%=  request.getAttribute("shortPassword") %>
-				<% } %>
-				
-				<% if(request.getAttribute("differentPasswords") != null) { %>
-					<p style="color: red"> <%=  request.getAttribute("differentPasswords") %>
+				<% if(request.getAttribute("wrongUser") != null) { %>
+					<p style="color: red"> <%=  request.getAttribute("wrongUser") %>
 				<% } %>
 
 			</form>

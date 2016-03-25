@@ -9,5 +9,7 @@ public interface IUserDAO {
 	public void getUser();
 	
 	public boolean isEmailUsed(String email);
+	
+	public boolean isExistingUser(String email, String password);
 
 }

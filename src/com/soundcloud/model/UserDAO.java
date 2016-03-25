@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class UserDAO implements IUserDAO {
+
+	private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
+	private static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
 
 	private String getInitialDisplayName(String email) {
 		
@@ -57,12 +59,13 @@ public class UserDAO implements IUserDAO {
 
 		Connection con = DBConnection.getDBInstance().getConnection();
 
-		Statement hasAUser = null;
+		PreparedStatement hasAUser = null;
 		ResultSet result = null;
 		
 		try {
-			hasAUser = con.createStatement();
-			hasAUser.executeQuery("SELECT * FROM users WHERE email = '" + email + "';");
+			hasAUser = con.prepareStatement(SELECT_USER_BY_EMAIL);
+			hasAUser.setString(1, email);
+			hasAUser.execute();
 			result = hasAUser.getResultSet();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -77,6 +80,34 @@ public class UserDAO implements IUserDAO {
 		}
 		
 		return true;
+	}
+
+	public boolean isExistingUser(String email, String password) {
+		
+		Connection con = DBConnection.getDBInstance().getConnection();
+		
+		PreparedStatement hasAUser = null;
+		ResultSet result = null;
+		
+		try {
+			hasAUser = con.prepareStatement(SELECT_USER_BY_EMAIL_AND_PASSWORD);
+			hasAUser.setString(1, email);
+			hasAUser.setString(2, password);
+			hasAUser.execute();
+			result = hasAUser.getResultSet();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			if(result.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 }

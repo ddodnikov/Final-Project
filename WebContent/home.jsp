@@ -12,27 +12,10 @@
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-			<form action = "./Register" method="post">
-				<table cellpadding="10">
-					<tr>
-						<td colspan=2><label for="email">Email:</label></br>
-						<input type="email" name="email" /></td>
-					</tr>
-					<tr>
-						<td>
-							<label for="password1">Choose password:</label></br>
-							<input type="password" name="password1" />
-						</td>
-						<td>
-							<label for="password2">Repeat password:</label></br>
-							<input type="password" name="password2" />
-						</td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td><input type="submit" value="Register!" /></td>
-					</tr>
-				</table>
+			<form action="./Upload" method="post" enctype="multipart/form-data">
+				Select file to upload: <input type="file" name="file" size="50" /> 
+				<br /> 
+				<input type="submit" value="Upload File" />
 			</form>
 		</div>
 		<jsp:include page="footer.jsp"></jsp:include>
