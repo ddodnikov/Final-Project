@@ -1,16 +1,43 @@
 package com.soundcloud.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class UserDAO implements IUserDAO {
 
-	@Override
-	public void addUser() {
-		// TODO Auto-generated method stub
+	private String getInitialDisplayName(String email) {
+		
+		StringBuilder name = new StringBuilder();
+		
+		int index = 0;
+		while(email.charAt(index) != '@') {
+			name.append(email.charAt(index));
+			index++;
+		}
 
+		return name.toString();
+	}
+	
+	@Override
+	public void addUser(String email, String password) {
+		
+		Connection con = DBConnection.getDBInstance().getConnection();
+
+		PreparedStatement addUser = null;
+		
+		try {
+			addUser = con.prepareStatement("INSERT INTO users (email, password,display_name) VALUES(?,?,?);");
+			addUser.setString(1, email);
+			addUser.setString(2, password);
+			addUser.setString(3, getInitialDisplayName(email));
+			
+			addUser.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -26,7 +53,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public boolean isEmailUsed(String email) {
+	public boolean isEmailUsed(String email){
 
 		Connection con = DBConnection.getDBInstance().getConnection();
 
@@ -41,8 +68,12 @@ public class UserDAO implements IUserDAO {
 			e.printStackTrace();
 		}
 		
-		if(result == null) {
-			return false;
+		try {
+			if(!result.next()) {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
 		return true;

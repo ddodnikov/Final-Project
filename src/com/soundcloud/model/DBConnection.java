@@ -8,14 +8,9 @@ public class DBConnection {
 
 	private static final String DB_PASSWORD = "^itta1ent$12%_3";
 	private static final String DB_USERNAME = "ittalents";
-	private static final String DB_SCHEMA = "soundcloud";
-	private static final String DB = "FinalProject";
-	private static final String DB_PORT = "3306";
+	private static final String DB_URL = "jdbc:mysql://212.50.89.157:3306/soundcloud";
 
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-
-	private static final String DB_URL = "jdbc:mysql:" + DB_PORT + System.lineSeparator() + System.lineSeparator() + DB
-			+ System.lineSeparator() + DB_SCHEMA;
 
 	private static DBConnection dbinstance = null;
 	private static Connection connection = null;
@@ -41,7 +36,7 @@ public class DBConnection {
 	}
 	
 	public Connection getConnection() {
-		return DBConnection.connection;
+		return connection;
 	}
 
 }

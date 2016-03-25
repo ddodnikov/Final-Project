@@ -2,7 +2,7 @@ package com.soundcloud.model;
 
 public interface IUserDAO {
 	
-	public void addUser();
+	public void addUser(String email, String password);
 	
 	public void deleteUser();
 	
