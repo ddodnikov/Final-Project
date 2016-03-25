@@ -9,7 +9,7 @@
 }
 
 #wrapper form table tr td {
-	font-size: 1.8em;
+	font-size: 1.4em;
 }
 
 #wrapper form table tr td  * {
@@ -17,5 +17,32 @@
 }
 
 form table tr td input {
-	
+	font-size: 1.2em;
+}
+
+form table tr td input:focus {
+	outline: none;
+}
+
+input[type="submit"] {
+	width: 50% !important;
+	display: block;
+	margin: 0 auto;	
+	background-color: #39c29d;
+	color: white;
+	font-weight: bold;
+	/*transition: color 0.8s !important;
+	-webkit-transition: color 0.8s !important;
+	transition: backgound-color 0.8s !important;
+	-webkit-transition: backgound-color 0.8s !important;*/
+}
+
+input[type="submit"]:hover {
+	color: black;
+	background-color: #DDD;
+	/*transition: color 0.8s !important;
+	-webkit-transition: color 0.8s !important;
+	transition: backgound-color 0.8s !important;
+	-webkit-transition: backgound-color 0.8s !important;*/
+	cursor: pointer;
 }

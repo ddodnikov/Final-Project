@@ -1,5 +1,5 @@
 @CHARSET "ISO-8859-1";
-@import url(https://fonts.googleapis.com/css?family=Nunito);
+/*@import url(https://fonts.googleapis.com/css?family=Nunito);*/
 @import 'header.css';
 @import 'footer.css';
 
@@ -9,7 +9,8 @@ body, div, p, header, ul, li, a, input, aside, footer, span, section,
 	padding: 0;
 	box-sizing: border-box;
 	font-size: 10px;
-	font-family: 'Nunito', sans-serif;
+	/*font-family: 'Nunito', sans-serif;*/
+	font-family: sans-serif;
 }
 
 body {

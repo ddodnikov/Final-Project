@@ -19,15 +19,24 @@ header nav ul {
 }
 
 header nav ul li {
-	padding: 10px;
+	margin-top: 20px;
+}
+
+header nav ul li#searchBar, header nav ul li#logo {
+	margin-top: 11px;	
 }
 
 header nav ul li a {
 	text-decoration: none;
 	color: white;
-	margin: 10px;
+	transition: color 0.8s;
 	font-size: 1.3em;
 	text-transform: uppercase;
+}
+
+header nav ul li a:hover {
+	color: black;
+	transition: color 0.8s;
 }
 
 header nav ul li a input[type="search"] {
@@ -35,7 +44,6 @@ header nav ul li a input[type="search"] {
 	border-radius: 10px;
 	font-size: 1em;
 	border: none;
-	padding: 10px;
 }
 
 	header nav ul li a input[type="search"]:focus {
@@ -44,7 +52,7 @@ header nav ul li a input[type="search"] {
 		color: black;
 	}
 
-header nav ul li a #logo {
+header nav ul li a #logoImg {
 	border: 1px solid black;
 	height: 40px;
 	width: 100px;
