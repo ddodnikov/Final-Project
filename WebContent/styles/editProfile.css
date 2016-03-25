@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+
+form label, form input, form textarea {
+	font-size: 1.4em;
+	margin: 10px;
+}
+
+input {
+	display: block;
+	width: 277px;
+}
+
+form {
+	display: flex;
+	justify-content: space-around;
+	padding-top: 10px;
+}
+
+#personalPics input {
+	border: none;
+}

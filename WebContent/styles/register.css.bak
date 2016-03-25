@@ -1,0 +1,29 @@
+@CHARSET "ISO-8859-1";
+#wrapper form {
+	margin: 0 auto;
+	display: block;
+}
+
+#wrapper form table {
+	margin: 0 auto;
+}
+
+#wrapper form table tr td {
+	font-size: 1.4em;
+}
+
+#wrapper form table tr td  * {
+	width: 100%;
+}
+
+input[type="submit"] {
+	width: 50% !important;
+	display: block;
+	margin: 0 auto;	
+	/*transition: color 0.8s !important;
+	-webkit-transition: color 0.8s !important;
+	transition: backgound-color 0.8s !important;
+	-webkit-transition: backgound-color 0.8s !important;*/
+}
+
+
