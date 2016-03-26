@@ -14,9 +14,9 @@
 	<h1>Edit your profile</h1>
 	<form method="post" action="./EditProfile">
 		<div id="left">
-			<label for="firstName">First Name:</label>
+			<label for="firstName">First name:</label>
 			<input name="firstName" type="text" placeholder="Enter your first name" />
-			<label for="lastName">Last Name:</label>
+			<label for="lastName">Last name:</label>
 			<input type="text" name="lastName" placeholder="Enter your last name" />
 			<label for="city">City:</label>
 			<input type="text" name="city" placeholder="Enter your city" />

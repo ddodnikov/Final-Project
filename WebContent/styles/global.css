@@ -1,6 +1,9 @@
 @CHARSET "ISO-8859-1";
+
 @import url(https://fonts.googleapis.com/css?family=Nunito);
+
 @import 'header.css';
+
 @import 'footer.css';
 
 body, div, p, header, ul, li, a, input, aside, footer, span, section,
@@ -28,7 +31,8 @@ body {
 
 #wrapper {
 	width: 1160px;
-	height: 550px; margin : 0 auto;
+	height: 540px;
+	margin: 0 auto;
 	background-color: white;
 	margin: 0 auto;
 	padding: 30px;
@@ -41,16 +45,26 @@ input, textarea {
 	font-size: 1.2em;
 }
 
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+	outline: none;
+	background-color: #cbf4e9;
+	color: black;
+}
+
 input[type="submit"] {
 	background-color: #39c29d;
 	color: white;
 	font-weight: bold;
+	transition: background-color 1s, color 1s;
 }
 
 input[type="submit"]:hover {
 	color: black;
 	background-color: #DDD;
 	cursor: pointer;
+	transition: background-color 1s, color 1s;
 }
 
 input:focus, textarea:focus {

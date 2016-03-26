@@ -22,8 +22,8 @@ header nav ul li {
 	margin-top: 22px;
 }
 
-header nav ul li#searchBar, header nav ul li#logo {
-	margin-top: 11px;	
+header nav ul li#logo, header nav ul li#searchBar {
+	margin-top: 11px !important;
 }
 
 header nav ul li a {
@@ -39,14 +39,14 @@ header nav ul li a:hover {
 	transition: color 0.8s;
 }
 
-header nav ul li a input[type="search"] {
+header nav ul li input[type="search"] {
 	width: 600px;
 	border-radius: 10px;
-	font-size: 1em;
+	font-size: 1.4em;
 	border: none;
 }
 
-	header nav ul li a input[type="search"]:focus {
+	header nav ul li input[type="search"]:focus {
 		outline: none;
 		background-color: #cbf4e9;
 		color: black;

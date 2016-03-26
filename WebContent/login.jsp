@@ -6,8 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
-<link type="text/css" rel="stylesheet" href="styles/register.css" />
-<title>Log in form</title>
+<link type="text/css" rel="stylesheet" href="styles/login.css" />
+<title>Log in :: SoundCloud</title>
 </head>
 <body>
 	<div id="outer">
@@ -16,21 +16,23 @@
 			<form action="./Login" method="post">
 				<table cellpadding="10">
 					<tr>
-						<td colspan=2><label for="email">Email:</label></br> <input
-							type="email" name="email" /></td>
+						<td colspan=2><label for="email">Email:</label></br>
+						<input
+							type="email" name="email"/></td>
 					</tr>
 					<tr>
 						<td><label for="password1">Password:</label></br> <input
 							type="password" name="password" /></td>
 					</tr>
 					<tr>
-						<td colspan="2"><input type="submit" value="LOG IN" /></td>
+						<td colspan="2"><input type="submit" value="Log in" /></td>
 					</tr>
 				</table>
 
-				<% if(request.getAttribute("wrongUser") != null) { %>
-					<p style="color: red"> <%=  request.getAttribute("wrongUser") %>
-				<% } %>
+				
+				<c:if test="${not empty wrongUser}">
+					<p style="color: red">${wrongUser}</p>
+				</c:if>
 
 			</form>
 		</div>

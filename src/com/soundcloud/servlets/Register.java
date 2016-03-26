@@ -13,6 +13,7 @@ import com.soundcloud.model.UserDAO;
 
 @WebServlet("/Register")
 public class Register extends HttpServlet {
+	private static final int MIN_PASSWORD_LENGTH = 8;
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -37,8 +38,7 @@ public class Register extends HttpServlet {
 			dispatcher.forward(request, response);
 
 		} else {
-			if (password1.length() < 8) {
-
+			if (password1.length() < MIN_PASSWORD_LENGTH) {
 				request.setAttribute("shortPassword", "The password must be at least 8 characters!");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
 				dispatcher.forward(request, response);
