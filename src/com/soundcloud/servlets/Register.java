@@ -1,6 +1,7 @@
 package com.soundcloud.servlets;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.hash.Hashing;
 import com.soundcloud.model.UserDAO;
 
 @WebServlet("/Register")
@@ -39,6 +41,7 @@ public class Register extends HttpServlet {
 
 		} else {
 			if (password1.length() < MIN_PASSWORD_LENGTH) {
+
 				request.setAttribute("shortPassword", "The password must be at least 8 characters!");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
 				dispatcher.forward(request, response);
@@ -51,7 +54,10 @@ public class Register extends HttpServlet {
 					dispatcher.forward(request, response);
 				
 				} else {
-					new UserDAO().addUser(email, password1);
+					String hashedPassword = Hashing.sha256()
+					        .hashString(password1, StandardCharsets.UTF_8)
+					        .toString();
+					new UserDAO().addUser(email, hashedPassword);
 					response.sendRedirect("home.jsp");
 				}
 			}

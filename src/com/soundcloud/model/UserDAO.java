@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 public class UserDAO implements IUserDAO {
 
+	private static final String INSERT_USER = "INSERT INTO users (email, password,display_name) VALUES(?,?,?);";
 	private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 	private static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
 
@@ -31,7 +32,7 @@ public class UserDAO implements IUserDAO {
 		PreparedStatement addUser = null;
 		
 		try {
-			addUser = con.prepareStatement("INSERT INTO users (email, password,display_name) VALUES(?,?,?);");
+			addUser = con.prepareStatement(INSERT_USER);
 			addUser.setString(1, email);
 			addUser.setString(2, password);
 			addUser.setString(3, getInitialDisplayName(email));

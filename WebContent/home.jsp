@@ -12,10 +12,15 @@
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-			<form action="./Upload" method="post" enctype="multipart/form-data">
-				Select file to upload: <input type="file" name="file" size="50" /> 
+			<form action="./UploadSong" method="post" enctype="multipart/form-data">
+				Select file to upload: <input type="file" name="fileUpload" size="50" /> 
 				<br /> 
 				<input type="submit" value="Upload File" />
+				
+				<% if(request.getAttribute("message") != null) { %>
+					<p style="color: red"> <%=  request.getAttribute("message") %>
+				<% } %>
+				
 			</form>
 		</div>
 		<jsp:include page="footer.jsp"></jsp:include>

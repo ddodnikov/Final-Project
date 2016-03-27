@@ -1,6 +1,7 @@
 package com.soundcloud.servlets;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,12 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.common.hash.Hashing;
 import com.mysql.jdbc.Statement;
 import com.soundcloud.model.DBConnection;
 import com.soundcloud.model.UserDAO;
 
 @WebServlet("/Login")
 public class Login extends HttpServlet {
+	
 	private static final String GET_USER_ID_BY_EMAIL_QUERY = "SELECT user_id FROM users where email = ?;";
 	private static final long serialVersionUID = 1L;
 
@@ -29,21 +32,28 @@ public class Login extends HttpServlet {
 		rd.forward(req, resp);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		String email = request.getParameter("email");
+
 		String password = request.getParameter("password");
-		if (new UserDAO().isExistingUser(email, password)) {
-			int userId = getCurrentUserId(email);
-			HttpSession session = request.getSession();
-			session.setAttribute("userId", userId);
-			session.setAttribute("email", email);
+		
+		String hashedPassword = Hashing.sha256()
+		        .hashString(password, StandardCharsets.UTF_8)
+		        .toString();
+
+		if (new UserDAO().isExistingUser(email, hashedPassword)) {
+
 			response.sendRedirect("home.jsp");
+
 		} else {
+			
 			request.setAttribute("wrongUser", "Incorrect email or password!");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 			dispatcher.forward(request, response);
+
 		}
+		
 	}
 
 	private int getCurrentUserId(String email) {
