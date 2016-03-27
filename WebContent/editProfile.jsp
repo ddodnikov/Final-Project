@@ -1,21 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
 <link type="text/css" rel="stylesheet" href="styles/editProfile.css" />
+<link type="image/x-icon" rel="icon" href="images/siteIcon.ico" />
 <title>Edit your profile :: SoundCloud</title>
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
 	<div id="wrapper">
 	<h1>Edit your profile</h1>
+	
 	<form method="post" action="./EditProfile">
 		<div id="left">
 			<label for="firstName">First name:</label>
-			<input name="firstName" type="text" placeholder="Enter your first name" />
+			<input name="firstName" type="text" placeholder="Enter your first name"/>
 			<label for="lastName">Last name:</label>
 			<input type="text" name="lastName" placeholder="Enter your last name" />
 			<label for="city">City:</label>
@@ -27,7 +30,9 @@
 		</div>
 		<div id="right">
 			<div id="personalPics">
-				<label for="uploadProfilePic">Profile picture:</label>
+				<label for="currentProfile">Current profile picture:</label>
+				<img  src="${pageContext.request.contextPath}/userProfilePics/<c:out value="${currentProfilePic}"></c:out>"/>
+				<label for="uploadProfilePic">Update profile picture:</label>
 				<input name="uploadProfilePic" type="file" />
 				<label for="uploadHeaderPic">Header picture:</label>
 				<input name="uploadHeaderPic" type="file" />

@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.common.hash.Hashing;
-import com.mysql.jdbc.Statement;
 import com.soundcloud.model.DBConnection;
 import com.soundcloud.model.UserDAO;
 
@@ -35,25 +34,19 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String email = request.getParameter("email");
-
-		String password = request.getParameter("password");
-		
+		String password = request.getParameter("password");		
 		String hashedPassword = Hashing.sha256()
 		        .hashString(password, StandardCharsets.UTF_8)
 		        .toString();
-
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
-
-			response.sendRedirect("home.jsp");
-
+			HttpSession session = request.getSession();
+			session.setAttribute("userId", getCurrentUserId(email));
+			request.getRequestDispatcher("./home.jsp").forward(request, response);
 		} else {
-			
 			request.setAttribute("wrongUser", "Incorrect email or password!");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 			dispatcher.forward(request, response);
-
-		}
-		
+		}		
 	}
 
 	private int getCurrentUserId(String email) {

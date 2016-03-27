@@ -7,12 +7,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
 <link type="text/css" rel="stylesheet" href="styles/login.css" />
+<link type="image/x-icon" rel="icon" href="images/siteIcon.ico" />
 <title>Log in :: SoundCloud</title>
 </head>
 <body>
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
+		<c:if test="${not empty sessionScope.userId}">
+			<p>${sessionScope.userId}</p>
+		</c:if>
+		<h1>Log in to SoundCloud</h1>
 			<form action="./Login" method="post">
 				<table cellpadding="10">
 					<tr>

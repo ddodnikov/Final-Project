@@ -22,8 +22,12 @@ header nav ul li {
 	margin-top: 22px;
 }
 
-header nav ul li#logo, header nav ul li#searchBar {
-	margin-top: 11px !important;
+header nav ul li#logo {
+	margin-top: 5px;
+}
+
+header nav ul li#searchBar {
+	margin-top: 11px;
 }
 
 header nav ul li a {
