@@ -31,8 +31,11 @@ public class EditProfile extends HttpServlet {
 		// get the current logged in user's profile picture name
 		Connection con = DBConnection.getDBInstance().getConnection();
 		int userId = (int) request.getSession().getAttribute("userId");
+<<<<<<< HEAD
 		// TODO: validate if there is a logged in user
 		// error page?
+=======
+>>>>>>> 06a9d37bd715223ce15964e8d73b47fcfefb6dde
 		try {
 			PreparedStatement ps = con.prepareStatement(GET_IMG_URI_QUERY);
 			ps.setInt(1, userId);

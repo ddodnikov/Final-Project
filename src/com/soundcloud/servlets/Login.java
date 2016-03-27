@@ -41,7 +41,16 @@ public class Login extends HttpServlet {
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("userId", getCurrentUserId(email));
+<<<<<<< HEAD
 			request.getRequestDispatcher("./home.jsp").forward(request, response);
+=======
+
+			HttpSession session = request.getSession();
+			session.setAttribute("userId", getCurrentUserId(email));
+			
+			response.sendRedirect("home.jsp");
+
+>>>>>>> 06a9d37bd715223ce15964e8d73b47fcfefb6dde
 		} else {
 			request.setAttribute("wrongUser", "Incorrect email or password!");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");

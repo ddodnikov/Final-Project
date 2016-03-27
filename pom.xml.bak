@@ -62,5 +62,12 @@
 			<artifactId>guava</artifactId>
 			<version>11.0</version>
 		</dependency>
+<<<<<<< HEAD
+=======
+
+=======
+>>>>>>> 9075105260bdc3550d272428956f1f80ac5ecb43
+
+>>>>>>> 06a9d37bd715223ce15964e8d73b47fcfefb6dde
 	</dependencies>
 </project>

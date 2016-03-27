@@ -76,12 +76,21 @@ public class TrackDAO implements ITrackDAO{
 				ResultSet result2 =  getImage.executeQuery();
 				result2.next();
 				
+<<<<<<< HEAD
 //				track.setImageURI(result2.getString("img_url"));
 				
 				track.setTrackURL(result.getString("track_uri"));
 				track.setDateAdded(result.getDate("date_added"));
 				track.setTitle(result.getString("title"));
 				track.setGanre(result.getString("genre"));
+=======
+				track.setImageURI(result2.getString("img_url"));
+				
+				track.setTrackURL(result.getString("track_url"));
+				track.setDateAdded(result.getDate("date_added"));
+				track.setTitle(result.getString("title"));
+				track.setGanre(result.getString("ganre"));
+>>>>>>> 06a9d37bd715223ce15964e8d73b47fcfefb6dde
 				track.setDescription(result.getString("description"));
 				track.setNumberOfLikes(result.getInt("likes_count"));
 				track.setNumberOfPlays(result.getInt("plays_count"));
