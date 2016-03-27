@@ -6,7 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
 <link type="text/css" rel="stylesheet" href="styles/register.css" />
-<title>Insert title here</title>
+<link type="image/x-icon" rel="icon" href="images/siteIcon.ico" />
+<title>Home :: SoundCloud</title>
 </head>
 <body>
 	<div id="outer">

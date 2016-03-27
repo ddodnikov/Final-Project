@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
 <link type="text/css" rel="stylesheet" href="styles/register.css" />
+<link type="image/x-icon" rel="icon" href="images/siteIcon.ico" />
 <title>Register :: SoundCloud</title>
 </head>
 <body>

@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.common.hash.Hashing;
-import com.mysql.jdbc.Statement;
 import com.soundcloud.model.DBConnection;
 import com.soundcloud.model.UserDAO;
 
@@ -43,7 +42,8 @@ public class Login extends HttpServlet {
 		        .toString();
 
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
-
+			HttpSession session = request.getSession();
+			session.setAttribute("userId", getCurrentUserId(email));
 			response.sendRedirect("home.jsp");
 
 		} else {

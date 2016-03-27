@@ -5,7 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
-<title>Sound Cloud :: IT Talents</title>
+<link type="image/x-icon" rel="icon" href="images/siteIcon.ico" />
+<title>SoundCloud :: IT Talents</title>
 </head>
 <body>
 	<div id="outer">
