@@ -42,8 +42,15 @@ public class Login extends HttpServlet {
 		        .toString();
 
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
+<<<<<<< HEAD
 			HttpSession session = request.getSession();
 			session.setAttribute("userId", getCurrentUserId(email));
+=======
+
+			HttpSession session = request.getSession();
+			session.setAttribute("userId", getCurrentUserId(email));
+			
+>>>>>>> 9075105260bdc3550d272428956f1f80ac5ecb43
 			response.sendRedirect("home.jsp");
 
 		} else {

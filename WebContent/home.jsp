@@ -1,3 +1,6 @@
+<%@page import="com.soundcloud.model.TrackDAO"%>
+<%@page import="com.soundcloud.model.Track" %>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,6 +13,9 @@
 <title>Home :: SoundCloud</title>
 </head>
 <body>
+
+	<% List<Track> tracks = new TrackDAO().getAllTracks(); %>
+
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
@@ -23,7 +29,14 @@
 				<% } %>
 				
 			</form>
+			
+			<% for(Track track : tracks)  { 
+				request.setAttribute("track", track); %>
+			<jsp:include page="song.jsp"></jsp:include>
+			<% } %>
+		
 		</div>
+		
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>
 </body>
