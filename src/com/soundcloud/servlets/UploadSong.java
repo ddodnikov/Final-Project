@@ -25,6 +25,11 @@ public class UploadSong extends HttpServlet {
 
 	private static final String SAVE_DIR = "D:\\soundcloudFiles\\tracks";
 
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("./uploadSong.jsp").forward(request, response);
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -51,11 +56,6 @@ public class UploadSong extends HttpServlet {
 			new TrackDAO().addTrack(fileName, 1, "222", SAVE_DIR + "\\" + fileName, userId);
 			request.setAttribute("message", "Upload has been done successfully!");
 		}
-		
-		new TrackDAO().addTrack(fileName, 1, "222", SAVE_DIR + "\\" + fileName, 6);
-
-		if (hasFile)
-			request.setAttribute("message", "Upload has been done successfully!");
 		else 
 			request.setAttribute("message", "No file selected or file exceeds maximum size limit of 50MB!");
 

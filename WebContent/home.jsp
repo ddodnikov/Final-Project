@@ -18,38 +18,16 @@
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-			<h1>Upload your tracks</h1>
-			<form action="./UploadSong" method="post"
-				enctype="multipart/form-data">
-				<label for="fileUpload">Select file to upload:</label> <input
-					type="file" name="fileUpload" size="50" /> <br /> <input
-					type="submit" value="Upload File" />
-				<c:if test="${not empty message}">
-					<p style="color: red">${message}</p>
-				</c:if>
-			</form>
 			<%
 				List<Track> tracks = new TrackDAO().getAllTracks();
 				request.setAttribute("tracks", tracks);
 			%>
-		<h1>Upload your tracks</h1>
-			<form action="./UploadSong" method="post"
-				enctype="multipart/form-data">
-				<label for="fileUpload">Select file to upload:</label>
-				<input type="file" name="fileUpload"
-					size="50" /> <br /> <input type="submit" value="Upload File" />
-				<c:if test="${not empty message}">
-					<p style="color: red">${message}</p>
-				</c:if>
-
-			</form>
 			<c:forEach var="track" items="${tracks}">
 				<c:set var="track" value="${track}" scope="request"></c:set>
 				<jsp:include page="song.jsp"></jsp:include>
 			</c:forEach>
 		</div>		
-		</div>
-		<jsp:include page="footer.jsp"></jsp:include>
 	</div>
+	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>
