@@ -30,6 +30,28 @@ header nav ul li#searchBar {
 	margin-top: 11px;
 }
 
+header nav ul li.dropdown:hover {
+	cursor: pointer;
+}
+
+header nav ul li ul.dropdown-menu {
+	padding: 5px;
+}
+
+header nav ul li ul.dropdown-menu li {
+	margin-top: 0 !important;
+	border-bottom: 1px solid black;
+	padding: 5px;
+}
+
+header nav ul li ul.dropdown-menu li a {
+	font-size: 1.1em !important;
+}
+
+header nav ul li ul.dropdown-menu li:last-child {
+	border-bottom: none;
+}
+
 header nav ul li a {
 	text-decoration: none;
 	color: white;

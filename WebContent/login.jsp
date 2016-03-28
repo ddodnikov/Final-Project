@@ -33,12 +33,9 @@
 						<td colspan="2"><input type="submit" value="Log in" /></td>
 					</tr>
 				</table>
-
-				
 				<c:if test="${not empty wrongUser}">
 					<p style="color: red">${wrongUser}</p>
 				</c:if>
-
 			</form>
 		</div>
 		<jsp:include page="footer.jsp"></jsp:include>

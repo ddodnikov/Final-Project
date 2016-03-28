@@ -21,23 +21,21 @@ import com.soundcloud.model.UserDAO;
 
 @WebServlet("/Login")
 public class Login extends HttpServlet {
-	
+
 	private static final String GET_USER_ID_BY_EMAIL_QUERY = "SELECT user_id FROM users where email = ?;";
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		RequestDispatcher rd = req.getRequestDispatcher("./login.jsp");
-		rd.forward(req, resp);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("./login.jsp").forward(request, response);
+		
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String email = request.getParameter("email");
-		String password = request.getParameter("password");		
-		String hashedPassword = Hashing.sha256()
-		        .hashString(password, StandardCharsets.UTF_8)
-		        .toString();
+		String password = request.getParameter("password");
+		String hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("userId", getCurrentUserId(email));
@@ -46,7 +44,7 @@ public class Login extends HttpServlet {
 			request.setAttribute("wrongUser", "Incorrect email or password!");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 			dispatcher.forward(request, response);
-		}		
+		}
 	}
 
 	private int getCurrentUserId(String email) {
@@ -57,8 +55,8 @@ public class Login extends HttpServlet {
 			ResultSet rs = ps.executeQuery();
 			int userId = 0;
 			if (rs.next()) {
-			// no validations required as this method is called only
-			// when the user has logged in successfully
+				// no validations required as this method is called only
+				// when the user has logged in successfully
 				userId = rs.getInt(1);
 			}
 			return userId;
@@ -66,5 +64,10 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	private void redirect(String destinationPage, HttpServletResponse response) throws IOException {
+		String urlWithSessionID = response.encodeRedirectURL(destinationPage);
+		response.sendRedirect(urlWithSessionID);
 	}
 }
