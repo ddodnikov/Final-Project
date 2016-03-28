@@ -36,12 +36,15 @@ public class Login extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+		
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("userId", getCurrentUserId(email));
+			session.setAttribute("currentUser", new UserDAO().getUserById((int)session.getAttribute("userId")));
 			request.getRequestDispatcher("./home.jsp").forward(request, response);
 		} else {
 			request.setAttribute("wrongUser", "Incorrect email or password!");
@@ -67,10 +70,5 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 		}
 		return 0;
-	}
-
-	private void redirect(String destinationPage, HttpServletResponse response) throws IOException {
-		String urlWithSessionID = response.encodeRedirectURL(destinationPage);
-		response.sendRedirect(urlWithSessionID);
 	}
 }

@@ -6,10 +6,8 @@ public interface IUserDAO {
 	
 	public void deleteUser();
 	
-	public User getUserById(int id);
+	public void getUser();
 	
 	public boolean isEmailUsed(String email);
-	
-	public boolean isExistingUser(String email, String password);
 
 }

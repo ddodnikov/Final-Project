@@ -17,7 +17,7 @@
 			<c:choose>
 				<c:when test="${not empty sessionScope.userId}">
 					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown"> Profile <span class="caret"></span>
+						data-toggle="dropdown">${sessionScope.currentUser.displayName} <span class="caret"></span>
 					</a>
 						<ul class="dropdown-menu">
 							<li><a href="./EditProfile">Edit Profile</a></li>
