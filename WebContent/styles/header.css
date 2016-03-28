@@ -36,6 +36,7 @@ header nav ul li.dropdown:hover {
 
 header nav ul li ul.dropdown-menu {
 	padding: 5px;
+	left: -220%;
 }
 
 header nav ul li ul.dropdown-menu li {
