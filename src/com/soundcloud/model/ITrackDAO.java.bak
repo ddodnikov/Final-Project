@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ITrackDAO {
 
-	public void addTrack(String title, int ganre_id, String description, String uri, int userId);
+	public void addTrack(String title, String ganre, String description, String uri, int userId);
 
 	public void deleteTrack();
 	

@@ -9,21 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-<<<<<<< HEAD
 import javax.servlet.http.HttpSession;
-=======
->>>>>>> 06a9d37bd715223ce15964e8d73b47fcfefb6dde
 import javax.servlet.http.Part;
 
 import com.soundcloud.model.TrackDAO;
 
 @WebServlet("/UploadSong")
-<<<<<<< HEAD
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 0, // 0MB , always on hard disk
-=======
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 0, // 0MB , always on hard
 														// disk
->>>>>>> 06a9d37bd715223ce15964e8d73b47fcfefb6dde
 		maxFileSize = 1024 * 1024 * 50, // 50MB
 		maxRequestSize = 1024 * 1024 * 500) // 500MB
 public class UploadSong extends HttpServlet {
@@ -51,21 +44,18 @@ public class UploadSong extends HttpServlet {
 		} else {
 			hasFile = false;
 		}
-<<<<<<< HEAD
 
 		if (hasFile) {
 			HttpSession session = request.getSession();
 			int userId = (int) session.getAttribute("userId");
-			new TrackDAO().addTrack(fileName, "111", "222", SAVE_DIR + "\\" + fileName, userId);
+			new TrackDAO().addTrack(fileName, 1, "222", SAVE_DIR + "\\" + fileName, userId);
 			request.setAttribute("message", "Upload has been done successfully!");
 		}
-=======
 		
-		new TrackDAO().addTrack(fileName, "111", "222", SAVE_DIR + "\\" + fileName, 6);
+		new TrackDAO().addTrack(fileName, 1, "222", SAVE_DIR + "\\" + fileName, 6);
 
 		if (hasFile)
 			request.setAttribute("message", "Upload has been done successfully!");
->>>>>>> 06a9d37bd715223ce15964e8d73b47fcfefb6dde
 		else 
 			request.setAttribute("message", "No file selected or file exceeds maximum size limit of 50MB!");
 
