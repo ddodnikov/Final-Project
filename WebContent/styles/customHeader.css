@@ -1,0 +1,37 @@
+@CHARSET "ISO-8859-1";
+
+.container {
+	width: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+ul.nav {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	padding: 5px 100px 5px 100px;
+}
+
+ul.nav li {
+	margin: 0 5px 0 5px;
+}
+
+ul.nav li.active a {
+	background-color: #777 !important;
+	border-radius: 5px;
+	color: white !important;
+}
+
+ul.nav li a {
+	color: black;
+	background-color: #39c29d;
+	font-size: 1.2em;
+}
+
+.tab-content {
+	padding: 0 100px 0 100px;
+}

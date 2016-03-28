@@ -63,6 +63,7 @@ header nav ul li a {
 header nav ul li a:hover {
 	color: black;
 	transition: color 0.8s;
+	text-decoration: none !important;
 }
 
 header nav ul li input[type="search"] {

@@ -12,10 +12,10 @@
 <body>
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
+		<c:if test="${empty sessionScope.user}">
+			<jsp:include page="./customHeader.jsp"></jsp:include>
+		</c:if>
 		<div id="wrapper">
-			<c:if test="${not empty sessionScope.userId}">
-				<p>${sessionScope.userId}</p>
-			</c:if>
 		</div>
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>

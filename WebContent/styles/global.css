@@ -1,9 +1,7 @@
 @CHARSET "ISO-8859-1";
 
 @import url(https://fonts.googleapis.com/css?family=Nunito);
-
 @import 'header.css';
-
 @import 'footer.css';
 
 body, div, p, header, ul, li, a, input, aside, footer, span, section,
