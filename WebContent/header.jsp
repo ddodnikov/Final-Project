@@ -21,6 +21,7 @@
 					<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown">${sessionScope.currentUser.displayName} <span class="caret"></span></a>
 					<ul class="dropdown-menu">
+						<li><a href="./Home">My Home</a></li>
 						<li><a href="./EditProfile">Edit Profile</a></li>
 						<li><a href="./UploadSong">Upload Song</a></li>
 						<li><a href="./Logout">Log out</a></li>

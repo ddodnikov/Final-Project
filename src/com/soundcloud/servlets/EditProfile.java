@@ -29,9 +29,10 @@ public class EditProfile extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if(session.getAttribute("authenticated") != null && session.getAttribute("authenticated").equals(true))
+		if(session.getAttribute("userId") == null)
 		{
-		   response.sendRedirect("home.jsp");
+		   response.sendRedirect("./");
+		   return;
 		}
 		// get the current logged in user's profile picture name
 		Connection con = DBConnection.getDBInstance().getConnection();
@@ -44,6 +45,7 @@ public class EditProfile extends HttpServlet {
 			ResultSet rs = ps.executeQuery();
 			rs.next();
 			request.setAttribute("currentProfilePic", rs.getString(1));
+			request.getSession().setAttribute("currentProfilePic", rs.getString(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -10,6 +10,8 @@ public class UserDAO implements IUserDAO {
 	private static final String INSERT_USER = "INSERT INTO users (email, password,display_name) VALUES(?,?,?);";
 	private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 	private static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
+	private static final String SELECT_IMAGE_BY_USER_ID = "SELECT user_img_id FROM users WHERE user_id = ?;";
+	
 	private static final Connection con = DBConnection.getDBInstance().getConnection();
 	
 	
@@ -124,6 +126,33 @@ public class UserDAO implements IUserDAO {
 		}
 		
 		return false;
+	}
+	
+	public String getImageById(int user_id) {
+
+		PreparedStatement selectImage = null;
+		
+		ResultSet result = null;
+		
+		String imgURL = "";
+		try {
+			selectImage = con.prepareStatement(SELECT_IMAGE_BY_USER_ID);
+			
+			selectImage.setInt(1, user_id);
+			
+			selectImage.execute();
+			
+			result = selectImage.getResultSet();
+			result.next();
+			
+			int imgId = result.getInt(1);
+			
+			imgURL = new ImageDAO().getImageURLById(imgId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return imgURL;
 	}
 
 }

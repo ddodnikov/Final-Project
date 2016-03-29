@@ -31,7 +31,7 @@
 		<div id="right">
 			<div id="personalPics">
 				<label for="currentProfile">Current profile picture:</label>
-				<img  src="${pageContext.request.contextPath}/userProfilePics/<c:out value="${currentProfilePic}"></c:out>"/>
+				<img  src="./FetchPicture" alt="Not found"/>
 				<label for="uploadProfilePic">Update profile picture:</label>
 				<input name="uploadProfilePic" type="file" />
 				<label for="uploadHeaderPic">Header picture:</label>

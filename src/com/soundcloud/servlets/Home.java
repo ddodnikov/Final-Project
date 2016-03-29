@@ -14,8 +14,13 @@ public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("./home.jsp");
-		rd.forward(request, response);
+		if(request.getSession(false).getAttribute("userId") == null) {
+			response.sendRedirect("./");
+		}
+		else {
+			RequestDispatcher rd = request.getRequestDispatcher("./home.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

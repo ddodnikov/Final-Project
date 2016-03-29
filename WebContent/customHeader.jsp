@@ -1,31 +1,50 @@
+<%@page import="com.soundcloud.model.TrackDAO"%>
+<%@page import="com.soundcloud.model.Track"%>
+<%@page import="java.util.List"%>
+<%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="styles/customHeader.css" />
 </head>
 <div class="container">
   <ul class="nav nav-pills">
-    <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
-    <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
-    <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
-    <li><a data-toggle="pill" href="#menu3">Menu 3</a></li>
+    <li class="active"><a data-toggle="pill" href="#home">My tracks</a></li>
+    <li><a data-toggle="pill" href="#menu1">My playlists</a></li>
+    <li><a data-toggle="pill" href="#menu2">My likes</a></li>
+    <li><a data-toggle="pill" href="#menu3">My follows</a></li>
   </ul>
   
+  <br>
   <div class="tab-content">
+    
     <div id="home" class="tab-pane fade in active">
-      <h3>HOME</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <h3>All Tracks</h3><br>
+      	<% 
+			List<Track> tracks = new TrackDAO().getUserTracks((int)session.getAttribute("userId"));
+			request.setAttribute("tracks", tracks);
+		%>
+		<c:forEach var="track" items="${tracks}">
+			<c:set var="track" value="${track}" scope="request"></c:set>
+			<jsp:include page="song.jsp"></jsp:include>
+		</c:forEach>
+		<c:if test="${empty tracks}">
+			<p> You have no tracks </p>
+		</c:if>
     </div>
+    
     <div id="menu1" class="tab-pane fade">
-      <h3>Menu 1</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <h3>All Playlists</h3><br>
+      
     </div>
+    
     <div id="menu2" class="tab-pane fade">
-      <h3>Menu 2</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      <h3>All Likes</h3><br>
+     
     </div>
+    
     <div id="menu3" class="tab-pane fade">
-      <h3>Menu 3</h3>
-      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+      <h3>All Follows</h3><br>
+      
     </div>
   </div>
 </div>

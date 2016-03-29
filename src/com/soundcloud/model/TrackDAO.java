@@ -13,11 +13,12 @@ public class TrackDAO implements ITrackDAO{
 
 	private static final String INSERT_TRACK = "INSERT INTO tracks (title, genre_id, description, "
 			+ "track_uri, likes_count, plays_count, date_added, user_id) VALUES(?,?,?,?,?,?,?,?);";
-	private static final String SELECT_ALL_TRACKS = "SELECT * FROM tracks;";
+	private static final String SELECT_ALL_TRACKS = "SELECT * FROM tracks ORDER BY date_added DESC;";
 	private static final String SELECT_IMAGE_BY_ID = "SELECT * FROM images WHERE img_id = ?;";
 	private static final String INSERT_IMAGE = "INSERT INTO images (img_id, img_uri) VALUES(null, ?);";
 	private static final String SELECT_IMAGE_BY_URI = "SELECT * FROM images WHERE img_uri = ?;";
 	private static final String UPDATE_TRACK_IMAGE = "UPDATE tracks SET img_id = ? WHERE title = ?;";
+	private static final String SELECT_TRACKS_BY_USER_ID = "SELECT * FROM tracks WHERE user_id = ? ORDER BY date_added DESC;";
 	
 	@Override
 	public void addTrack(String title, int ganre_id, String description, String uri, int userId) {
@@ -161,6 +162,48 @@ public class TrackDAO implements ITrackDAO{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<Track> getUserTracks(int userId) {
+		
+		List<Track> tracks = new ArrayList<Track>();
+		
+		Connection con = DBConnection.getDBInstance().getConnection();
+		
+		try {
+			
+			PreparedStatement getTracks = con.prepareStatement(SELECT_TRACKS_BY_USER_ID);
+			PreparedStatement getImage  = con.prepareStatement(SELECT_IMAGE_BY_ID);
+			
+			getTracks.setInt(1, userId);
+			ResultSet resultTracks =  getTracks.executeQuery();
+			
+			while(resultTracks.next()) {
+				Track track = new Track();
+				int imageid = resultTracks.getInt("img_id");
+				int genreId = resultTracks.getInt("genre_id");
+				getImage.setInt(1, imageid);
+				ResultSet resultImages =  getImage.executeQuery();
+				resultImages.next();
+				
+				GenreDAO genreDao = new GenreDAO();
+				String genreName = genreDao.getNameById(genreId);
+				
+				track.setTrackURL(resultTracks.getString("track_uri"));
+				track.setDateAdded(resultTracks.getDate("date_added"));
+				track.setTitle(resultTracks.getString("title"));
+				track.setGanre(genreName);
+				track.setDescription(resultTracks.getString("description"));
+				track.setNumberOfLikes(resultTracks.getInt("likes_count"));
+				track.setNumberOfPlays(resultTracks.getInt("plays_count"));
+				
+				
+				tracks.add(track);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tracks;
 	}
 
 }

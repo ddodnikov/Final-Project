@@ -31,7 +31,12 @@ public class UploadSong extends HttpServlet {
 			
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("./uploadSong.jsp").forward(request, response);
+		if(request.getSession(false).getAttribute("userId") != null) {
+			request.getRequestDispatcher("./uploadSong.jsp").forward(request, response);
+		}
+		else {
+			response.sendRedirect("./");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

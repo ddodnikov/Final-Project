@@ -1,3 +1,6 @@
+<%@page import="com.soundcloud.model.TrackDAO"%>
+<%@page import="com.soundcloud.model.Track"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
@@ -12,10 +15,16 @@
 <body>
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
-		<c:if test="${empty sessionScope.user}">
-			<jsp:include page="./customHeader.jsp"></jsp:include>
-		</c:if>
 		<div id="wrapper">
+		<h1>All tracks</h1>
+		<% 
+			List<Track> tracks = new TrackDAO().getAllTracks();
+			request.setAttribute("tracks", tracks);
+		%>
+		<c:forEach var="track" items="${tracks}">
+			<c:set var="track" value="${track}" scope="request"></c:set>
+			<jsp:include page="song.jsp"></jsp:include>
+		</c:forEach>
 		</div>
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>

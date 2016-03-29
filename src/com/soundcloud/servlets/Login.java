@@ -28,7 +28,7 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getSession() != null) {
+		if (request.getSession(false).getAttribute("userId") != null) {
 			request.getSession().invalidate();
 		}
 		request.getRequestDispatcher("./login.jsp").forward(request, response);
@@ -48,7 +48,7 @@ public class Login extends HttpServlet {
 			request.getRequestDispatcher("./home.jsp").forward(request, response);
 		} else {
 			request.setAttribute("wrongUser", "Incorrect email or password!");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("./login.jsp");
 			dispatcher.forward(request, response);
 		}
 	}

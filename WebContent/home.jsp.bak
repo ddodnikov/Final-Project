@@ -18,7 +18,7 @@
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-		<h1>Your tracks</h1>
+			<h1>Your tracks</h1>
 			<%
 				List<Track> tracks = new TrackDAO().getAllTracks();
 				request.setAttribute("tracks", tracks);
