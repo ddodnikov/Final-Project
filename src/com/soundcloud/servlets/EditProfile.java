@@ -60,7 +60,8 @@ public class EditProfile extends HttpServlet {
 		String city = request.getParameter("city");
 		String country = request.getParameter("country");
 		String biography = request.getParameter("biography");
-		
+		String imguri = request.getParameter("uploadProfilePic");
+
 		Connection con = DBConnection.getDBInstance().getConnection();
 		PreparedStatement ps;
 		
@@ -72,6 +73,8 @@ public class EditProfile extends HttpServlet {
 		updateParameter(city, con, userId, UPDATE_USER_CITY_QUERY);
 		updateParameter(country, con, userId, UPDATE_USER_COUNTRY_QUERY);
 		updateParameter(biography, con, userId, UPDATE_USER_BIOGRAPHY_QUERY);
+//		updateParameter(imageUri, con, userId, "UPDATE ");
+		// TODO: update user profile picture in DB
 		
 		doGet(request, response);
 		// TODO: success page??

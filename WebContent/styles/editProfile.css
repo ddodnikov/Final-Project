@@ -5,7 +5,7 @@ form label, form input, form textarea {
 	margin: 10px;
 }
 
-input {
+input, textarea {
 	display: block;
 	width: 277px;
 }
@@ -33,6 +33,7 @@ form {
 #personalPics img {
 	width: 200px;
 	height: 200px;
+	object-fit: cover;
 	display: block;
 	border-radius: 10px;
 }

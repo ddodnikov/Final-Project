@@ -4,14 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GenreDAO implements IGenreDAO{
 	private static final String GET_GENRE_NAME = "SELECT name FROM genres WHERE genre_id = ?;";
 	private static final String GET_GENRE_ID = "SELECT genre_id FROM genres WHERE name = ?;";
-
+	private static final Connection con = DBConnection.getDBInstance().getConnection();
 	@Override
 	public String getNameById(int genreId) {
-		Connection con = DBConnection.getDBInstance().getConnection();
+		
 		String genreName = "";
 		try {
 			PreparedStatement ps = con.prepareStatement(GET_GENRE_NAME);
@@ -28,7 +30,6 @@ public class GenreDAO implements IGenreDAO{
 	
 	@Override
 	public int getIdByName(String name) {
-		Connection con = DBConnection.getDBInstance().getConnection();
 		int genreId = 0;
 		try {
 			PreparedStatement ps = con.prepareStatement(GET_GENRE_ID);
@@ -41,5 +42,21 @@ public class GenreDAO implements IGenreDAO{
 			e.printStackTrace();
 		}
 		return genreId;
+	}
+	
+	@Override
+	public List<String> getAllGenreNames() {
+		List<String> allGenres = new ArrayList<String>();
+		try {
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM genres;");
+			ResultSet genresResult = ps.executeQuery();
+			while (genresResult.next()) {
+				String genreName = genresResult.getString(2);
+				allGenres.add(genreName);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return allGenres;
 	}
 }

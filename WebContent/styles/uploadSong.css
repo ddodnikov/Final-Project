@@ -5,13 +5,13 @@ form label, form input, form textarea, form select {
 	margin: 10px;
 }
 
-input , select{
+form label {
 	display: block;
-	width: 400px;	
 }
 
-input[type="file"] {
-	padding: 0 !important;
+input, select, textarea {
+	display: block;
+	width: 400px;
 }
 
 form {
@@ -26,7 +26,7 @@ form {
 	align-items: center;
 }
 
-#personalPics, #trackPic input {
+#personalPics, input[type="file"] {
 	border: none;
 }
 
@@ -37,9 +37,65 @@ form {
 	border-radius: 10px;
 }
 
-#trackPic img{
+#trackPic img {
 	width: 280px;
 	height: 280px;
 	display: block;
 	border-radius: 10px;
+}
+
+#tags {
+	border: 1px solid black;
+	border-radius: 10px;
+	width: 400px;
+	position: relative;
+	left: 10px;
+}
+
+#tags:focus {
+	outline: none;
+	color: black;
+}
+
+#tags > span {
+	cursor: pointer;
+	border-radius: 5px;
+	font-size: 14px;
+	display: block;
+	float: left;
+	position: relative;
+	bottom: 1px;
+	color: white;
+	background-color: #39c29d;
+	padding: 5px;
+	padding-right: 25px;
+	margin: 4px;
+}
+
+#tags > span:hover {
+	opacity: 0.7;
+}
+
+#tags > span:after {
+	position: absolute;
+	bottom: 5px;
+	content: "X";
+	border: 1px solid;
+	padding: 2px 5px;
+	margin-left: 3px;
+	font-size: 11px;
+	font-weight: bold;
+	background-color: #ff5151;
+	opacity: 0.7px;
+}
+
+#tags > input {
+	margin: 0;
+	border: 0;
+	width: 100%;
+}
+
+#tags > input:focus {
+	background-color: #cbf4e9;
+	width: 30%;
 }

@@ -22,7 +22,7 @@ public class FetchPicture extends HttpServlet {
 			throws ServletException, IOException {
 
 		String imageURL = (String) request.getSession().getAttribute("currentProfilePic");
-		System.out.println(imageURL);
+//		System.out.println(imageURL);
 
 		Path path = Paths.get(imageURL);
 		String mime = Files.probeContentType(path);

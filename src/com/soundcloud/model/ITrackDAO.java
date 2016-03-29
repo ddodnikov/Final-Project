@@ -14,4 +14,11 @@ public interface ITrackDAO {
 	
 	public void addImage(String uri);
 
+	int getImageByUri(String uri);
+	
+	void updateTrackImage(int imgid, String title);
+	
+	List<Track> getUserTracks(int userId);
+	
+	List<Track> searchTracksTitleAndGenreByWord(String word);
 }

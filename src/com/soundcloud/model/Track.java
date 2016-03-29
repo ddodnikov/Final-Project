@@ -2,8 +2,7 @@ package com.soundcloud.model;
 
 import java.util.List;
 
-public class Track extends PieceOfMusic{
-	
+public class Track extends PieceOfMusic {
 
 	private String trackURL;
 	

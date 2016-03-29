@@ -30,6 +30,14 @@ header nav ul li#searchBar {
 	margin-top: 11px;
 }
 
+header nav ul li#searchBar form {
+	padding-top: 0;
+}
+
+header nav ul li#searchBar form input {
+	margin: 0;
+}
+
 header nav ul li.dropdown:hover {
 	cursor: pointer;
 }

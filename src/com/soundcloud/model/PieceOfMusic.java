@@ -22,7 +22,8 @@ public abstract class PieceOfMusic {
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		if (title != null && !title.isEmpty())
+			this.title = title;
 	}
 
 	public String getGanre() {
@@ -30,7 +31,8 @@ public abstract class PieceOfMusic {
 	}
 
 	public void setGanre(String ganre) {
-		this.ganre = ganre;
+		if (ganre != null && !ganre.isEmpty())
+			this.ganre = ganre;
 	}
 
 	public List<String> getTags() {

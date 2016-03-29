@@ -15,7 +15,7 @@
 	<div id="wrapper">
 	<h1>Edit your profile</h1>
 	
-	<form method="post" action="./EditProfile">
+	<form method="post" action="./EditProfile" enctype="multipart/form-data">
 		<div id="left">
 			<label for="firstName">First name:</label>
 			<input name="firstName" type="text" placeholder="Enter your first name"/>
@@ -30,10 +30,11 @@
 		</div>
 		<div id="right">
 			<div id="personalPics">
-				<label for="currentProfile">Current profile picture:</label>
-				<img  src="./FetchPicture" alt="Not found"/>
+				<label for="currentProfile">Profile picture:</label>
+				<img src="./FetchPicture" alt="Not found" id="outImage"/>
 				<label for="uploadProfilePic">Update profile picture:</label>
-				<input name="uploadProfilePic" type="file" />
+				<input name="uploadProfilePic" type="file" id="picField" />
+				<script src="scripts/dynamicImageLoad.js"></script>
 				<label for="uploadHeaderPic">Header picture:</label>
 				<input name="uploadHeaderPic" type="file" />
 			</div>

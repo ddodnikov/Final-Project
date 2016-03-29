@@ -14,7 +14,10 @@
 			<a href="#">Charts</a>
 			</li>
 			<li id="searchBar">
-			<input type="search" results=3 placeholder="Search tracks" />
+			<form action="./Search" method="get">
+				<input type="search" results=3 placeholder="Search tracks" name="search"/>
+				<input type="submit" value="Search" style="position: absolute; left: -9999px" />
+			</form>
 			</li>
 			<c:choose>
 				<c:when test="${not empty sessionScope.userId}">
