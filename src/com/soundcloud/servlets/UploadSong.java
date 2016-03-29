@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.soundcloud.model.GenreDAO;
 import com.soundcloud.model.TrackDAO;
 
 @WebServlet("/UploadSong")
@@ -23,56 +24,68 @@ public class UploadSong extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String SAVE_DIR = "D:\\soundcloudFiles\\tracks";
+	private static final String TRACK_SAVE_DIR = "D:\\soundcloudFiles\\tracks";
+	private static final String IMAGE_SAVE_DIR = "D:\\soundcloudFiles\\images";
 
+	private static final int MAX_FILE_SIZE = 1024 * 1024 * 50;
+			
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("./uploadSong.jsp").forward(request, response);
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// creates the save directory if it does not exists
-		File fileSaveDir = new File(SAVE_DIR);
-		if (!fileSaveDir.exists()) {
-			fileSaveDir.mkdir();
-		}
-
-		boolean hasFile = true;
+		String title = request.getParameter("title");
+		String genre = request.getParameter("genre");
+		String description = request.getParameter("description");
 		
-		Part part = request.getPart("fileUpload");
-		String fileName = extractFileName(part);
+		int genreId = new GenreDAO().getIdByName(genre);
+		
+		// creates the save directory if it does not exists
+		File trackSaveDir = new File(TRACK_SAVE_DIR);
+		if (!trackSaveDir.exists()) {
+			trackSaveDir.mkdir();
+		}
+		
+		File imageSaveDir = new File(IMAGE_SAVE_DIR);
+		if (!imageSaveDir.exists()) {
+			imageSaveDir.mkdir();
+		}
+		
+		Part track = request.getPart("songUpload");
+		Part image = request.getPart("uploadTrackPic");
 
-		if (!fileName.equals("") && part.getSize() < 50*1024*1024) {
-			part.write(SAVE_DIR + File.separator + fileName);
+		String trackName = track.getSubmittedFileName();
+		String imageName = image.getSubmittedFileName();
+		
+		if (trackName.equals("") || track.getSize() > MAX_FILE_SIZE) {
+			request.setAttribute("songErrorMessage", "No file selected or file exceeds maximum size limit of 50MB!");
 		} else {
-			hasFile = false;
-		}
-
-		if (hasFile) {
-			HttpSession session = request.getSession();
-			int userId = (int) session.getAttribute("userId");
-			new TrackDAO().addTrack(fileName, 1, "222", SAVE_DIR + "\\" + fileName, userId);
-			request.setAttribute("message", "Upload has been done successfully!");
-		}
-		else 
-			request.setAttribute("message", "No file selected or file exceeds maximum size limit of 50MB!");
-
-		getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
-	}
-
-	/**
-	 * Extracts file name from HTTP header content-disposition
-	 */
-	private String extractFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		String[] items = contentDisp.split(";");
-		for (String s : items) {
-			if (s.trim().startsWith("filename")) {
-				return s.substring(s.indexOf("=") + 2, s.length() - 1);
+			if(title.equals("")) {
+				request.setAttribute("songErrorMessage", "The field title is required!");
+			} else {
+				if(image.getSize() > MAX_FILE_SIZE) {
+					request.setAttribute("songErrorMessage", "Image exceeds maximum size limit of 50MB!");
+				} else {
+					HttpSession session = request.getSession();
+					int userId = (int) session.getAttribute("userId");
+					track.write(TRACK_SAVE_DIR + File.separator + title + ".mp3");
+					new TrackDAO().addTrack(title, genreId, description, TRACK_SAVE_DIR + File.separator + title + ".mp3", userId);
+					if(imageName.length() > 0) {
+						image.write(IMAGE_SAVE_DIR + File.separator + imageName);
+						new TrackDAO().addImage(IMAGE_SAVE_DIR + File.separator + imageName);
+						int img_id = new TrackDAO().getImageByUri(IMAGE_SAVE_DIR + File.separator + imageName);
+						new TrackDAO().updateTrackImage(img_id, title);
+					}
+					request.setAttribute("songErrorMessage", "Your track was successfully uploaded!");
+				}
 			}
 		}
-		return "";
+		
+		getServletContext().getRequestDispatcher("/uploadSong.jsp").forward(request, response);
+
 	}
+	
 }

@@ -11,5 +11,7 @@ public interface ITrackDAO {
 	public void getTrack();
 	
 	public List<Track> getAllTracks();
+	
+	public void addImage(String uri);
 
 }

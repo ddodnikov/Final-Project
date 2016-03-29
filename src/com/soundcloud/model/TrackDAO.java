@@ -15,6 +15,9 @@ public class TrackDAO implements ITrackDAO{
 			+ "track_uri, likes_count, plays_count, date_added, user_id) VALUES(?,?,?,?,?,?,?,?);";
 	private static final String SELECT_ALL_TRACKS = "SELECT * FROM tracks;";
 	private static final String SELECT_IMAGE_BY_ID = "SELECT * FROM images WHERE img_id = ?;";
+	private static final String INSERT_IMAGE = "INSERT INTO images (img_id, img_uri) VALUES(null, ?);";
+	private static final String SELECT_IMAGE_BY_URI = "SELECT * FROM images WHERE img_uri = ?;";
+	private static final String UPDATE_TRACK_IMAGE = "UPDATE tracks SET img_id = ? WHERE title = ?;";
 	
 	@Override
 	public void addTrack(String title, int ganre_id, String description, String uri, int userId) {
@@ -30,8 +33,8 @@ public class TrackDAO implements ITrackDAO{
 			addTrack.setInt(2, ganre_id);
 			addTrack.setString(3, description);
 			addTrack.setString(4, uri);
-			addTrack.setInt(5, 23);
-			addTrack.setInt(6, 45);
+			addTrack.setInt(5, 0);
+			addTrack.setInt(6, 0);
 			addTrack.setDate(7, Date.valueOf(LocalDate.now()));
 			addTrack.setInt(8, userId);
 			
@@ -96,6 +99,68 @@ public class TrackDAO implements ITrackDAO{
 			e.printStackTrace();
 		}
 		return tracks;
+	}
+	
+	public void addImage(String uri) {
+		
+		Connection con = DBConnection.getDBInstance().getConnection();
+
+		PreparedStatement addImage = null;
+		
+		try {
+			addImage = con.prepareStatement(INSERT_IMAGE);
+			
+			addImage.setString(1, uri);
+			
+			addImage.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int getImageByUri(String uri) {
+		
+		Connection con = DBConnection.getDBInstance().getConnection();
+
+		PreparedStatement selectImage = null;
+		
+		ResultSet result = null;
+		
+		int id = 1;
+		try {
+			selectImage = con.prepareStatement(SELECT_IMAGE_BY_URI);
+			
+			selectImage.setString(1, uri);
+			
+			selectImage.execute();
+			
+			result = selectImage.getResultSet();
+			result.next();
+			
+			id = result.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return id;
+	}
+	
+	public void updateTrackImage(int imgid, String title) {
+		
+		Connection con = DBConnection.getDBInstance().getConnection();
+
+		PreparedStatement updateTrackImage = null;
+		
+		try {
+			updateTrackImage = con.prepareStatement(UPDATE_TRACK_IMAGE);
+			
+			updateTrackImage.setInt(1, imgid);
+			updateTrackImage.setString(2, title);
+			
+			updateTrackImage.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

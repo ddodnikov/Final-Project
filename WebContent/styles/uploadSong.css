@@ -1,0 +1,45 @@
+@CHARSET "ISO-8859-1";
+
+form label, form input, form textarea, form select {
+	font-size: 1.4em;
+	margin: 10px;
+}
+
+input , select{
+	display: block;
+	width: 400px;	
+}
+
+input[type="file"] {
+	padding: 0 !important;
+}
+
+form {
+	display: flex;
+	justify-content: space-around;
+	padding-top: 10px;
+}
+
+#personalPics, #trackPic {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#personalPics, #trackPic input {
+	border: none;
+}
+
+#personalPics img {
+	width: 200px;
+	height: 200px;
+	display: block;
+	border-radius: 10px;
+}
+
+#trackPic img{
+	width: 280px;
+	height: 280px;
+	display: block;
+	border-radius: 10px;
+}
