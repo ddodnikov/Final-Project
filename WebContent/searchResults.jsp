@@ -17,11 +17,9 @@
 			<p id="message">${noResultsMessage}</p>
 		</c:when>
 		<c:otherwise>
-			<c:forEach var="tracksList" items="${results}">
-				<c:set var="tracksList" value="${tracksList}" scope="request"></c:set>
-				<c:forEach var="track" items="${tracksList}">
-					<p>${track.title}</p>
-				</c:forEach>			
+			<c:forEach var="track" items="${results}">
+				<c:set var="track" value="${track}" scope="request"></c:set>
+				<jsp:include page="song.jsp"></jsp:include>		
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>

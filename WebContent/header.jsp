@@ -11,7 +11,7 @@
 			<a href="./Home"><img src="images/soundCloudLogo.png" alt="siteLogo" /></a>
 			</li>
 			<li>
-			<a href="#">Charts</a>
+			<a href="./Charts">Charts</a>
 			</li>
 			<li id="searchBar">
 			<form action="./Search" method="get">

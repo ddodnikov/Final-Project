@@ -11,15 +11,21 @@ import java.util.List;
 
 public class TrackDAO implements ITrackDAO {
 
-	private static final String FIND_TRACKS_QUERY = "SELECT * FROM tracks WHERE title LIKE ?;";
+	private static final String FIND_TRACKS_QUERY = "SELECT * FROM tracks WHERE title LIKE ? OR " + 
+									"genre_id in (SELECT genre_id FROM genres WHERE name LIKE ?) OR " + 
+									"track_id in (SELECT track_id FROM tags_with_tracks WHERE tag_id IN " + 
+									"(SELECT tag_id FROM tags WHERE name LIKE ?));";
 	private static final String INSERT_TRACK = "INSERT INTO tracks (title, genre_id, description, "
 			+ "track_uri, likes_count, plays_count, date_added, user_id) VALUES(?,?,?,?,?,?,?,?);";
 	private static final String SELECT_ALL_TRACKS = "SELECT * FROM tracks ORDER BY date_added DESC;";
 	private static final String SELECT_IMAGE_BY_ID = "SELECT * FROM images WHERE img_id = ?;";
-	private static final String INSERT_IMAGE = "INSERT INTO images (img_id, img_uri) VALUES(null, ?);";
+	public static final String INSERT_IMAGE = "INSERT INTO images (img_id, img_uri) VALUES(null, ?);";
 	private static final String SELECT_IMAGE_BY_URI = "SELECT * FROM images WHERE img_uri = ?;";
 	private static final String UPDATE_TRACK_IMAGE = "UPDATE tracks SET img_id = ? WHERE title = ?;";
 	private static final String SELECT_TRACKS_BY_USER_ID = "SELECT * FROM tracks WHERE user_id = ? ORDER BY date_added DESC;";
+	private static final String SELECT_LATEST_TRACKS = "SELECT * FROM tracks order by date_added desc limit 50;";
+	private static final String SELECT_MOST_PLAYED_TRACKS = "SELECT * FROM tracks order by plays_count desc limit 50;";
+	private static final String SELECT_MOST_LIKED_TRACKS = "SELECT * FROM tracks order by likes_count desc limit 50;";
 
 	private static final Connection con = DBConnection.getDBInstance().getConnection();
 
@@ -199,12 +205,50 @@ public class TrackDAO implements ITrackDAO {
 	}
 
 	@Override
-	public List<Track> searchTracksTitleAndGenreByWord(String word) {
+	public List<Track> searchTracksTitleTagsAndGenreByWord(String word) {
 		List<Track> foundTracks = new ArrayList<Track>();
 		try {
 			PreparedStatement foundTracksStatement = con.prepareStatement(FIND_TRACKS_QUERY);
 			foundTracksStatement.setString(1, "%" + word + "%");
-//			foundTracksStatement.setString(2, "%" + word + "%");
+			foundTracksStatement.setString(2, "%" + word + "%");
+			foundTracksStatement.setString(3, "%" + word + "%");
+			ResultSet results = foundTracksStatement.executeQuery();
+			while (results.next()) {
+				Track track = new Track();
+				int genreId = results.getInt("genre_id");
+				GenreDAO genreDao = new GenreDAO();
+				String genreName = genreDao.getNameById(genreId);
+				track.setTrackURL(results.getString("track_uri"));
+				track.setDateAdded(results.getDate("date_added"));
+				track.setTitle(results.getString("title"));
+				track.setGanre(genreName);
+				track.setDescription(results.getString("description"));
+				track.setNumberOfLikes(results.getInt("likes_count"));
+				track.setNumberOfPlays(results.getInt("plays_count"));
+				foundTracks.add(track);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return foundTracks;
+	}
+	
+	public List<Track> getMostPlayedTracks() {
+		return getTrackList(SELECT_MOST_PLAYED_TRACKS);
+	}
+	
+	public List<Track> getLatestTracks() {
+		return getTrackList(SELECT_LATEST_TRACKS);
+	}
+	
+	public List<Track> getMostLikedTracks() {
+		return getTrackList(SELECT_MOST_LIKED_TRACKS);
+	}
+	
+	private List<Track> getTrackList(String sql) {
+		List<Track> foundTracks = new ArrayList<Track>();
+		try {
+			PreparedStatement foundTracksStatement = con.prepareStatement(sql);
 			ResultSet results = foundTracksStatement.executeQuery();
 			while (results.next()) {
 				Track track = new Track();

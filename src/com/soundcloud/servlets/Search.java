@@ -26,13 +26,12 @@ public class Search extends HttpServlet {
 			request.setAttribute("noResultsMessage", NO_RESULTS_MESSAGE);
 		}
 		List<String> searchArgs = Arrays.asList(request.getParameter("search").split(SPLIT_REGEX));
-		List<List<Track>> results = new ArrayList<List<Track>>();
+		List<Track> results = new ArrayList<Track>();
 		for (String word : searchArgs) {
-			List<Track> resultTracks = new TrackDAO().searchTracksTitleAndGenreByWord(word);
-			results.add(resultTracks);
+			List<Track> resultTracks = new TrackDAO().searchTracksTitleTagsAndGenreByWord(word);
+			results.addAll(resultTracks);
 		}
-		// TODO: check if there are no found results??
-		// this is not working
+
 		if (results.size() == 0) {
 			request.setAttribute("noResultsMessage", NO_RESULTS_MESSAGE);
 		} else {

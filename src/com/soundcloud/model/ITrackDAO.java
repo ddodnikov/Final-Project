@@ -20,5 +20,5 @@ public interface ITrackDAO {
 	
 	List<Track> getUserTracks(int userId);
 	
-	List<Track> searchTracksTitleAndGenreByWord(String word);
+	List<Track> searchTracksTitleTagsAndGenreByWord(String word);
 }

@@ -45,7 +45,7 @@
 				<div id="right">
 					<div id="trackPic">
 						<label for="currentProfile">Track picture:</label>
-						<img src="./FetchPicture" id="outImage" />
+						<img src="./images/defaultSongImage.jpg" id="outImage" />
 						<input name="uploadTrackPic" type="file" id="picField" />
 						<script src="scripts/dynamicImageLoad.js"></script>
 					</div>

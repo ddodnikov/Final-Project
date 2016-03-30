@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import com.google.common.hash.Hashing;
 import com.soundcloud.model.DBConnection;
 import com.soundcloud.model.UserDAO;
+import com.soundcloud.model.User;
 
 @WebServlet("/Login")
 public class Login extends HttpServlet {
@@ -44,7 +45,9 @@ public class Login extends HttpServlet {
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("userId", getCurrentUserId(email));
-			session.setAttribute("currentUser", new UserDAO().getUserById((int)session.getAttribute("userId")));
+			User user = new UserDAO().getUserById((int)session.getAttribute("userId"));
+			session.setAttribute("currentUser", user);
+			session.setAttribute("userName", user.getDisplayName());
 			request.getRequestDispatcher("./home.jsp").forward(request, response);
 		} else {
 			request.setAttribute("wrongUser", "Incorrect email or password!");
