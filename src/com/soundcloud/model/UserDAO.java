@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 public class UserDAO implements IUserDAO {
 
+	private static final String GET_HEADER_IMG_URI_QUERY = "SELECT i.img_uri FROM images i INNER JOIN users u ON i.img_id = u.header_img_id WHERE user_id = ?;";
 	private static final String INSERT_USER = "INSERT INTO users (email, password,display_name) VALUES(?,?,?);";
 	private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 	private static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
@@ -153,6 +154,75 @@ public class UserDAO implements IUserDAO {
 		}
 		
 		return imgURL;
+	}
+
+	@Override
+	public String getHeaderImgUriByUserId(int id) {
+		String headerImgUri = "";
+		try {
+			PreparedStatement ps = con.prepareStatement(GET_HEADER_IMG_URI_QUERY);
+			ps.setInt(1, id);
+			ResultSet headerImgUriResult = ps.executeQuery();
+			if (headerImgUriResult.next()) {
+				headerImgUri = headerImgUriResult.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return headerImgUri;
+	}
+
+	public void addImage(String imgUri) {
+		try {
+			PreparedStatement ps = con.prepareStatement("INSERT INTO images (img_id, img_uri) VALUES(null, ?);");
+			ps.setString(1, imgUri);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public int getImageByUri(String imgUri) {
+		int imageId = 0;
+		try {
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM images WHERE img_uri = ?;");
+			ps.setString(1, imgUri);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				imageId = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (imageId == 0) {
+			return 1; // default img uri??
+		}
+		return imageId;
+	}
+
+	public void updateProfilePic(int profilePicId, int userId) {
+		try {
+			PreparedStatement ps = con.prepareStatement("UPDATE users SET user_img_id = ? WHERE user_id = ?;");
+			ps.setInt(1, profilePicId);
+			ps.setInt(2, userId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void updateHeaderPic(int headerImageId, int userId) {
+		try {
+			PreparedStatement ps = con.prepareStatement("UPDATE users SET header_img_id = ? WHERE user_id = ?;");
+			ps.setInt(1, headerImageId);
+			ps.setInt(2, userId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

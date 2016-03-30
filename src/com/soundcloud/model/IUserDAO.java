@@ -11,5 +11,7 @@ public interface IUserDAO {
 	public boolean isEmailUsed(String email);
 	
 	public boolean isExistingUser(String email, String password);
+	
+	String getHeaderImgUriByUserId(int id);
 
 }

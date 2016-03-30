@@ -38,13 +38,25 @@ header nav ul li#searchBar form input {
 	margin: 0;
 }
 
+header nav ul li.dropdown {
+	margin-top: 11px;
+}
+
 header nav ul li.dropdown:hover {
 	cursor: pointer;
 }
 
+header nav ul li.dropdown span#smallUserPic {
+	margin-right: 10px;
+}
+
+header nav ul li.dropdown span#smallUserPic img {
+	width: 40px;
+	height: 40px;
+}
+
 header nav ul li ul.dropdown-menu {
 	padding: 5px;
-	left: -220%;
 }
 
 header nav ul li ul.dropdown-menu li {

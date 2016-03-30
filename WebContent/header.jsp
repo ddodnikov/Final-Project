@@ -15,13 +15,16 @@
 			</li>
 			<li id="searchBar">
 			<form action="./Search" method="get">
-				<input type="search" results=3 placeholder="Search tracks" name="search"/>
+				<input type="search" results=3 placeholder="Search tracks by title, genre or tag" name="search"/>
 				<input type="submit" value="Search" style="position: absolute; left: -9999px" />
 			</form>
 			</li>
 			<c:choose>
 				<c:when test="${not empty sessionScope.userId}">
 					<li class="dropdown">
+					<span id="smallUserPic">
+						<img src="./FetchPicture" />
+					</span>
 					<a class="dropdown-toggle" data-toggle="dropdown">${sessionScope.currentUser.displayName} <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="./Home">My Home</a></li>

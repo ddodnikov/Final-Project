@@ -22,7 +22,7 @@
 			<h1>Upload track</h1>
 			<form method="post" action="./UploadSong" enctype="multipart/form-data">
 				<div id="left">
-					<input type="file" name="songUpload" /> <label for="title">Title (required)</label>
+					<input type="file" name="songUpload" accept=".mp3" /> <label for="title">Title (required)</label>
 					<input type="text" name="title" placeholder="Name your track" />
 					<label for="genre">Genre</label>
 					<select name="genre">
