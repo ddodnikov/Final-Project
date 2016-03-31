@@ -34,7 +34,6 @@
     
     <div id="menu1" class="tab-pane fade">
       <h3>All Playlists</h3><br>
-      
     </div>
     
     <div id="menu2" class="tab-pane fade">

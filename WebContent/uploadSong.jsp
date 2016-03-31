@@ -7,8 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="scripts/tagManager.js"></script>
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
 <link type="text/css" rel="stylesheet" href="styles/uploadSong.css" />
@@ -38,6 +37,7 @@
 					<div id="tags">
 						<input type="text" value="" placeholder="Add tags" />
 					</div>
+					
 					<!-- <input type="text" name="tags" placeholder="Add tags to describe the genre and mood of your track" /> -->
 					<label for="description">Description</label>
 					<textarea name="description" rows=5 cols=45 placeholder="Describe your track"></textarea>
@@ -46,7 +46,7 @@
 					<div id="trackPic">
 						<label for="currentProfile">Track picture:</label>
 						<img src="./images/defaultSongImage.jpg" id="outImage" />
-						<input name="uploadTrackPic" type="file" id="picField" />
+						<input name="uploadTrackPic" type="file" id="picField" accept="image/jpeg" />
 						<script src="scripts/dynamicImageLoad.js"></script>
 					</div>
 					<input type="submit" value="Upload">

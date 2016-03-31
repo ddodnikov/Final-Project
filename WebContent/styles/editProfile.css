@@ -16,24 +16,39 @@ input[type="file"] {
 
 form {
 	display: flex;
-	justify-content: space-around;
+	flex-direction: column;
 	padding-top: 10px;
+}
+
+#top, #bottom {
+	display: flex;
+	justify-content: space-around;
 }
 
 #personalPics {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 }
 
-#personalPics input {
+#bottom div input {
 	border: none;
 }
 
-#personalPics img {
+#bottom div img {
 	width: 200px;
 	height: 200px;
 	object-fit: cover;
 	display: block;
 	border-radius: 10px;
+}
+
+input[type="submit"] {
+	display: block;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+
+#outHeader {
+	width: 500px !important;
+	
 }

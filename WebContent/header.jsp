@@ -23,7 +23,15 @@
 				<c:when test="${not empty sessionScope.userId}">
 					<li class="dropdown">
 					<span id="smallUserPic">
-						<img src="./FetchPicture" />
+						<c:choose>
+						<c:when test="${not empty sessionScope.currentProfilePic}">
+							<img src="./FetchPicture" />
+						</c:when>
+						<c:otherwise>
+							<img src="./images/defaultProfilePic.jpg" />
+						</c:otherwise>
+						</c:choose>
+						
 					</span>
 					<a class="dropdown-toggle" data-toggle="dropdown">${sessionScope.currentUser.displayName} <span class="caret"></span></a>
 					<ul class="dropdown-menu">

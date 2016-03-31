@@ -13,12 +13,13 @@
 <link type="image/x-icon" rel="icon" href="images/siteIcon.ico" />
 <title>Charts :: SoundCloud</title>
 </head>
+<body>
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
 			<jsp:include page="./chartsHeader.jsp"></jsp:include>
-		</div>		
+		</div>
+		<jsp:include page="footer.jsp"></jsp:include>	
 	</div>
-	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

@@ -17,9 +17,10 @@
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
 			<c:if test="${not empty sessionScope.userId}">
+				<jsp:include page="./userProfile.jsp"></jsp:include>
 				<jsp:include page="./customHeader.jsp"></jsp:include>
 			</c:if>
-		</div>		
+		</div>
 	</div>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>

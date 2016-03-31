@@ -148,24 +148,12 @@ public class User {
 		return userImageURI;
 	}
 
-	private void setUserImageURI(String userImageURI) {
-		this.userImageURI = userImageURI;
-	}
-
 	public String getHeaderImageURI() {
 		return headerImageURI;
 	}
 
-	private void setHeaderImageURI(String headerImageURI) {
-		this.headerImageURI = headerImageURI;
-	}
-
 	public String getUserProfileURL() {
 		return userProfileURL;
-	}
-
-	private void setUserProfileURL(String userProfileURL) {
-		this.userProfileURL = userProfileURL;
 	}
 
 }

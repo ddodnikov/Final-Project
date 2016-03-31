@@ -25,15 +25,21 @@ body {
 
 #outer {
 	width: 100%;
+	background-image: url('../images/fresh-background.jpg');
+	background-repeat: no-repeat;
+	background-position: center top;
+    background-size: 100% auto;
+    background-attachment: fixed;
 }
 
 #wrapper {
 	width: 1160px;
 	min-height: 533px;
 	margin: 0 auto;
-	background-color: white;
+	/*background-color: white;*/
 	margin: 0 auto;
 	padding: 30px;
+	padding-top: 60px;
 }
 
 input, textarea, select{

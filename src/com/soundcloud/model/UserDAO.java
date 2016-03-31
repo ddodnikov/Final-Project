@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO implements IUserDAO {
-
+	
+	private static final String GET_USER_ID_BY_EMAIL_QUERY = "SELECT user_id FROM users where email = ?;";
+	private static final String GET_PROFILE_IMG_URI_QUERY = "SELECT i.img_uri FROM images i INNER JOIN users u ON i.img_id = u.user_img_id WHERE user_id = ?;";
 	private static final String GET_HEADER_IMG_URI_QUERY = "SELECT i.img_uri FROM images i INNER JOIN users u ON i.img_id = u.header_img_id WHERE user_id = ?;";
 	private static final String INSERT_USER = "INSERT INTO users (email, password,display_name) VALUES(?,?,?);";
 	private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
@@ -222,7 +224,37 @@ public class UserDAO implements IUserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public String getCurrentProfilePicUri(int userId) {
+		String currentProfilePicUri = null;
+		try {
+			PreparedStatement ps = con.prepareStatement(GET_PROFILE_IMG_URI_QUERY);
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				currentProfilePicUri = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return currentProfilePicUri;
+	}
+	
+	public int getCurrentUserId(String email) {
+		try {
+			PreparedStatement ps = con.prepareStatement(GET_USER_ID_BY_EMAIL_QUERY);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			int userId = 0;
+			if (rs.next()) {
+				userId = rs.getInt(1);
+			}
+			return userId;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

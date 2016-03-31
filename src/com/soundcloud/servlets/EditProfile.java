@@ -23,7 +23,6 @@ import com.soundcloud.model.UserDAO;
 @WebServlet("/EditProfile")
 @MultipartConfig
 public class EditProfile extends HttpServlet {
-	private static final String GET_IMG_URI_QUERY = "SELECT i.img_uri FROM images i INNER JOIN users u ON i.img_id = u.user_img_id WHERE user_id = ?;";
 
 	private static final String UPDATE_USER_BIOGRAPHY_QUERY = "UPDATE users SET biography = ? WHERE user_id = ?;";
 	private static final String UPDATE_USER_COUNTRY_QUERY = "UPDATE users SET country = ? WHERE user_id = ?;";
@@ -44,19 +43,11 @@ public class EditProfile extends HttpServlet {
 			response.sendRedirect("./");
 			return;
 		}
-		// get the current logged in user's profile picture name
-		Connection con = DBConnection.getDBInstance().getConnection();
-		int userId = (int) request.getSession().getAttribute("userId");
-		try {
-			PreparedStatement ps = con.prepareStatement(GET_IMG_URI_QUERY);
-			ps.setInt(1, userId);
-			ResultSet rs = ps.executeQuery();
-			rs.next();
-			request.setAttribute("currentProfilePic", rs.getString(1));
-			request.getSession().setAttribute("currentProfilePic", rs.getString(1));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		int userId = (int) session.getAttribute("userId");
+		UserDAO userDao = new UserDAO();
+		session.setAttribute("currentProfilePic", userDao.getCurrentProfilePicUri(userId));
+		session.setAttribute("currentHeaderPic", userDao.getHeaderImgUriByUserId(userId));
+		session.setAttribute("currentUser", userDao.getUserById(userId));
 		RequestDispatcher rd = request.getRequestDispatcher("./editProfile.jsp");
 		rd.forward(request, response);
 	}

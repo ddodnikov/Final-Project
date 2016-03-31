@@ -23,13 +23,12 @@ import com.soundcloud.model.User;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 
-	private static final String GET_USER_ID_BY_EMAIL_QUERY = "SELECT user_id FROM users where email = ?;";
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getSession(false).getAttribute("userId") != null) {
+		if (request.getSession(false) != null) {
 			request.getSession().invalidate();
 		}
 		request.getRequestDispatcher("./login.jsp").forward(request, response);
@@ -44,10 +43,18 @@ public class Login extends HttpServlet {
 		
 		if (new UserDAO().isExistingUser(email, hashedPassword)) {
 			HttpSession session = request.getSession();
-			session.setAttribute("userId", getCurrentUserId(email));
-			User user = new UserDAO().getUserById((int)session.getAttribute("userId"));
+			UserDAO userDao = new UserDAO();
+			int currentUserId = userDao.getCurrentUserId(email);
+			String currentProfilePicUri = userDao.getCurrentProfilePicUri(currentUserId);
+			String currentHeaderPicUri = userDao.getHeaderImgUriByUserId(currentUserId);
+			session.setAttribute("currentProfilePic", currentProfilePicUri);
+			session.setAttribute("currentHeaderPic", currentHeaderPicUri);
+			session.setAttribute("userId", currentUserId);
+			User user = userDao.getUserById(currentUserId);
+			
 			session.setAttribute("currentUser", user);
 			session.setAttribute("userName", user.getDisplayName());
+			
 			request.getRequestDispatcher("./home.jsp").forward(request, response);
 		} else {
 			request.setAttribute("wrongUser", "Incorrect email or password!");
@@ -56,22 +63,5 @@ public class Login extends HttpServlet {
 		}
 	}
 
-	private int getCurrentUserId(String email) {
-		Connection con = DBConnection.getDBInstance().getConnection();
-		try {
-			PreparedStatement ps = con.prepareStatement(GET_USER_ID_BY_EMAIL_QUERY);
-			ps.setString(1, email);
-			ResultSet rs = ps.executeQuery();
-			int userId = 0;
-			if (rs.next()) {
-				// no validations required as this method is called only
-				// when the user has logged in successfully
-				userId = rs.getInt(1);
-			}
-			return userId;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
+	
 }
