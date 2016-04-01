@@ -7,6 +7,7 @@ import com.soundcloud.exceptions.SoundCloudInvalidArgumentException;
 
 public class User {
 
+	private int id;
 	private String emailAddress;
 	private String password;
 	private String displayName;
@@ -34,12 +35,16 @@ public class User {
 		setCountry(country);
 		setBiography(biography);
 	}
+	
+	public User(){
+		
+	}
 
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
-	private void setEmailAddress(String emailAddress) {
+	public void setEmailAddress(String emailAddress) {
 		if (emailAddress == null || emailAddress.isEmpty()) {
 			try {
 				throw new SoundCloudInvalidArgumentException("User email cannot be empty!");
@@ -58,7 +63,7 @@ public class User {
 		return displayName;
 	}
 
-	private void setDisplayName(String displayName) {
+	public void setDisplayName(String displayName) {
 		if (displayName == null || displayName.isEmpty()) {
 			try {
 				throw new SoundCloudInvalidArgumentException("Display name cannot be empty!");
@@ -73,7 +78,7 @@ public class User {
 		return firstName;
 	}
 
-	private void setFirstName(String firstName) {
+	public void setFirstName(String firstName) {
 //		if (firstName == null || firstName.isEmpty()) {
 //			try {
 //				throw new SoundCloudInvalidArgumentException("First name cannot be empty!");
@@ -88,7 +93,7 @@ public class User {
 		return lastName;
 	}
 
-	private void setLastName(String lastName) {
+	public void setLastName(String lastName) {
 //		if (lastName == null || lastName.isEmpty()) {
 //			try {
 //				throw new SoundCloudInvalidArgumentException("Last name cannot be empty!");
@@ -103,7 +108,7 @@ public class User {
 		return city;
 	}
 
-	private void setCity(String city) {
+	public void setCity(String city) {
 //		if (city == null || city.isEmpty()) {
 //			try {
 //				throw new SoundCloudInvalidArgumentException("City cannot be empty!");
@@ -118,7 +123,7 @@ public class User {
 		return country;
 	}
 
-	private void setCountry(String country) {
+	public void setCountry(String country) {
 //		if (country == null || country.isEmpty()) {
 //			try {
 //				throw new SoundCloudInvalidArgumentException("Country cannot be empty!");
@@ -133,7 +138,7 @@ public class User {
 		return biography;
 	}
 
-	private void setBiography(String biography) {
+	public void setBiography(String biography) {
 //		if (biography == null || biography.isEmpty()) {
 //			try {
 //				throw new SoundCloudInvalidArgumentException("Biography cannot be empty!");
@@ -151,9 +156,25 @@ public class User {
 	public String getHeaderImageURI() {
 		return headerImageURI;
 	}
+	
+	public void setHeaderImageURI(String url) {
+		this.headerImageURI = url;
+	}
 
 	public String getUserProfileURL() {
 		return userProfileURL;
+	}
+
+	public void setUserImageURI(String imageURL) {
+		this.userImageURI = imageURL;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

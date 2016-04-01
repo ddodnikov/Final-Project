@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO implements IUserDAO {
 	
@@ -14,6 +16,11 @@ public class UserDAO implements IUserDAO {
 	private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 	private static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
 	private static final String SELECT_IMAGE_BY_USER_ID = "SELECT user_img_id FROM users WHERE user_id = ?;";
+	private static final String SELECT_USER_LIKES = "SELECT * FROM tracks t INNER JOIN users_likes ul ON "
+			+ "t.track_id = ul.track_id INNER JOIN users u ON ul.user_id = u.user_id WHERE u.user_id = ?;";
+	private static final String SELECT_USER_BY_TRACK_ID = "SELECT * FROM users WHERE "
+			+ "user_id = (SELECT user_id FROM tracks WHERE track_id =?);";
+	
 	
 	private static final Connection con = DBConnection.getDBInstance().getConnection();
 	
@@ -71,6 +78,8 @@ public class UserDAO implements IUserDAO {
 				String country = rs.getString(8);
 				String biography = rs.getString(9);
 				result = new User(email, displayName, firstName, lastName, city, country, biography);
+				result.setUserImageURI(new ImageDAO().getImageURLById(rs.getInt(10)));
+				result.setHeaderImageURI(new ImageDAO().getImageURLById(rs.getInt(11)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -257,4 +266,59 @@ public class UserDAO implements IUserDAO {
 		return 0;
 	}
 
+	public List<Track> getUserLikes(int userId) {
+		
+		List<Track> likedTracks = new ArrayList<Track>();
+		
+		try {
+			PreparedStatement ps = con.prepareStatement(SELECT_USER_LIKES);
+			ps.setInt(1, userId);
+			ResultSet tracks = ps.executeQuery();
+			
+			while (tracks.next()) {
+				Track track = new Track();
+				int genreId = tracks.getInt("genre_id");
+				GenreDAO genreDao = new GenreDAO();
+				String genreName = genreDao.getNameById(genreId);
+				track.setTrackURL(tracks.getString("track_uri"));
+				track.setDateAdded(tracks.getTimestamp("date_added"));
+				track.setTitle(tracks.getString("title"));
+				track.setGanre(genreName);
+				track.setDescription(tracks.getString("description"));
+				track.setNumberOfLikes(tracks.getInt("likes_count"));
+				track.setNumberOfPlays(tracks.getInt("plays_count"));
+				likedTracks.add(track);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return likedTracks;
+		
+	}
+	
+	public User selectUserByTrackId(int track_id) {
+		try {
+			PreparedStatement ps = con.prepareStatement(SELECT_USER_BY_TRACK_ID);
+			ps.setInt(1, track_id);
+			ResultSet rs = ps.executeQuery();
+			User user = null;
+			if (rs.next()) {
+				user = new User();
+				user.setId(rs.getInt("user_id"));
+				user.setDisplayName(rs.getString("display_name"));
+				user.setFirstName(rs.getString("first_name"));
+				user.setLastName(rs.getString("last_name"));
+				user.setLastName(rs.getString("city"));
+				user.setLastName(rs.getString("country"));
+				user.setLastName(rs.getString("biography"));
+				user.setUserImageURI(new ImageDAO().getImageURLById(rs.getInt("user_img_id")));
+				user.setHeaderImageURI(new ImageDAO().getImageURLById(rs.getInt("header_img_id")));
+			}
+			return user;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

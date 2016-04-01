@@ -1,21 +1,22 @@
 package com.soundcloud.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PieceOfMusic {
 	
+	private int id;
 	private String title;
 	private String ganre;
 	private List<String> tags = new ArrayList<String>();
 	private String description;
-	private Date dateAdded;
+	private Timestamp dateAdded;
 	
 	private int numberOfLikes;
 	private String imageURI;
 	
-	private User user;
+	private User user = new User();
 
 	public String getTitle() {
 		return title;
@@ -51,11 +52,11 @@ public abstract class PieceOfMusic {
 		this.description = description;
 	}
 
-	public Date getDateAdded() {
+	public Timestamp getDateAdded() {
 		return dateAdded;
 	}
 
-	public void setDateAdded(Date dateAdded) {
+	public void setDateAdded(Timestamp dateAdded) {
 		this.dateAdded = dateAdded;
 	}
 
@@ -81,6 +82,14 @@ public abstract class PieceOfMusic {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

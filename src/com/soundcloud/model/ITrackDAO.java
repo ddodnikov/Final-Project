@@ -12,10 +12,6 @@ public interface ITrackDAO {
 	
 	public List<Track> getAllTracks();
 	
-	public void addImage(String uri);
-
-	int getImageByUri(String uri);
-	
 	void updateTrackImage(int imgid, String title);
 	
 	List<Track> getUserTracks(int userId);

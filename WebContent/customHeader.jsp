@@ -1,3 +1,4 @@
+<%@page import="com.soundcloud.model.UserDAO"%>
 <%@page import="com.soundcloud.model.TrackDAO"%>
 <%@page import="com.soundcloud.model.Track"%>
 <%@page import="java.util.List"%>
@@ -34,11 +35,22 @@
     
     <div id="menu1" class="tab-pane fade">
       <h3>All Playlists</h3><br>
+      
     </div>
     
     <div id="menu2" class="tab-pane fade">
       <h3>All Likes</h3><br>
-     
+     	<% 
+			List<Track> likedTracks = new UserDAO().getUserLikes((int)session.getAttribute("userId"));
+			request.setAttribute("likedTracks", likedTracks);
+		%>
+		<c:forEach var="track" items="${likedTracks}">
+			<c:set var="track" value="${track}" scope="request"></c:set>
+			<jsp:include page="song.jsp"></jsp:include>
+		</c:forEach>
+		<c:if test="${empty likedTracks}">
+			<p> You have no liked tracks </p>
+		</c:if>
     </div>
     
     <div id="menu3" class="tab-pane fade">
