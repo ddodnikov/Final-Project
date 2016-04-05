@@ -16,6 +16,7 @@ import com.soundcloud.model.User;
 
 @WebServlet("/home")
 public class ShowProfile extends HttpServlet {
+	private static final int SONGS_SHOWN = 5;
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,7 +37,7 @@ public class ShowProfile extends HttpServlet {
 			
 			List<Track> showTracks = new TrackDAO().getUserTracks(user_id, 0);
 			request.getSession().setAttribute("showTracks", showTracks);
-			request.getSession().setAttribute("userTracksShown", 10);
+			request.getSession().setAttribute("userTracksShown", SONGS_SHOWN);
 
 			request.getRequestDispatcher("./showUserInfo.jsp").forward(request, response);
 		

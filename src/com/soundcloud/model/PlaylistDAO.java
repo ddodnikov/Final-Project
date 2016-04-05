@@ -1,6 +1,6 @@
 package com.soundcloud.model;
 
-public class PlaylistDAO implements IPlaylistDAO{
+public class PlaylistDAO extends AbstractDAO implements IPlaylistDAO{
 
 	@Override
 	public void addPlaylist() {

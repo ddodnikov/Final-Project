@@ -47,7 +47,7 @@
 						<label for="currentProfile">Track picture:</label>
 						<img src="./images/defaultSongImage.jpg" id="outImage" />
 						<input name="uploadTrackPic" type="file" id="picField" accept="image/jpeg" />
-						<script src="scripts/dynamicImageLoad.js"></script>
+						<script src="scripts/dynamicTrackPicLoad.js"></script>
 					</div>
 					<input type="submit" value="Upload">
 				</div>

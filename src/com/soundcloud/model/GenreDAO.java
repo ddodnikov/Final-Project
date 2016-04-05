@@ -7,16 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenreDAO implements IGenreDAO{
+public class GenreDAO extends AbstractDAO implements IGenreDAO {
 	private static final String GET_GENRE_NAME = "SELECT name FROM genres WHERE genre_id = ?;";
 	private static final String GET_GENRE_ID = "SELECT genre_id FROM genres WHERE name = ?;";
-	private static final Connection con = DBConnection.getDBInstance().getConnection();
 	@Override
 	public String getNameById(int genreId) {
 		
 		String genreName = "";
 		try {
-			PreparedStatement ps = con.prepareStatement(GET_GENRE_NAME);
+			PreparedStatement ps = getCon().prepareStatement(GET_GENRE_NAME);
 			ps.setInt(1, genreId);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -32,7 +31,7 @@ public class GenreDAO implements IGenreDAO{
 	public int getIdByName(String name) {
 		int genreId = 0;
 		try {
-			PreparedStatement ps = con.prepareStatement(GET_GENRE_ID);
+			PreparedStatement ps = getCon().prepareStatement(GET_GENRE_ID);
 			ps.setString(1, name);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -48,7 +47,7 @@ public class GenreDAO implements IGenreDAO{
 	public List<String> getAllGenreNames() {
 		List<String> allGenres = new ArrayList<String>();
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM genres;");
+			PreparedStatement ps = getCon().prepareStatement("SELECT * FROM genres;");
 			ResultSet genresResult = ps.executeQuery();
 			while (genresResult.next()) {
 				String genreName = genresResult.getString(2);

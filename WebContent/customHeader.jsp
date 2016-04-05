@@ -12,7 +12,6 @@
     <li class="active"><a data-toggle="pill" href="#home" >My tracks</a></li>
     <li><a data-toggle="pill" href="#menu1">My playlists</a></li>
     <li><a data-toggle="pill" href="#menu2">My likes</a></li>
-    <li><a data-toggle="pill" href="#menu3">My follows</a></li>
   </ul>
   
   <br>
@@ -51,11 +50,6 @@
 		<c:if test="${empty likedTracks}">
 			<p> You have no liked tracks </p>
 		</c:if>
-    </div>
-    
-    <div id="menu3" class="tab-pane fade">
-      <h3>All Follows</h3><br>
-      
     </div>
   </div>
 </div>

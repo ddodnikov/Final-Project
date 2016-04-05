@@ -15,6 +15,7 @@ import com.soundcloud.model.User;
 
 @WebServlet("/NextPreviousTrackPage")
 public class NextPreviousTrackPage extends HttpServlet {
+	private static final int SONGS_SHOWN = 5;
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,18 +36,18 @@ public class NextPreviousTrackPage extends HttpServlet {
 			
 			if(!tracksToDsiplay.isEmpty()) {
 				request.getSession().setAttribute("tracksToDisplay", tracksToDsiplay);
-				request.getSession().setAttribute("tracksShown", (int)request.getSession().getAttribute("tracksShown") + 10);
+				request.getSession().setAttribute("tracksShown", (int)request.getSession().getAttribute("tracksShown") + SONGS_SHOWN);
 			}
 			
 		}else {
 			
 			if(request.getParameter("previous") != null) {
 				
-				if((int) request.getSession().getAttribute("tracksShown") > 10) {
+				if((int) request.getSession().getAttribute("tracksShown") > SONGS_SHOWN) {
 					tracksToDsiplay = new TrackDAO().getUserTracks(((User) request.getSession().getAttribute("currentUser")).getId(),
-						(int) request.getSession().getAttribute("tracksShown") - 20);
+						(int) request.getSession().getAttribute("tracksShown") - SONGS_SHOWN * 2);
 					
-					request.getSession().setAttribute("tracksShown", (int)request.getSession().getAttribute("tracksShown") - 20);
+					request.getSession().setAttribute("tracksShown", (int)request.getSession().getAttribute("tracksShown") - SONGS_SHOWN * 2);
 					request.getSession().setAttribute("tracksToDisplay", tracksToDsiplay);
 				}
 				

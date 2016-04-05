@@ -1,7 +1,7 @@
 package com.soundcloud.servlets;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +14,14 @@ import com.soundcloud.model.TrackDAO;
 
 @WebServlet("/NextPreviousSearchPage")
 public class NextPreviousSearchPage extends HttpServlet {
+	private static final int SONGS_SHOWN = 5;
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		
-		List<Track> results = null;
+		Set<Track> results = null;
 				
 		if (request.getParameter("next") != null) {
 			
@@ -29,19 +30,19 @@ public class NextPreviousSearchPage extends HttpServlet {
 			
 			if(!results.isEmpty()) {
 				request.getSession().setAttribute("results", results);
-				request.getSession().setAttribute("songsShown", (int)request.getSession().getAttribute("songsShown") + 10);
+				request.getSession().setAttribute("songsShown", (int)request.getSession().getAttribute("songsShown") + SONGS_SHOWN);
 			}
 			
 		}else {
 			
 			if(request.getParameter("previous") != null) {
 				
-				if((int) request.getSession().getAttribute("songsShown") > 10) {
+				if((int) request.getSession().getAttribute("songsShown") > SONGS_SHOWN) {
 					results = new TrackDAO().searchTracksTitleTagsAndGenreByWord((String)request.getSession().getAttribute("search"),
-							(int)request.getSession().getAttribute("songsShown") - 20);
+							(int)request.getSession().getAttribute("songsShown") - SONGS_SHOWN * 2);
 				
 					request.getSession().setAttribute("results", results);
-					request.getSession().setAttribute("songsShown", (int)request.getSession().getAttribute("songsShown") - 20);
+					request.getSession().setAttribute("songsShown", (int)request.getSession().getAttribute("songsShown") - SONGS_SHOWN * 2);
 				}
 			}
 		}

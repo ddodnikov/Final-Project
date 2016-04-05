@@ -1,6 +1,7 @@
 package com.soundcloud.model;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ITrackDAO {
 
@@ -16,11 +17,15 @@ public interface ITrackDAO {
 	
 	List<Track> getUserTracks(int userId, int offset);
 	
-	List<Track> searchTracksTitleTagsAndGenreByWord(String word, int offset);
+	Set<Track> searchTracksTitleTagsAndGenreByWord(String word, int offset);
 	
 	public boolean isTrackLikedByUser(int track_id, int user_id);
 	
 	public void likeTrack(int track_id, int user_id);
 	
 	public void unlikeTrack(int track_id, int user_id);
+
+	Track getTrackById(int trackId);
+	
+	String getTrackImageUri(int trackId);
 }

@@ -33,7 +33,7 @@ public class EditProfile extends HttpServlet {
 
 	private static final Connection con = DBConnection.getDBInstance().getConnection();
 	private static final String IMAGE_SAVE_DIR = "D:\\soundcloudFiles\\images";
-	private static final int MAX_PICTURE_SIZE = 1024 * 1024 * 10; // 1 MB
+	private static final int MAX_PICTURE_SIZE = 1024 * 1024 * 5; // 1 MB
 
 	private static final long serialVersionUID = 1L;
 

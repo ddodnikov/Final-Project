@@ -62,7 +62,7 @@ public class Login extends HttpServlet {
 			request.getSession().setAttribute("tracksShown", 10);
 			
 			
-			request.getRequestDispatcher("./home.jsp").forward(request, response);
+			response.sendRedirect("./Home");
 		} else {
 			request.setAttribute("wrongUser", "Incorrect email or password!");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("./login.jsp");

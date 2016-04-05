@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageDAO {
-	
-	private static final Connection con = DBConnection.getDBInstance().getConnection();
+public class ImageDAO extends AbstractDAO {
 	
 	private static final String SELECT_IMAGE_BY_ID = "SELECT img_uri FROM images WHERE img_id = ?;";
 	public static final String INSERT_IMAGE = "INSERT INTO images (img_id, img_uri) VALUES(null, ?);";
@@ -21,7 +19,7 @@ public class ImageDAO {
 		
 		String url = "";
 		try {
-			selectImage = con.prepareStatement(SELECT_IMAGE_BY_ID);
+			selectImage = getCon().prepareStatement(SELECT_IMAGE_BY_ID);
 			
 			selectImage.setInt(1, img_id);
 			
@@ -46,7 +44,7 @@ public class ImageDAO {
 		
 		int id = 0;
 		try {
-			selectImage = con.prepareStatement(SELECT_IMAGE_BY_URI);
+			selectImage = getCon().prepareStatement(SELECT_IMAGE_BY_URI);
 			
 			selectImage.setString(1, img_uri);
 			
@@ -68,13 +66,14 @@ public class ImageDAO {
 		PreparedStatement addImage = null;
 
 		try {
-			addImage = con.prepareStatement(INSERT_IMAGE);
+			addImage = getCon().prepareStatement(INSERT_IMAGE);
 
 			addImage.setString(1, uri);
 
 			addImage.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			// throw exception
 		}
 	}
 	

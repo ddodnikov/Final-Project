@@ -3,7 +3,7 @@ package com.soundcloud.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class Track extends PieceOfMusic implements Serializable {
+public class Track extends PieceOfMusic implements Serializable, Comparable<Track> {
 
 	private static final long serialVersionUID = 1L;
 	private String trackURL;
@@ -35,6 +35,13 @@ public class Track extends PieceOfMusic implements Serializable {
 
 	public void setComments(List<String> comments) {
 		this.comments = comments;
+	}
+
+	@Override
+	public int compareTo(Track track) {
+		if (this.getId() == track.getId())
+			return 0;
+		return 1;
 	}
 
 	public boolean getIsLikedByUser() {

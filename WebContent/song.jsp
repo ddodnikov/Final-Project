@@ -1,7 +1,9 @@
 <%@page import="com.soundcloud.model.TrackDAO"%>
+<%@page import="java.util.List"%>
 <%@page import="com.soundcloud.model.UserDAO"%>
 <%@page import="com.soundcloud.model.Track" %>
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
+<link type="text/css" href="styles/song.css" rel="stylesheet" />
 
 <script type="text/javascript">
 	function like(id) {
@@ -19,16 +21,28 @@
 	}
 </script>
 
-<p>Title: ${track.title}</p>
-<p>Genre: ${track.ganre}</p>
-<p>Description: ${track.description}</p>
-<p>Number of plays: ${track.numberOfPlays}</p>
-<p>Number of likes: ${track.numberOfLikes}</p>
-<p>Date added: ${track.dateAdded}</p>
-<form action="./home" method="get">
-	<p>User: <a type="submit" href="./home?showUserId=${track.user.id}">${track.user.displayName}</a></p>
-</form>
-
+<div id="songContainer">
+	<div>
+		<c:catch var="catchException">
+		   <img src="./FetchTrackImage?trackId=${track.id}" alt="Track image not found" />
+		</c:catch>
+		<c:if test="${catchException} != null">
+			<img src="images/defaultSongImage.jpg" alt="Track image not found" />
+		</c:if>
+	</div>
+	<div id="details">
+		<p>Title: ${track.title}</p>
+		<p>Genre: ${track.ganre}</p>
+		<p>Description: ${track.description}</p>
+		<p>Number of plays: ${track.numberOfPlays}</p>
+		<p>Number of likes: ${track.numberOfLikes}</p>
+		<p>Date added: ${track.dateAdded}</p>
+		<form action="./index" method="get">
+			<p>
+				User: <a type="submit" href="./home?showUserId=${track.user.id}">${track.user.displayName}</a>
+			</p>
+		</form>
+	</div>
 <c:if test="${not empty sessionScope.currentUser}">
 	<c:if test="${track.isLikedByUser == false}">
 		<p id="p${track.id}">You don't like this track</p>
@@ -41,7 +55,8 @@
 		<p id="${track.id}" style = "visibility:hidden">You unliked this track</p>
 	</c:if>
 </c:if>
-	<br>	
-<audio controls>
-	<source src="file:///${track.trackURL}">
-</audio>
+	<audio controls>
+		<source src="./FetchTrack?trackId=${track.id}" type="audio/mpeg" />
+	</audio>
+	<script src="scripts/playOneSongAtATime.js"></script>
+</div>

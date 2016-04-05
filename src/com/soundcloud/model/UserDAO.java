@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO implements IUserDAO {
+public class UserDAO extends AbstractDAO implements IUserDAO {
 	
 	private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
 	private static final String GET_USER_ID_BY_EMAIL_QUERY = "SELECT user_id FROM users where email = ?;";
@@ -21,10 +21,6 @@ public class UserDAO implements IUserDAO {
 			+ "t.track_id = ul.track_id INNER JOIN users u ON ul.user_id = u.user_id WHERE u.user_id = ?;";
 	private static final String SELECT_USER_BY_TRACK_ID = "SELECT * FROM users WHERE "
 			+ "user_id = (SELECT user_id FROM tracks WHERE track_id =?);";
-	
-	
-	private static final Connection con = DBConnection.getDBInstance().getConnection();
-	
 	
 	public String getInitialDisplayName(String email) {
 		
@@ -45,7 +41,7 @@ public class UserDAO implements IUserDAO {
 		PreparedStatement addUser = null;
 		
 		try {
-			addUser = con.prepareStatement(INSERT_USER);
+			addUser = getCon().prepareStatement(INSERT_USER);
 			addUser.setString(1, email);
 			addUser.setString(2, password);
 			addUser.setString(3, getInitialDisplayName(email));
@@ -67,7 +63,7 @@ public class UserDAO implements IUserDAO {
 		User result = null;
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement(SELECT_USER_BY_ID);
+			ps = getCon().prepareStatement("SELECT * FROM users WHERE user_id = ?;");
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -97,7 +93,7 @@ public class UserDAO implements IUserDAO {
 		ResultSet result = null;
 		
 		try {
-			hasAUser = con.prepareStatement(SELECT_USER_BY_EMAIL);
+			hasAUser = getCon().prepareStatement(SELECT_USER_BY_EMAIL);
 			hasAUser.setString(1, email);
 			hasAUser.execute();
 			result = hasAUser.getResultSet();
@@ -122,7 +118,7 @@ public class UserDAO implements IUserDAO {
 		ResultSet result = null;
 		
 		try {
-			hasAUser = con.prepareStatement(SELECT_USER_BY_EMAIL_AND_PASSWORD);
+			hasAUser = getCon().prepareStatement(SELECT_USER_BY_EMAIL_AND_PASSWORD);
 			hasAUser.setString(1, email);
 			hasAUser.setString(2, password);
 			hasAUser.execute();
@@ -150,7 +146,7 @@ public class UserDAO implements IUserDAO {
 		
 		String imgURL = "";
 		try {
-			selectImage = con.prepareStatement(SELECT_IMAGE_BY_USER_ID);
+			selectImage = getCon().prepareStatement(SELECT_IMAGE_BY_USER_ID);
 			
 			selectImage.setInt(1, user_id);
 			
@@ -173,7 +169,7 @@ public class UserDAO implements IUserDAO {
 	public String getHeaderImgUriByUserId(int id) {
 		String headerImgUri = "";
 		try {
-			PreparedStatement ps = con.prepareStatement(GET_HEADER_IMG_URI_QUERY);
+			PreparedStatement ps = getCon().prepareStatement(GET_HEADER_IMG_URI_QUERY);
 			ps.setInt(1, id);
 			ResultSet headerImgUriResult = ps.executeQuery();
 			if (headerImgUriResult.next()) {
@@ -187,7 +183,7 @@ public class UserDAO implements IUserDAO {
 
 	public void addImage(String imgUri) {
 		try {
-			PreparedStatement ps = con.prepareStatement("INSERT INTO images (img_id, img_uri) VALUES(null, ?);");
+			PreparedStatement ps = getCon().prepareStatement("INSERT INTO images (img_id, img_uri) VALUES(null, ?);");
 			ps.setString(1, imgUri);
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -199,7 +195,7 @@ public class UserDAO implements IUserDAO {
 	public int getImageByUri(String imgUri) {
 		int imageId = 0;
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM images WHERE img_uri = ?;");
+			PreparedStatement ps = getCon().prepareStatement("SELECT * FROM images WHERE img_uri = ?;");
 			ps.setString(1, imgUri);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -216,7 +212,7 @@ public class UserDAO implements IUserDAO {
 
 	public void updateProfilePic(int profilePicId, int userId) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE users SET user_img_id = ? WHERE user_id = ?;");
+			PreparedStatement ps = getCon().prepareStatement("UPDATE users SET user_img_id = ? WHERE user_id = ?;");
 			ps.setInt(1, profilePicId);
 			ps.setInt(2, userId);
 			ps.executeUpdate();
@@ -228,7 +224,7 @@ public class UserDAO implements IUserDAO {
 
 	public void updateHeaderPic(int headerImageId, int userId) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE users SET header_img_id = ? WHERE user_id = ?;");
+			PreparedStatement ps = getCon().prepareStatement("UPDATE users SET header_img_id = ? WHERE user_id = ?;");
 			ps.setInt(1, headerImageId);
 			ps.setInt(2, userId);
 			ps.executeUpdate();
@@ -240,7 +236,7 @@ public class UserDAO implements IUserDAO {
 	public String getCurrentProfilePicUri(int userId) {
 		String currentProfilePicUri = null;
 		try {
-			PreparedStatement ps = con.prepareStatement(GET_PROFILE_IMG_URI_QUERY);
+			PreparedStatement ps = getCon().prepareStatement(GET_PROFILE_IMG_URI_QUERY);
 			ps.setInt(1, userId);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -254,7 +250,7 @@ public class UserDAO implements IUserDAO {
 	
 	public int getCurrentUserId(String email) {
 		try {
-			PreparedStatement ps = con.prepareStatement(GET_USER_ID_BY_EMAIL_QUERY);
+			PreparedStatement ps = getCon().prepareStatement(GET_USER_ID_BY_EMAIL_QUERY);
 			ps.setString(1, email);
 			ResultSet rs = ps.executeQuery();
 			int userId = 0;
@@ -273,7 +269,7 @@ public class UserDAO implements IUserDAO {
 		List<Track> likedTracks = new ArrayList<Track>();
 		
 		try {
-			PreparedStatement ps = con.prepareStatement(SELECT_USER_LIKES);
+			PreparedStatement ps = getCon().prepareStatement(SELECT_USER_LIKES);
 			ps.setInt(1, userId);
 			ResultSet tracks = ps.executeQuery();
 			
@@ -301,7 +297,7 @@ public class UserDAO implements IUserDAO {
 	
 	public User selectUserByTrackId(int track_id) {
 		try {
-			PreparedStatement ps = con.prepareStatement(SELECT_USER_BY_TRACK_ID);
+			PreparedStatement ps = getCon().prepareStatement(SELECT_USER_BY_TRACK_ID);
 			ps.setInt(1, track_id);
 			ResultSet rs = ps.executeQuery();
 			User user = null;
