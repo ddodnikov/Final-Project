@@ -1,10 +1,13 @@
 package com.soundcloud.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Track extends PieceOfMusic {
+public class Track extends PieceOfMusic implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String trackURL;
+	private boolean isLikedByUser;
 	
 	private List<String> comments;
 	
@@ -32,5 +35,13 @@ public class Track extends PieceOfMusic {
 
 	public void setComments(List<String> comments) {
 		this.comments = comments;
+	}
+
+	public boolean getIsLikedByUser() {
+		return isLikedByUser;
+	}
+
+	public void setIsLikedByUser(boolean isLikedByUser) {
+		this.isLikedByUser = isLikedByUser;
 	}
 }

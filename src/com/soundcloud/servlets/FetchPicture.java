@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.soundcloud.model.User;
+
 @WebServlet("/FetchPicture")
 public class FetchPicture extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,8 +23,8 @@ public class FetchPicture extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String imageURL = (String) request.getSession().getAttribute("currentProfilePic");
-
+		String imageURL = (String) ((User)request.getSession().getAttribute("currentUser")).getUserImageURI();
+	
 		Path path = Paths.get(imageURL);
 		String mime = Files.probeContentType(path);
 

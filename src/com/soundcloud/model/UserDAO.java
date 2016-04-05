@@ -9,6 +9,7 @@ import java.util.List;
 
 public class UserDAO implements IUserDAO {
 	
+	private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
 	private static final String GET_USER_ID_BY_EMAIL_QUERY = "SELECT user_id FROM users where email = ?;";
 	private static final String GET_PROFILE_IMG_URI_QUERY = "SELECT i.img_uri FROM images i INNER JOIN users u ON i.img_id = u.user_img_id WHERE user_id = ?;";
 	private static final String GET_HEADER_IMG_URI_QUERY = "SELECT i.img_uri FROM images i INNER JOIN users u ON i.img_id = u.header_img_id WHERE user_id = ?;";
@@ -25,7 +26,7 @@ public class UserDAO implements IUserDAO {
 	private static final Connection con = DBConnection.getDBInstance().getConnection();
 	
 	
-	private String getInitialDisplayName(String email) {
+	public String getInitialDisplayName(String email) {
 		
 		StringBuilder name = new StringBuilder();
 		
@@ -66,7 +67,7 @@ public class UserDAO implements IUserDAO {
 		User result = null;
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("SELECT * FROM users WHERE user_id = ?;");
+			ps = con.prepareStatement(SELECT_USER_BY_ID);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -78,6 +79,7 @@ public class UserDAO implements IUserDAO {
 				String country = rs.getString(8);
 				String biography = rs.getString(9);
 				result = new User(email, displayName, firstName, lastName, city, country, biography);
+				result.setId(rs.getInt(1));
 				result.setUserImageURI(new ImageDAO().getImageURLById(rs.getInt(10)));
 				result.setHeaderImageURI(new ImageDAO().getImageURLById(rs.getInt(11)));
 			}

@@ -9,6 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
+<link type="text/css" rel="stylesheet" href="styles/welcome.css" />
 <link type="image/x-icon" rel="icon" href="images/siteIcon.ico" />
 <title>SoundCloud :: IT Talents</title>
 </head>
@@ -16,15 +17,36 @@
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-		<h1>All tracks</h1>
-		<% 
-			List<Track> tracks = new TrackDAO().getAllTracks();
-			request.setAttribute("tracks", tracks);
-		%>
-		<c:forEach var="track" items="${tracks}">
-			<c:set var="track" value="${track}" scope="request"></c:set>
-			<jsp:include page="song.jsp"></jsp:include>
-		</c:forEach>
+
+				<h1>Welcome to SoundCloud</h1>
+				<h2>Hear the world's sounds</h2>
+				<h3>Find the music you love. Discover new tracks.</h3>
+
+				<section class="4u 12u(mobile)"> <a href="#"
+					class="image full"><img src="images/pic01.jpg" alt="" /></a>
+				<div class="box">
+					<h4>
+						<a href="#">Service</a>
+					</h4>
+				</div>
+				</section>
+				<section class="4u 12u(mobile)"> <a href="#"
+					class="image full"><img src="images/pic02.jpg" alt="" /></a>
+				<div class="box">
+					<h4>
+						<a href="#">Service</a>
+					</h4>
+				</div>
+				</section>
+				<section class="4u 12u(mobile)"> <a href="#"
+					class="image full"><img src="images/pic03.jpg" alt="" /></a>
+				<div class="box">
+					<h4>
+						<a href="#">Service</a>
+					</h4>
+				</div>
+				</section>
+
 		</div>
 		<jsp:include page="footer.jsp"></jsp:include>
 	</div>

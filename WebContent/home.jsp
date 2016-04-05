@@ -16,7 +16,7 @@
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-			<c:if test="${not empty sessionScope.userId}">
+			<c:if test="${not empty sessionScope.currentUser}">
 				<jsp:include page="./userProfile.jsp"></jsp:include>
 				<jsp:include page="./customHeader.jsp"></jsp:include>
 			</c:if>

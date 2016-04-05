@@ -14,9 +14,6 @@
 	<div id="outer">
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
-		<c:if test="${not empty sessionScope.userId}">
-			<p>${sessionScope.userId}</p>
-		</c:if>
 		<h1>Log in to SoundCloud</h1>
 			<form action="./Login" method="post">
 				<table cellpadding="10">

@@ -1,7 +1,7 @@
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="userProfile">
 	<c:choose>
-		<c:when test="${not empty sessionScope.currentHeaderPic}">
+		<c:when test="${not empty sessionScope.currentUser.headerImageURI}">
 			<img src="./FetchHeader" alt="Header pic not found" id="headerPic" />
 		</c:when>
 		<c:otherwise>
@@ -11,7 +11,7 @@
 
 	<div id="infoBlock">
 		<c:choose>
-			<c:when test="${not empty sessionScope.currentProfilePic}">
+			<c:when test="${not empty sessionScope.currentUser.userImageURI}">
 				<img src="./FetchPicture" alt="Profile pic not found" id="profilePic" />
 			</c:when>
 			<c:otherwise>

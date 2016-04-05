@@ -13,7 +13,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.soundcloud.model.GenreDAO;
+import com.soundcloud.model.ImageDAO;
 import com.soundcloud.model.TrackDAO;
+import com.soundcloud.model.User;
 
 @WebServlet("/UploadSong")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 0, // 0MB , always on hard
@@ -31,7 +33,7 @@ public class UploadSong extends HttpServlet {
 			
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getSession().getAttribute("userId") != null) {
+		if(request.getSession().getAttribute("currentUser") != null) {
 			request.getRequestDispatcher("./uploadSong.jsp").forward(request, response);
 		}
 		else {
@@ -45,6 +47,7 @@ public class UploadSong extends HttpServlet {
 		String title = request.getParameter("title");
 		String genre = request.getParameter("genre");
 		String description = request.getParameter("description");
+		String[] tags = request.getParameterValues("tags");
 		
 		int genreId = new GenreDAO().getIdByName(genre);
 		
@@ -75,13 +78,13 @@ public class UploadSong extends HttpServlet {
 					request.setAttribute("songErrorMessage", "Image exceeds maximum size limit of 50MB!");
 				} else {
 					HttpSession session = request.getSession();
-					int userId = (int) session.getAttribute("userId");
+					int userId = (int) ((User)session.getAttribute("currentUser")).getId();
 					track.write(TRACK_SAVE_DIR + File.separator + title + ".mp3");
 					new TrackDAO().addTrack(title, genreId, description, TRACK_SAVE_DIR + File.separator + title + ".mp3", userId);
 					if(imageName.length() > 0) {
 						image.write(IMAGE_SAVE_DIR + File.separator + imageName);
-						new TrackDAO().addImage(IMAGE_SAVE_DIR + File.separator + imageName);
-						int img_id = new TrackDAO().getImageByUri(IMAGE_SAVE_DIR + File.separator + imageName);
+						new ImageDAO().addImage(IMAGE_SAVE_DIR + File.separator + imageName);
+						int img_id = new ImageDAO().getImagIdByUri(IMAGE_SAVE_DIR + File.separator + imageName);
 						new TrackDAO().updateTrackImage(img_id, title);
 					}
 					request.setAttribute("songErrorMessage", "Your track was successfully uploaded!");

@@ -1,37 +1,48 @@
 package com.soundcloud.servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.soundcloud.model.UserDAO;
+import com.soundcloud.model.Track;
+import com.soundcloud.model.TrackDAO;
 import com.soundcloud.model.User;
 
-@WebServlet("/index")
+@WebServlet("/home")
 public class ShowProfile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		if (request.getSession(false).getAttribute("currentUser") != null) {
+
+			String id = request.getParameter("showUserId");
+			int user_id = Integer.parseInt(id);
+			
+			if (((User)request.getSession().getAttribute("currentUser")).getId() == user_id) {
+				response.sendRedirect("./home.jsp");
+				return;
+			}
+
+			User user = new UserDAO().getUserById(user_id);
+			request.getSession().setAttribute("showUser", user);
+			
+			List<Track> showTracks = new TrackDAO().getUserTracks(user_id, 0);
+			request.getSession().setAttribute("showTracks", showTracks);
+			request.getSession().setAttribute("userTracksShown", 10);
+
+			request.getRequestDispatcher("./showUserInfo.jsp").forward(request, response);
 		
-		String id = request.getParameter("userid");
-		int user_id = Integer.parseInt(id);
-		
-		HttpSession session = request.getSession();
-		
-		User user = new UserDAO().getUserById(user_id);
-		session.setAttribute("user", user);
-		
-		session.setAttribute("firstNAME", user.getFirstName());
-		session.setAttribute("lastNAME", user.getLastName());
-		session.setAttribute("cityNAME", user.getCity());
-		session.setAttribute("countryNAME", user.getCountry());
-		session.setAttribute("pic", user.getUserImageURI());
-		session.setAttribute("head", user.getHeaderImageURI());
-		
-		request.getRequestDispatcher("./showUserInfo.jsp").forward(request, response);
+		} else {
+			response.sendRedirect("./");
+		}
+			
 	}
 }

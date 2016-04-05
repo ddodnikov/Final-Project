@@ -14,13 +14,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.soundcloud.model.User;
+
 @WebServlet("/FetchHeader")
 public class FetchHeader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String imageURL = (String) request.getSession().getAttribute("currentHeaderPic");
+		
+		String imageURL = (String) ((User)request.getSession().getAttribute("currentUser")).getHeaderImageURI();
 
 		Path path = Paths.get(imageURL);
 		String mime = Files.probeContentType(path);

@@ -20,11 +20,11 @@
 			</form>
 			</li>
 			<c:choose>
-				<c:when test="${not empty sessionScope.userId}">
+				<c:when test="${not empty sessionScope.currentUser}">
 					<li class="dropdown">
 					<span id="smallUserPic">
 						<c:choose>
-						<c:when test="${not empty sessionScope.currentProfilePic}">
+						<c:when test="${not empty sessionScope.currentUser.userImageURI}">
 							<img src="./FetchPicture" />
 						</c:when>
 						<c:otherwise>

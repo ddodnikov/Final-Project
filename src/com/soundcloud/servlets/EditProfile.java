@@ -19,6 +19,7 @@ import javax.servlet.http.Part;
 
 import com.soundcloud.model.DBConnection;
 import com.soundcloud.model.UserDAO;
+import com.soundcloud.model.User;
 
 @WebServlet("/EditProfile")
 @MultipartConfig
@@ -32,22 +33,17 @@ public class EditProfile extends HttpServlet {
 
 	private static final Connection con = DBConnection.getDBInstance().getConnection();
 	private static final String IMAGE_SAVE_DIR = "D:\\soundcloudFiles\\images";
-	private static final int MAX_PICTURE_SIZE = 1024 * 1024 * 1; // 1 MB
+	private static final int MAX_PICTURE_SIZE = 1024 * 1024 * 10; // 1 MB
 
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if (session.getAttribute("userId") == null) {
+		if (session.getAttribute("currentUser") == null) {
 			response.sendRedirect("./");
 			return;
 		}
-		int userId = (int) session.getAttribute("userId");
-		UserDAO userDao = new UserDAO();
-		session.setAttribute("currentProfilePic", userDao.getCurrentProfilePicUri(userId));
-		session.setAttribute("currentHeaderPic", userDao.getHeaderImgUriByUserId(userId));
-		session.setAttribute("currentUser", userDao.getUserById(userId));
 		RequestDispatcher rd = request.getRequestDispatcher("./editProfile.jsp");
 		rd.forward(request, response);
 	}
@@ -63,9 +59,9 @@ public class EditProfile extends HttpServlet {
 
 		Part profilePicture = request.getPart("uploadProfilePic");
 		Part headerImage = request.getPart("uploadHeaderPic");
-
+		
 		HttpSession session = request.getSession();
-		int userId = (int) session.getAttribute("userId");
+		int userId = ((User)session.getAttribute("currentUser")).getId();
 
 		UserDAO userDao = new UserDAO();
 

@@ -14,7 +14,13 @@ public interface ITrackDAO {
 	
 	void updateTrackImage(int imgid, String title);
 	
-	List<Track> getUserTracks(int userId);
+	List<Track> getUserTracks(int userId, int offset);
 	
-	List<Track> searchTracksTitleTagsAndGenreByWord(String word);
+	List<Track> searchTracksTitleTagsAndGenreByWord(String word, int offset);
+	
+	public boolean isTrackLikedByUser(int track_id, int user_id);
+	
+	public void likeTrack(int track_id, int user_id);
+	
+	public void unlikeTrack(int track_id, int user_id);
 }

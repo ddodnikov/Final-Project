@@ -2,10 +2,7 @@ package com.soundcloud.servlets;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,8 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.common.hash.Hashing;
-import com.soundcloud.model.DBConnection;
 import com.soundcloud.model.UserDAO;
+import com.soundcloud.model.Track;
+import com.soundcloud.model.TrackDAO;
 import com.soundcloud.model.User;
 
 @WebServlet("/Login")
@@ -45,15 +43,24 @@ public class Login extends HttpServlet {
 			HttpSession session = request.getSession();
 			UserDAO userDao = new UserDAO();
 			int currentUserId = userDao.getCurrentUserId(email);
-			String currentProfilePicUri = userDao.getCurrentProfilePicUri(currentUserId);
-			String currentHeaderPicUri = userDao.getHeaderImgUriByUserId(currentUserId);
-			session.setAttribute("currentProfilePic", currentProfilePicUri);
-			session.setAttribute("currentHeaderPic", currentHeaderPicUri);
-			session.setAttribute("userId", currentUserId);
+
 			User user = userDao.getUserById(currentUserId);
+			user.setId(currentUserId);
 			
 			session.setAttribute("currentUser", user);
-			session.setAttribute("userName", user.getDisplayName());
+			
+			
+			List<Track> tracksToDsiplay = new TrackDAO()
+					.getUserTracks((int) ((User) request.getSession().getAttribute("currentUser")).getId(), 0);
+			
+			for(int i = 0; i < tracksToDsiplay.size(); i++) {
+				tracksToDsiplay.get(i).setIsLikedByUser(new TrackDAO().isTrackLikedByUser(
+						tracksToDsiplay.get(i).getId(), user.getId()));
+			}
+			
+			request.getSession().setAttribute("tracksToDisplay", tracksToDsiplay);
+			request.getSession().setAttribute("tracksShown", 10);
+			
 			
 			request.getRequestDispatcher("./home.jsp").forward(request, response);
 		} else {

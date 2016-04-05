@@ -28,14 +28,16 @@ public class Search extends HttpServlet {
 		List<String> searchArgs = Arrays.asList(request.getParameter("search").split(SPLIT_REGEX));
 		List<Track> results = new ArrayList<Track>();
 		for (String word : searchArgs) {
-			List<Track> resultTracks = new TrackDAO().searchTracksTitleTagsAndGenreByWord(word);
+			List<Track> resultTracks = new TrackDAO().searchTracksTitleTagsAndGenreByWord(word, 0);
 			results.addAll(resultTracks);
 		}
 
 		if (results.size() == 0) {
 			request.setAttribute("noResultsMessage", NO_RESULTS_MESSAGE);
 		} else {
-			request.setAttribute("results", results);
+			request.getSession().setAttribute("search", request.getParameter("search"));
+			request.getSession().setAttribute("songsShown", 10);
+			request.getSession().setAttribute("results", results);
 		}
 		request.getRequestDispatcher("./searchResults.jsp").forward(request, response);
 	}

@@ -37,7 +37,7 @@
 					<div class="leftColumn">
 						<label for="currentProfile">Profile picture:</label>
 						<c:choose>
-							<c:when test="${not empty sessionScope.currentProfilePic}">
+							<c:when test="${not empty sessionScope.currentUser.userImageURI}">
 								<img src="./FetchPicture" alt="Not found" id="outImage" />
 							</c:when>
 							<c:otherwise>
@@ -51,7 +51,7 @@
 					<div class="rightColumn">
 						<label for="currentHeader">Header picture:</label>
 						<c:choose>
-							<c:when test="${not empty sessionScope.currentHeaderPic}">
+							<c:when test="${not empty sessionScope.currentUser.headerImageURI}">
 								<img src="./FetchHeader" alt="Not found" id="outHeader" />
 							</c:when>
 							<c:otherwise>

@@ -20,15 +20,15 @@
     
     <div id="home" class="tab-pane fade in active">
       <h3>All Tracks</h3><br>
-      	<% 
-			List<Track> tracks = new TrackDAO().getUserTracks(Integer.parseInt(request.getParameter("userid")));
-			request.setAttribute("tracks", tracks);
-		%>
-		<c:forEach var="track" items="${tracks}">
+		<c:forEach var="track" items="${sessionScope.showTracks}">
 			<c:set var="track" value="${track}" scope="request"></c:set>
 			<jsp:include page="song.jsp"></jsp:include>
 		</c:forEach>
-		<c:if test="${empty tracks}">
+		<form action="./NextPreviousTrackPageShowUser" method="get">
+			<button type="submit" name="next">NEXT</button>
+			<button type="submit" name="previous">PREVIOUS</button>
+		</form>
+		<c:if test="${empty sessionScope.showTracks}">
 			<p> No tracks </p>
 		</c:if>
     </div>

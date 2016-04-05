@@ -17,10 +17,14 @@
 			<p id="message">${noResultsMessage}</p>
 		</c:when>
 		<c:otherwise>
-			<c:forEach var="track" items="${results}">
+			<c:forEach var="track" items="${sessionScope.results}">
 				<c:set var="track" value="${track}" scope="request"></c:set>
 				<jsp:include page="song.jsp"></jsp:include>		
 			</c:forEach>
+		<form action="./NextPreviousSearchPage" method="get">
+			<button type="submit" name="next">NEXT</button>
+			<button type="submit" name="previous">PREVIOUS</button>
+		</form>
 		</c:otherwise>
 	</c:choose>
 	</div>
