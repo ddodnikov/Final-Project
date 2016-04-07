@@ -39,7 +39,7 @@ body {
 	/*background-color: white;*/
 	margin: 0 auto;
 	padding: 30px;
-	padding-top: 60px;
+	padding-top: 100px;
 }
 
 input, textarea, select{
@@ -80,4 +80,9 @@ p#message {
 	font-size: 16px;
 	text-align: center;
 	margin-top: 20px;
+}
+
+a:hover, img:hover {
+	opacity: 1 !important;
+	text-decoration: none !important;
 }

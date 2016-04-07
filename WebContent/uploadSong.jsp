@@ -37,7 +37,6 @@
 					<div id="tags">
 						<input type="text" value="" placeholder="Add tags" />
 					</div>
-					
 					<!-- <input type="text" name="tags" placeholder="Add tags to describe the genre and mood of your track" /> -->
 					<label for="description">Description</label>
 					<textarea name="description" rows=5 cols=45 placeholder="Describe your track"></textarea>
@@ -57,6 +56,15 @@
 			</c:if>
 		</div>
 	</div>
+	<script>
+		$('form').submit(function(){
+		$.post(
+			$('#tags').children('span').each(function () {
+					console.log(this.value); // "this" is the current element in the loop
+				})
+			);
+		});
+	</script>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

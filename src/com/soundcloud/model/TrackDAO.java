@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.mysql.jdbc.Statement;
+
 public class TrackDAO extends AbstractDAO implements ITrackDAO {
 
 	private static final String IS_TRACK_LIKED = "SELECT * FROM liked_tracks WHERE track_id = ? AND user_id = ?";
@@ -32,13 +34,13 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	public static final int NUMBER_OF_TRACKS_PER_PAGE = 5;
 
 	@Override
-	public void addTrack(String title, int ganre_id, String description, String uri, int userId) {
+	public void addTrack(String title, int ganre_id, String description, String uri, int userId, Set<String> tags) {
 
 		PreparedStatement addTrack = null;
-
+		int newTrackId = 0;
+		
 		try {
-			addTrack = getCon().prepareStatement(INSERT_TRACK);
-
+			addTrack = getCon().prepareStatement(INSERT_TRACK, Statement.RETURN_GENERATED_KEYS);
 			addTrack.setString(1, title);
 			addTrack.setInt(2, ganre_id);
 			addTrack.setString(3, description);
@@ -47,12 +49,16 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 			addTrack.setInt(6, 0);
 			addTrack.setObject(7, new Timestamp(new Date().getTime()));
 			addTrack.setInt(8, userId);
-
 			addTrack.executeUpdate();
+			ResultSet newTrackResult = addTrack.getGeneratedKeys();
+			newTrackResult.next();
+			newTrackId = newTrackResult.getInt("track_id");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		for (String tag : tags) {
+			addTag(tag);
+		}
 	}
 
 	@Override
@@ -226,6 +232,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				int genreId = results.getInt("genre_id");
 				GenreDAO genreDao = new GenreDAO();
 				String genreName = genreDao.getNameById(genreId);
+				track.setId(results.getInt("track_id"));
 				track.setTrackURL(results.getString("track_uri"));
 				track.setDateAdded(results.getTimestamp("date_added"));
 				track.setTitle(results.getString("title"));
@@ -349,6 +356,31 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 			e.printStackTrace();
 		}
 		return trackImageUri;
+	}
+	
+	@Override
+	public void addTag(String tag) {
+		int tagId = 0;
+		try {
+			// first we have to check if the tag is existing in the tags table
+			PreparedStatement ps = getCon().prepareStatement("SELECT * FROM tags WHERE name = ?;");
+			ps.setString(1, tag);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				tagId = rs.getInt("tag_id");
+			} else {
+				// if the tag is not existing, we create it and insert it into tags table
+				PreparedStatement insertTagStatement = getCon().prepareStatement("INSERT INTO tags VALUES (null, ?);", Statement.RETURN_GENERATED_KEYS);
+				insertTagStatement.setString(1, tag);
+				insertTagStatement.executeUpdate();
+				// get the ID of the inserted tag
+				ResultSet newTagResult = insertTagStatement.getGeneratedKeys();
+				newTagResult.next();
+				tagId = newTagResult.getInt("tag_id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

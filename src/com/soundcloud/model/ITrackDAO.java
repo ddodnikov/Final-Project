@@ -5,7 +5,7 @@ import java.util.Set;
 
 public interface ITrackDAO {
 
-	public void addTrack(String title, int ganre_id, String description, String uri, int userId);
+	public void addTrack(String title, int ganre_id, String description, String uri, int userId, Set<String> tags);
 
 	public void deleteTrack();
 	
@@ -28,4 +28,6 @@ public interface ITrackDAO {
 	Track getTrackById(int trackId);
 	
 	String getTrackImageUri(int trackId);
+	
+	void addTag(String tag);
 }

@@ -26,7 +26,6 @@
 			</li>
 			<!-- END SEARCH -->
 			
-			
 			<c:choose>
 				<c:when test="${not empty sessionScope.currentUser}">
 					<li class="dropdown">

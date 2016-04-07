@@ -1,7 +1,11 @@
 @CHARSET "ISO-8859-1";
+@font-face {
+	font-family: 'Odin Rounded Bold';
+	src: url("../fonts/Odin Rounded - Bold.otf");
+}
 header {
 	width: 100%;
-	height: 60px;
+	height: 100px;
 	background-color: #2b8e73;
 	position: fixed;
 	z-index: 100;
@@ -21,15 +25,15 @@ header nav ul {
 }
 
 header nav ul li {
-	margin-top: 22px;
+	margin-top: 33px;
 }
 
 header nav ul li#logo {
-	margin-top: 5px;
+	margin-top: 15px;
 }
 
 header nav ul li#searchBar {
-	margin-top: 11px;
+	margin-top: 27px;
 }
 
 header nav ul li#searchBar form {
@@ -41,7 +45,7 @@ header nav ul li#searchBar form input {
 }
 
 header nav ul li.dropdown {
-	margin-top: 11px;
+	margin-top: 31px;
 }
 
 header nav ul li.dropdown:hover {
@@ -68,7 +72,7 @@ header nav ul li ul.dropdown-menu li {
 }
 
 header nav ul li ul.dropdown-menu li a {
-	font-size: 1.1em !important;
+	font-size: 1.4em !important;
 }
 
 header nav ul li ul.dropdown-menu li:last-child {
@@ -81,6 +85,8 @@ header nav ul li a {
 	transition: color 0.8s;
 	font-size: 1.3em;
 	text-transform: uppercase;
+	font-family: 'Odin Rounded Bold', Arial, sans-serif;
+	font-size: 1.7em;
 }
 
 header nav ul li a:hover {

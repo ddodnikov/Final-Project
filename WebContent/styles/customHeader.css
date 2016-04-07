@@ -13,7 +13,7 @@ ul.nav {
 	justify-content: flex-start;
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
-	padding: 5px 100px 5px 100px;
+	padding: 15px 0;
 }
 
 ul.nav li {
@@ -30,8 +30,4 @@ ul.nav li a {
 	color: black;
 	background-color: #39c29d;
 	font-size: 1.2em;
-}
-
-.tab-content {
-	padding: 0 100px 0 100px;
 }

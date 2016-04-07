@@ -10,11 +10,32 @@ $(function() { // DOM ready
 				});
 			this.value = "";
 		},
+		keypress : function(e) {
+			var code = e.keyCode || e.which;
+			if (code == 44) { // on press comma
+				console.log($('#tags input:text').val());
+				$.ajax({
+					url : 'TagsServlet',
+					data : {
+						currentTag : $('#tags input:text').val(),
+					},
+					type : 'put',
+					cache : false,
+					success : function(data) {
+						console.log(data);
+					},
+					error : function() {
+						console.log('error');
+					}
+				});
+			}
+		},
 		keyup : function(ev) {
 			// if: comma (delimit more keyCodes with | pipe)
 			// enter key = code 13
-			if (/(32|188)/.test(ev.which))
-				$(this).focusout();
+			if (/(32|188|44)/.test(ev.which)) {
+				$(this).focusout();				
+			}
 		}
 	});
 	$('#tags').on('click', 'span', function() {

@@ -2,6 +2,7 @@ package com.soundcloud.servlets;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -79,8 +80,9 @@ public class UploadSong extends HttpServlet {
 				} else {
 					HttpSession session = request.getSession();
 					int userId = (int) ((User)session.getAttribute("currentUser")).getId();
+					Set<String> trackTags = (Set<String>) request.getAttribute("trackTags");
 					track.write(TRACK_SAVE_DIR + File.separator + title + ".mp3");
-					new TrackDAO().addTrack(title, genreId, description, TRACK_SAVE_DIR + File.separator + title + ".mp3", userId);
+					new TrackDAO().addTrack(title, genreId, description, TRACK_SAVE_DIR + File.separator + title + ".mp3", userId, trackTags);
 					if(imageName.length() > 0) {
 						image.write(IMAGE_SAVE_DIR + File.separator + imageName);
 						new ImageDAO().addImage(IMAGE_SAVE_DIR + File.separator + imageName);

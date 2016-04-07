@@ -11,8 +11,7 @@
     <li class="active"><a data-toggle="pill" href="#home">Top 50</a></li>
     <li><a data-toggle="pill" href="#menu1">Latest Uploads</a></li>
     <li><a data-toggle="pill" href="#menu2">Most Liked</a></li>
-  </ul>
-  
+  </ul>  
   <br>
   <div class="tab-content">
     

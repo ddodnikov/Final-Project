@@ -49,7 +49,6 @@ public class Login extends HttpServlet {
 			
 			session.setAttribute("currentUser", user);
 			
-			
 			List<Track> tracksToDsiplay = new TrackDAO()
 					.getUserTracks((int) ((User) request.getSession().getAttribute("currentUser")).getId(), 0);
 			
