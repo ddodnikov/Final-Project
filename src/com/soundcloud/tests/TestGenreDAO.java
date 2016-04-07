@@ -13,7 +13,7 @@ public class TestGenreDAO {
 	@Test
 	public void testGetNameById() {
 		
-		String name = new GenreDAO().getNameById(1);
+		String name = GenreDAO.getGenreDAOInstance().getNameById(1);
 		assertNotNull(name);
 		assertNotEquals("", name);
 		
@@ -22,7 +22,7 @@ public class TestGenreDAO {
 	@Test
 	public void testGetIdByName() {
 		
-		int id = new GenreDAO().getIdByName(new GenreDAO().getNameById(1));
+		int id = GenreDAO.getGenreDAOInstance().getIdByName(GenreDAO.getGenreDAOInstance().getNameById(1));
 		assertEquals(1, id);
 		
 	}
@@ -30,7 +30,7 @@ public class TestGenreDAO {
 	@Test
 	public void testGetAllGenreNames() {
 		
-		List<String> allGenres = new GenreDAO().getAllGenreNames();
+		List<String> allGenres = GenreDAO.getGenreDAOInstance().getAllGenreNames();
 		assertNotNull(allGenres);
 		assertNotEquals(0, allGenres.size());
 		

@@ -1,6 +1,5 @@
 package com.soundcloud.model;
 
-import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,24 +13,42 @@ import java.util.TreeSet;
 import com.mysql.jdbc.Statement;
 
 public class TrackDAO extends AbstractDAO implements ITrackDAO {
+	
+	private static final String SELECT_PLAYLIST_TRACKS = "SELECT t.track_id FROM tracks t " +
+			"JOIN playlists_with_tracks pt ON (pt.track_id = t.track_id) " +
+			"JOIN playlists p ON (p.playlist_id = pt.playlist_id) WHERE p.playlist_id = ?;";
+
+	private static TrackDAO trackDAOInstance = null;
 
 	private static final String IS_TRACK_LIKED = "SELECT * FROM liked_tracks WHERE track_id = ? AND user_id = ?";
 	private static final String GET_TRACK_IMAGE_URI = "SELECT * FROM tracks WHERE track_id = ?;";
-	private static final String FIND_TRACKS_QUERY = "SELECT * FROM tracks WHERE title LIKE ? OR "
-			+ "genre_id in (SELECT genre_id FROM genres WHERE name LIKE ?) OR "
-			+ "track_id in (SELECT track_id FROM tags_with_tracks WHERE tag_id IN "
-			+ "(SELECT tag_id FROM tags WHERE name LIKE ?)) LIMIT 5 OFFSET ?;";
+	
 	private static final String INSERT_TRACK = "INSERT INTO tracks (title, genre_id, description, "
 			+ "track_uri, likes_count, plays_count, date_added, user_id) VALUES(?,?,?,?,?,?,?,?);";
 	private static final String SELECT_ALL_TRACKS = "SELECT * FROM tracks ORDER BY date_added DESC;";
 	private static final String UPDATE_TRACK_IMAGE = "UPDATE tracks SET img_id = ? WHERE title = ?;";
 	private static final String SELECT_TRACKS_BY_USER_ID = "SELECT * FROM tracks WHERE user_id = ? "
 			+ "ORDER BY date_added DESC LIMIT 5 OFFSET ?;";
+	private static final String SELECT_LIKED_TRACKS_BY_USER_ID = 
+			"SELECT track_id FROM liked_tracks WHERE user_id = ? LIMIT 5 OFFSET ?;";
 	private static final String SELECT_LATEST_TRACKS = "SELECT * FROM tracks order by date_added desc limit 5;";
 	private static final String SELECT_MOST_PLAYED_TRACKS = "SELECT * FROM tracks order by plays_count desc limit 5;";
 	private static final String SELECT_MOST_LIKED_TRACKS = "SELECT * FROM tracks order by likes_count desc limit 5;";
 
 	public static final int NUMBER_OF_TRACKS_PER_PAGE = 5;
+	
+	private TrackDAO() {
+
+	}
+
+	public static TrackDAO getTrackDAOInstance() {
+		synchronized (TrackDAO.class) {
+			if (TrackDAO.trackDAOInstance == null) {
+				TrackDAO.trackDAOInstance = new TrackDAO();
+			}
+		}
+		return TrackDAO.trackDAOInstance;
+	}
 
 	@Override
 	public void addTrack(String title, int ganre_id, String description, String uri, int userId, Set<String> tags) {
@@ -89,15 +106,15 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				int imageid = resultTracks.getInt("img_id");
 				int genreId = resultTracks.getInt("genre_id");
 
-				GenreDAO genreDao = new GenreDAO();
+				GenreDAO genreDao = GenreDAO.getGenreDAOInstance();
 				String genreName = genreDao.getNameById(genreId);
 
-				String img_uri = new ImageDAO().getImageURLById(imageid);
+				String img_uri = ImageDAO.getImageDAOInstance().getImageURLById(imageid);
 				if (img_uri != null)
-					track.setImageURI(new ImageDAO().getImageURLById(imageid));
+					track.setImageURI(ImageDAO.getImageDAOInstance().getImageURLById(imageid));
 				
 				int track_id = resultTracks.getInt("track_id");
-				track.setUser(new UserDAO().selectUserByTrackId(track_id));
+				track.setUser(UserDAO.getUserDAOInstance().selectUserByTrackId(track_id));
 				
 				track.setId(track_id);
 				track.setTrackURL(resultTracks.getString("track_uri"));
@@ -151,12 +168,12 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				int imageid = resultTracks.getInt("img_id");
 				int genreId = resultTracks.getInt("genre_id");
 
-				String img_uri = new ImageDAO().getImageURLById(imageid);
+				String img_uri = ImageDAO.getImageDAOInstance().getImageURLById(imageid);
 
-				String genreName = new GenreDAO().getNameById(genreId);
+				String genreName = GenreDAO.getGenreDAOInstance().getNameById(genreId);
 
 				int track_id = resultTracks.getInt("track_id");
-				track.setUser(new UserDAO().selectUserByTrackId(track_id));
+				track.setUser(UserDAO.getUserDAOInstance().selectUserByTrackId(track_id));
 
 				track.setId(track_id);
 				track.setTrackURL(resultTracks.getString("track_uri"));
@@ -176,20 +193,37 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	}
 
 	@Override
-	public Set<Track> searchTracksTitleTagsAndGenreByWord(String word, int offset ) {
-		Set<Track> foundTracks = new TreeSet<Track>();
+	public List<Track> searchTracksTitleTagsAndGenreByWord(Set<String> words, int offset ) {
+		List<Track> foundTracks = new ArrayList<Track>();
+		
+		StringBuilder title = new StringBuilder();
+		StringBuilder name = new StringBuilder();
+		
+		StringBuilder sql = new StringBuilder();
+		
+		for(String word : words) {
+			title.append("'%" + word + "%' OR title LIKE ");
+			name.append("'%" + word + "%' OR name LIKE ");
+		}
+		
+		title.delete(title.length() - 15, title.length());
+		name.delete(name.length() - 14, name.length());
+		
+		sql.append("SELECT * FROM tracks WHERE title LIKE " + title
+				+ " OR genre_id in (SELECT genre_id FROM genres WHERE name LIKE " + name
+				+ ") OR track_id in (SELECT track_id FROM tags_with_tracks WHERE tag_id IN "
+				+ "(SELECT tag_id FROM tags WHERE name LIKE " + name + ")) LIMIT 5 OFFSET ?;");
+		
 		try {
-			PreparedStatement foundTracksStatement = getCon().prepareStatement(FIND_TRACKS_QUERY);
-			foundTracksStatement.setString(1, "%" + word + "%");
-			foundTracksStatement.setString(2, "%" + word + "%");
-			foundTracksStatement.setString(3, "%" + word + "%");
-			foundTracksStatement.setInt(4, offset);
+			PreparedStatement foundTracksStatement = getCon().prepareStatement(sql.toString());
+			foundTracksStatement.setInt(1, offset);
+			
 			ResultSet results = foundTracksStatement.executeQuery();
 			while (results.next()) {
 				Track track = new Track();
 				int trackId = results.getInt("track_id");
 				int genreId = results.getInt("genre_id");
-				GenreDAO genreDao = new GenreDAO();
+				GenreDAO genreDao = GenreDAO.getGenreDAOInstance();
 				String genreName = genreDao.getNameById(genreId);
 				track.setId(trackId);
 				track.setTrackURL(results.getString("track_uri"));
@@ -200,7 +234,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				track.setNumberOfLikes(results.getInt("likes_count"));
 				track.setNumberOfPlays(results.getInt("plays_count"));
 
-				track.setUser(new UserDAO().selectUserByTrackId(trackId));
+				track.setUser(UserDAO.getUserDAOInstance().selectUserByTrackId(trackId));
 
 				foundTracks.add(track);
 			}
@@ -230,7 +264,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 			while (results.next()) {
 				Track track = new Track();
 				int genreId = results.getInt("genre_id");
-				GenreDAO genreDao = new GenreDAO();
+				GenreDAO genreDao = GenreDAO.getGenreDAOInstance();
 				String genreName = genreDao.getNameById(genreId);
 				track.setId(results.getInt("track_id"));
 				track.setTrackURL(results.getString("track_uri"));
@@ -242,7 +276,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				track.setNumberOfPlays(results.getInt("plays_count"));
 
 				int track_id = results.getInt("track_id");
-				track.setUser(new UserDAO().selectUserByTrackId(track_id));
+				track.setUser(UserDAO.getUserDAOInstance().selectUserByTrackId(track_id));
 
 				foundTracks.add(track);
 			}
@@ -282,16 +316,15 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 			
 			if (rs.next()) {
 					int genreId = rs.getInt("genre_id");
-					int imgId = rs.getInt("img_id");
-					int userId = rs.getInt("user_id");
-					GenreDAO genreDao = new GenreDAO();
-					ImageDAO imageDao = new ImageDAO();
-					UserDAO userDao = new UserDAO();
-					String genreName = genreDao.getNameById(genreId);
-					String imageUri = imageDao.getImageURLById(imgId);
-					String username = userDao.getUserById(userId).getDisplayName();
+
+					GenreDAO genreDao = GenreDAO.getGenreDAOInstance();
+
+					String genreName = genreDao.getNameById(genreId);	
 					
 					track = new Track();
+					
+					track.setUser(UserDAO.getUserDAOInstance().selectUserByTrackId(trackId));
+					track.setId(trackId);
 					track.setGanre(genreName);
 					track.setTitle(rs.getString("title"));
 					track.setDescription(rs.getString("description"));
@@ -342,7 +375,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	public String getTrackImageUri(int trackId) {
 		int imgId = 0;
 		String trackImageUri = "";
-		ImageDAO imageDao = new ImageDAO();
+		ImageDAO imageDao = ImageDAO.getImageDAOInstance();
 		try {
 			PreparedStatement ps = getCon().prepareStatement(GET_TRACK_IMAGE_URI);
 			ps.setInt(1, trackId);
@@ -357,7 +390,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 		}
 		return trackImageUri;
 	}
-	
+
 	@Override
 	public void addTag(String tag) {
 		int tagId = 0;
@@ -381,6 +414,52 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<Track> getUserLikedTracks(int user_id, int offset) {
+		
+		List<Track> likedTracks = new ArrayList<Track>();
+
+		try {
+
+			PreparedStatement getLikedTracks = getCon().prepareStatement(SELECT_LIKED_TRACKS_BY_USER_ID);
+			getLikedTracks.setInt(1, user_id);
+			getLikedTracks.setInt(2, offset);
+			ResultSet resultId = getLikedTracks.executeQuery();
+
+			while (resultId.next()) {
+
+				Track track = getTrackById(resultId.getInt(1));
+
+				likedTracks.add(track);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return likedTracks;
+	}
+	
+	public List<Track> getPlaylistTracks(int playlistId) {
+		
+		List<Track> playlistTracks = new ArrayList<Track>();
+
+		try {
+
+			PreparedStatement getPlaylistTracks = getCon().prepareStatement(SELECT_PLAYLIST_TRACKS);
+			getPlaylistTracks.setInt(1, playlistId);
+
+			ResultSet resultId = getPlaylistTracks.executeQuery();
+
+			while (resultId.next()) {
+
+				Track track = getTrackById(resultId.getInt(1));
+
+				playlistTracks.add(track);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return playlistTracks;
 	}
 
 }

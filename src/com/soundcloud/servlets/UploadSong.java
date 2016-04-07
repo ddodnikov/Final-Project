@@ -50,7 +50,7 @@ public class UploadSong extends HttpServlet {
 		String description = request.getParameter("description");
 		String[] tags = request.getParameterValues("tags");
 		
-		int genreId = new GenreDAO().getIdByName(genre);
+		int genreId = GenreDAO.getGenreDAOInstance().getIdByName(genre);
 		
 		// creates the save directory if it does not exists
 		File trackSaveDir = new File(TRACK_SAVE_DIR);
@@ -82,12 +82,12 @@ public class UploadSong extends HttpServlet {
 					int userId = (int) ((User)session.getAttribute("currentUser")).getId();
 					Set<String> trackTags = (Set<String>) request.getAttribute("trackTags");
 					track.write(TRACK_SAVE_DIR + File.separator + title + ".mp3");
-					new TrackDAO().addTrack(title, genreId, description, TRACK_SAVE_DIR + File.separator + title + ".mp3", userId, trackTags);
+					TrackDAO.getTrackDAOInstance().addTrack(title, genreId, description, TRACK_SAVE_DIR + File.separator + title + ".mp3", userId, trackTags);
 					if(imageName.length() > 0) {
 						image.write(IMAGE_SAVE_DIR + File.separator + imageName);
-						new ImageDAO().addImage(IMAGE_SAVE_DIR + File.separator + imageName);
-						int img_id = new ImageDAO().getImagIdByUri(IMAGE_SAVE_DIR + File.separator + imageName);
-						new TrackDAO().updateTrackImage(img_id, title);
+						ImageDAO.getImageDAOInstance().addImage(IMAGE_SAVE_DIR + File.separator + imageName);
+						int img_id = ImageDAO.getImageDAOInstance().getImagIdByUri(IMAGE_SAVE_DIR + File.separator + imageName);
+						TrackDAO.getTrackDAOInstance().updateTrackImage(img_id, title);
 					}
 					request.setAttribute("songErrorMessage", "Your track was successfully uploaded!");
 				}

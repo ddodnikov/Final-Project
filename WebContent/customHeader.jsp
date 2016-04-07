@@ -9,15 +9,18 @@
 </head>
 <div class="container">
   <ul class="nav nav-pills">
-    <li class="active"><a data-toggle="pill" href="#home" >My tracks</a></li>
-    <li><a data-toggle="pill" href="#menu1">My playlists</a></li>
-    <li><a data-toggle="pill" href="#menu2">My likes</a></li>
+    <li class="<c:if test="${sessionScope.activeTab == 'alltracks'}">active</c:if>">
+    <a data-toggle="pill" href="#home" >My tracks</a></li>
+    <li class="<c:if test="${sessionScope.activeTab == 'allplaylists'}">active</c:if>">
+    <a data-toggle="pill" href="#menu1">My playlists</a></li>
+    <li class="<c:if test="${sessionScope.activeTab == 'alllikes'}">active</c:if>">
+    <a data-toggle="pill" href="#menu2">My likes</a></li>
   </ul>
   
   <br>
   <div class="tab-content">
     
-    <div id="home" class="tab-pane fade in active">
+    <div id="home" class='tab-pane fade <c:if test="${sessionScope.activeTab == 'alltracks'}">in active</c:if>'>
       <h3>All Tracks</h3><br>
 		<c:forEach var="track" items="${sessionScope.tracksToDisplay}">
 			<c:set var="track" value="${track}" scope="request"></c:set>
@@ -27,29 +30,39 @@
 			<p> You have no tracks </p>
 		</c:if>
 		<form action="./NextPreviousTrackPage" method="get">
-		<button type="submit" name="next">NEXT</button>
-		<button type="submit" name="previous">PREVIOUS</button>
+			<button type="submit" name="nextTracks">NEXT</button>
+			<button type="submit" name="previousTracks">PREVIOUS</button>
 		</form>
     </div>
     
-    <div id="menu1" class="tab-pane fade">
+    <div id="menu1" class='tab-pane fade <c:if test="${sessionScope.activeTab == 'allplaylists'}">in active</c:if>'>
       <h3>All Playlists</h3><br>
-      
+        <c:forEach var="playlist" items="${sessionScope.playlistsToDisplay}">
+			<c:set var="playlist" value="${playlist}" scope="request"></c:set>
+			<jsp:include page="playlist.jsp"></jsp:include>
+		</c:forEach>
+		<c:if test="${empty sessionScope.playlistsToDisplay}">
+			<p> You have no playlists </p>
+		</c:if>
+		<form action="./NextPreviousPlaylists" method="get">
+			<button type="submit" name="nextPlaylists">NEXT</button>
+			<button type="submit" name="previousPlaylists">PREVIOUS</button>
+		</form>
     </div>
     
-    <div id="menu2" class="tab-pane fade">
+    <div id="menu2" class='tab-pane fade <c:if test="${sessionScope.activeTab == 'alllikes'}">in active</c:if>'>
       <h3>All Likes</h3><br>
-     	<%-- 
-			List<Track> likedTracks = new TrackDAO().getUserTracks((int)((User)session.getAttribute("currentUser")).getId());
-			request.setAttribute("likedTracks", likedTracks);
-		--%>
-		<c:forEach var="track" items="${likedTracks}">
+     	<c:forEach var="track" items="${sessionScope.likedTracksToDisplay}">
 			<c:set var="track" value="${track}" scope="request"></c:set>
 			<jsp:include page="song.jsp"></jsp:include>
 		</c:forEach>
-		<c:if test="${empty likedTracks}">
-			<p> You have no liked tracks </p>
+		<c:if test="${empty sessionScope.likedTracksToDisplay}">
+			<p> You haven't liked any tracks </p>
 		</c:if>
+		<form action="./NextPreviousLikedTrackPage" method="get">
+			<button type="submit" name="nextLikedTracks">NEXT</button>
+			<button type="submit" name="previousLikedTracks">PREVIOUS</button>
+		</form>
     </div>
   </div>
 </div>

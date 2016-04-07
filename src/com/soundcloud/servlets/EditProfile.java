@@ -63,7 +63,7 @@ public class EditProfile extends HttpServlet {
 		HttpSession session = request.getSession();
 		int userId = ((User)session.getAttribute("currentUser")).getId();
 
-		UserDAO userDao = new UserDAO();
+		UserDAO userDao = UserDAO.getUserDAOInstance();
 
 		updateParameter(firstName, con, userId, UPDATE_USER_FIRST_NAME_QUERY);
 		updateParameter(lastName, con, userId, UPDATE_USER_LAST_NAME_QUERY);
@@ -88,7 +88,7 @@ public class EditProfile extends HttpServlet {
 				if (profilePictureName.length() > 0) {
 					profilePicture.write(IMAGE_SAVE_DIR + File.separator + profilePictureName);
 					userDao.addImage(IMAGE_SAVE_DIR + File.separator + profilePictureName);
-					int profilePicId = new UserDAO()
+					int profilePicId = UserDAO.getUserDAOInstance()
 							.getImageByUri(IMAGE_SAVE_DIR + File.separator + profilePictureName);
 					userDao.updateProfilePic(profilePicId, userId);
 				}
@@ -102,7 +102,7 @@ public class EditProfile extends HttpServlet {
 					if (headerImageName.length() > 0) {
 						headerImage.write(IMAGE_SAVE_DIR + File.separator + headerImageName);
 						userDao.addImage(IMAGE_SAVE_DIR + File.separator + headerImageName);
-						int headerImageId = new UserDAO()
+						int headerImageId = UserDAO.getUserDAOInstance()
 								.getImageByUri(IMAGE_SAVE_DIR + File.separator + headerImageName);
 						userDao.updateHeaderPic(headerImageId, userId);
 					}

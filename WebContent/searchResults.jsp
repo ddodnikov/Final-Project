@@ -23,8 +23,8 @@
 				<jsp:include page="song.jsp"></jsp:include>		
 			</c:forEach>
 		<form action="./NextPreviousSearchPage" method="get">
-			<button type="submit" name="next">NEXT</button>
-			<button type="submit" name="previous">PREVIOUS</button>
+			<button type="submit" name="nextSearchTracks">NEXT</button>
+			<button type="submit" name="previousSearchTracks">PREVIOUS</button>
 		</form>
 		</c:otherwise>
 	</c:choose>

@@ -1,15 +1,30 @@
 package com.soundcloud.model;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ImageDAO extends AbstractDAO {
 	
+	private static ImageDAO imageDAOInstance = null;
+	
 	private static final String SELECT_IMAGE_BY_ID = "SELECT img_uri FROM images WHERE img_id = ?;";
 	public static final String INSERT_IMAGE = "INSERT INTO images (img_id, img_uri) VALUES(null, ?);";
 	private static final String SELECT_IMAGE_BY_URI = "SELECT img_id FROM images WHERE img_uri = ?;";
+	
+	
+	private ImageDAO() {
+
+	}
+
+	public static ImageDAO getImageDAOInstance() {
+		synchronized (TrackDAO.class) {
+			if (ImageDAO.imageDAOInstance == null) {
+				ImageDAO.imageDAOInstance = new ImageDAO();
+			}
+		}
+		return ImageDAO.imageDAOInstance;
+	}
 	
 	public String getImageURLById(int img_id) {
 

@@ -2,7 +2,6 @@ package com.soundcloud.servlets;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -23,9 +22,9 @@ public class FetchTrackImage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-			TrackDAO trackDao = new TrackDAO();
-			int currentTrackId = Integer.parseInt(request.getParameter("trackId"));
-			String trackImageUri = trackDao.getTrackImageUri(currentTrackId);
+		TrackDAO trackDao = TrackDAO.getTrackDAOInstance();
+		int currentTrackId = Integer.parseInt(request.getParameter("trackId"));
+		String trackImageUri = trackDao.getTrackImageUri(currentTrackId);
 
 			Path path = Paths.get(trackImageUri);
 			String mime = Files.probeContentType(path);

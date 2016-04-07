@@ -1,6 +1,5 @@
 package com.soundcloud.model;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,8 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenreDAO extends AbstractDAO implements IGenreDAO {
+	
+	private static GenreDAO genreDAOInstance = null;
+	
 	private static final String GET_GENRE_NAME = "SELECT name FROM genres WHERE genre_id = ?;";
 	private static final String GET_GENRE_ID = "SELECT genre_id FROM genres WHERE name = ?;";
+	
+	private GenreDAO() {
+
+	}
+
+	public static GenreDAO getGenreDAOInstance() {
+		synchronized (TrackDAO.class) {
+			if (GenreDAO.genreDAOInstance == null) {
+				GenreDAO.genreDAOInstance = new GenreDAO();
+			}
+		}
+		return GenreDAO.genreDAOInstance;
+	}
+	
 	@Override
 	public String getNameById(int genreId) {
 		

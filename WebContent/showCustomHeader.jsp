@@ -25,8 +25,8 @@
 			<jsp:include page="song.jsp"></jsp:include>
 		</c:forEach>
 		<form action="./NextPreviousTrackPageShowUser" method="get">
-			<button type="submit" name="next">NEXT</button>
-			<button type="submit" name="previous">PREVIOUS</button>
+			<button type="submit" name="nextUserTracks">NEXT</button>
+			<button type="submit" name="previousUserTracks">PREVIOUS</button>
 		</form>
 		<c:if test="${empty sessionScope.showTracks}">
 			<p> No tracks </p>

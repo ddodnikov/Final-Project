@@ -26,6 +26,7 @@
 			</li>
 			<!-- END SEARCH -->
 			
+			
 			<c:choose>
 				<c:when test="${not empty sessionScope.currentUser}">
 					<li class="dropdown">
@@ -44,6 +45,7 @@
 							<li><a href="./Home">My Home</a></li>
 							<li><a href="./EditProfile">Edit Profile</a></li>
 							<li><a href="./UploadSong">Upload Song</a></li>
+							<li><a href="./CreatePlaylist">Create Playlist</a></li>
 							<li><a href="./Logout">Log out</a></li>
 						</ul>
 					</li>

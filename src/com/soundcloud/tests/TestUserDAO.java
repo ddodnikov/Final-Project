@@ -13,7 +13,7 @@ public class TestUserDAO {
 	public void testGetInitialDisplayName() {
 		
 		String email = "mitko@abv.bg";
-		String name = new UserDAO().getInitialDisplayName(email);
+		String name = UserDAO.getUserDAOInstance().getInitialDisplayName(email);
 		assertTrue(email.startsWith(name));
 		
 	}
@@ -21,7 +21,7 @@ public class TestUserDAO {
 	@Test
 	public void testGetUserById() {
 		
-		User user = new UserDAO().getUserById(7);
+		User user = UserDAO.getUserDAOInstance().getUserById(7);
 		assertNotNull(user);
 		
 	}
@@ -29,23 +29,23 @@ public class TestUserDAO {
 	@Test
 	public void testIsEmailUsed() {
 		
-		assertTrue(new UserDAO().isEmailUsed("mimi@abv.bg"));
-		assertFalse(new UserDAO().isEmailUsed("mimidf@abv.bg"));
+		assertTrue(UserDAO.getUserDAOInstance().isEmailUsed("mimi@abv.bg"));
+		assertFalse(UserDAO.getUserDAOInstance().isEmailUsed("mimidf@abv.bg"));
 		
 	}
 	
 	@Test
 	public void testIsExistingUser() {
 		
-		assertTrue(new UserDAO().isExistingUser("mimi@abv.bg", "mimimimi"));
-		assertFalse(new UserDAO().isExistingUser("mimi@abv.bg", "mimimimi9"));
+		assertTrue(UserDAO.getUserDAOInstance().isExistingUser("mimi@abv.bg", "mimimimi"));
+		assertFalse(UserDAO.getUserDAOInstance().isExistingUser("mimi@abv.bg", "mimimimi9"));
 		
 	}
 	
 	@Test
 	public void testGetImageById() {
 		
-		String url = new UserDAO().getImageById(7);
+		String url = UserDAO.getUserDAOInstance().getImageById(7);
 		assertNotNull(url);
 		assertNotEquals("", url);
 		
@@ -54,7 +54,7 @@ public class TestUserDAO {
 	@Test
 	public void testGetHeaderImgUriByUserId() {
 		
-		String url = new UserDAO().getHeaderImgUriByUserId(7);
+		String url = UserDAO.getUserDAOInstance().getHeaderImgUriByUserId(7);
 		assertNotNull(url);
 		assertNotEquals("", url);
 		

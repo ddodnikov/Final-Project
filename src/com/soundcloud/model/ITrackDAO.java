@@ -17,7 +17,7 @@ public interface ITrackDAO {
 	
 	List<Track> getUserTracks(int userId, int offset);
 	
-	Set<Track> searchTracksTitleTagsAndGenreByWord(String word, int offset);
+	List<Track> searchTracksTitleTagsAndGenreByWord(Set<String> words, int offset);
 	
 	public boolean isTrackLikedByUser(int track_id, int user_id);
 	

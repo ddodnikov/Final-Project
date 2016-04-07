@@ -21,40 +21,40 @@ public class NextPreviousTrackPage extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
-		List<Track> tracksToDsiplay = null;
 				
-		if (request.getParameter("next") != null) {
+		if (request.getParameter("nextTracks") != null) {
 			
-			tracksToDsiplay = new TrackDAO().getUserTracks(((User) request.getSession().getAttribute("currentUser")).getId(),
-					(int) request.getSession().getAttribute("tracksShown"));
-			
-			for(int i = 0; i < tracksToDsiplay.size(); i++) {
-				tracksToDsiplay.get(i).setIsLikedByUser(new TrackDAO().isTrackLikedByUser(
-						tracksToDsiplay.get(i).getId(), ((User) request.getSession().getAttribute("currentUser")).getId()));
-			}
+			List<Track> tracksToDsiplay = TrackDAO.getTrackDAOInstance().getUserTracks(((User) request.getSession().getAttribute("currentUser")).getId(),
+					(int) request.getSession().getAttribute("tracksShown") + SONGS_SHOWN);
 			
 			if(!tracksToDsiplay.isEmpty()) {
+				
+				for(int i = 0; i < tracksToDsiplay.size(); i++) {
+					tracksToDsiplay.get(i).setIsLikedByUser(TrackDAO.getTrackDAOInstance().isTrackLikedByUser(
+							tracksToDsiplay.get(i).getId(), ((User) request.getSession().getAttribute("currentUser")).getId()));
+				}
+				
 				request.getSession().setAttribute("tracksToDisplay", tracksToDsiplay);
 				request.getSession().setAttribute("tracksShown", (int)request.getSession().getAttribute("tracksShown") + SONGS_SHOWN);
 			}
 			
 		}else {
 			
-			if(request.getParameter("previous") != null) {
+			if(request.getParameter("previousTracks") != null) {
 				
-				if((int) request.getSession().getAttribute("tracksShown") > SONGS_SHOWN) {
-					tracksToDsiplay = new TrackDAO().getUserTracks(((User) request.getSession().getAttribute("currentUser")).getId(),
-						(int) request.getSession().getAttribute("tracksShown") - SONGS_SHOWN * 2);
+				if((int) request.getSession().getAttribute("tracksShown") >= SONGS_SHOWN) {
+					List<Track> tracksToDsiplay = TrackDAO.getTrackDAOInstance().getUserTracks(((User) request.getSession().getAttribute("currentUser")).getId(),
+						(int) request.getSession().getAttribute("tracksShown") - SONGS_SHOWN);
 					
-					request.getSession().setAttribute("tracksShown", (int)request.getSession().getAttribute("tracksShown") - SONGS_SHOWN * 2);
+					request.getSession().setAttribute("tracksShown", (int)request.getSession().getAttribute("tracksShown") - SONGS_SHOWN);
 					request.getSession().setAttribute("tracksToDisplay", tracksToDsiplay);
 				}
 				
 			}
 		}
 		
-		request.getRequestDispatcher("/Home").forward(request, response);
+		request.getSession().setAttribute("activeTab", "alltracks");
+		request.getRequestDispatcher("./Home").forward(request, response);
 
 	}
 

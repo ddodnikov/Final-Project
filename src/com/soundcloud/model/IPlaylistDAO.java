@@ -1,11 +1,13 @@
 package com.soundcloud.model;
 
+import java.util.List;
+
 public interface IPlaylistDAO {
 	
-	public void addPlaylist();
+	public void addPlaylist(int img_id, String title, int userId);
 
 	public void deletePlaylist();
 	
-	public void getPlaylist();
+	public List<Playlist> getUserPlaylists(int userId, int offset);
 
 }
