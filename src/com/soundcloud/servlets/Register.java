@@ -31,7 +31,7 @@ public class Register extends HttpServlet {
 		String password1 = request.getParameter("password1");
 		String password2 = request.getParameter("password2");
 
-		if (new UserDAO().isEmailUsed(email)) {
+		if (UserDAO.getUserDAOInstance().isEmailUsed(email)) {
 			request.setAttribute("usedEmailError", "This email is already registered!");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
 			dispatcher.forward(request, response);
@@ -52,7 +52,7 @@ public class Register extends HttpServlet {
 					String hashedPassword = Hashing.sha256()
 					        .hashString(password1, StandardCharsets.UTF_8)
 					        .toString();
-					new UserDAO().addUser(email, hashedPassword);
+					UserDAO.getUserDAOInstance().addUser(email, hashedPassword);
 					request.getRequestDispatcher("./home.jsp").forward(request, response);
 				}
 			}

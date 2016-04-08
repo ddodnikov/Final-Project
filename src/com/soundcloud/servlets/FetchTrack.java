@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +22,7 @@ public class FetchTrack extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		TrackDAO trackDao = new TrackDAO();
+		TrackDAO trackDao = TrackDAO.getTrackDAOInstance();
 		int currentTrackId = Integer.parseInt(request.getParameter("trackId"));
 		Track currentTrack = trackDao.getTrackById(currentTrackId);
 		String currentTrackUri = currentTrack.getTrackURL();

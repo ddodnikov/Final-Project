@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import com.google.common.hash.Hashing;
 import com.soundcloud.model.UserDAO;
+import com.soundcloud.model.Playlist;
+import com.soundcloud.model.PlaylistDAO;
 import com.soundcloud.model.Track;
 import com.soundcloud.model.TrackDAO;
 import com.soundcloud.model.User;
@@ -39,9 +41,9 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		String hashedPassword = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
 		
-		if (new UserDAO().isExistingUser(email, hashedPassword)) {
+		if (UserDAO.getUserDAOInstance().isExistingUser(email, hashedPassword)) {
 			HttpSession session = request.getSession();
-			UserDAO userDao = new UserDAO();
+			UserDAO userDao = UserDAO.getUserDAOInstance();
 			int currentUserId = userDao.getCurrentUserId(email);
 
 			User user = userDao.getUserById(currentUserId);
@@ -49,18 +51,35 @@ public class Login extends HttpServlet {
 			
 			session.setAttribute("currentUser", user);
 			
-			List<Track> tracksToDsiplay = new TrackDAO()
+			
+			List<Track> tracksToDisplay = TrackDAO.getTrackDAOInstance()
 					.getUserTracks((int) ((User) request.getSession().getAttribute("currentUser")).getId(), 0);
 			
-			for(int i = 0; i < tracksToDsiplay.size(); i++) {
-				tracksToDsiplay.get(i).setIsLikedByUser(new TrackDAO().isTrackLikedByUser(
-						tracksToDsiplay.get(i).getId(), user.getId()));
+			for(int i = 0; i < tracksToDisplay.size(); i++) {
+				tracksToDisplay.get(i).setIsLikedByUser(TrackDAO.getTrackDAOInstance().isTrackLikedByUser(
+						tracksToDisplay.get(i).getId(), user.getId()));
 			}
 			
-			request.getSession().setAttribute("tracksToDisplay", tracksToDsiplay);
-			request.getSession().setAttribute("tracksShown", 10);
+			request.getSession().setAttribute("tracksToDisplay", tracksToDisplay);
+			request.getSession().setAttribute("tracksShown", 0);
 			
 			
+			List<Track> likedTracksToDisplay = TrackDAO.getTrackDAOInstance()
+					.getUserLikedTracks((int) ((User) request.getSession().getAttribute("currentUser")).getId(), 0);
+			
+			for(int i = 0; i < likedTracksToDisplay.size(); i++)
+				likedTracksToDisplay.get(i).setIsLikedByUser(true);
+			
+			request.getSession().setAttribute("likedTracksToDisplay", likedTracksToDisplay);
+			request.getSession().setAttribute("likedTracksShown", 0);
+			
+			List<Playlist> playlistsToDisplay = PlaylistDAO.getPlaylistDAOInstance()
+					.getUserPlaylists((int) ((User) request.getSession().getAttribute("currentUser")).getId(), 0);
+			
+			request.getSession().setAttribute("playlistsToDisplay", playlistsToDisplay);
+			request.getSession().setAttribute("playlistsShown", 0);
+			
+			request.getSession().setAttribute("activeTab", "alltracks");
 			response.sendRedirect("./Home");
 		} else {
 			request.setAttribute("wrongUser", "Incorrect email or password!");

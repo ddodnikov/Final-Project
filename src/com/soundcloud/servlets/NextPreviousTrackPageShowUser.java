@@ -24,25 +24,30 @@ public class NextPreviousTrackPageShowUser extends HttpServlet {
 		
 		List<Track> showTracks = null;
 				
-		if (request.getParameter("next") != null) {
+		if (request.getParameter("nextUserTracks") != null) {
 			
-			showTracks = new TrackDAO().getUserTracks(((User) request.getSession().getAttribute("showUser")).getId(),
-					(int) request.getSession().getAttribute("userTracksShown"));
+			showTracks = TrackDAO.getTrackDAOInstance().getUserTracks(((User) request.getSession().getAttribute("showUser")).getId(),
+					(int) request.getSession().getAttribute("userTracksShown") + SONGS_SHOWN);
 			
 			if(!showTracks.isEmpty()) {
+				
+				for(int i = 0; i < showTracks.size(); i++)
+					showTracks.get(i).setIsLikedByUser(TrackDAO.getTrackDAOInstance().isTrackLikedByUser(
+							showTracks.get(i).getId(), ((User) request.getSession().getAttribute("currentUser")).getId()));
+				
 				request.getSession().setAttribute("showTracks", showTracks);
 				request.getSession().setAttribute("userTracksShown", (int)request.getSession().getAttribute("userTracksShown") + SONGS_SHOWN);
 			}
 			
 		}else {
 			
-			if(request.getParameter("previous") != null) {
+			if(request.getParameter("previousUserTracks") != null) {
 				
-				if((int) request.getSession().getAttribute("userTracksShown") > SONGS_SHOWN) {
-					showTracks = new TrackDAO().getUserTracks(((User) request.getSession().getAttribute("showUser")).getId(),
-						(int) request.getSession().getAttribute("userTracksShown") - SONGS_SHOWN * 2);
+				if((int) request.getSession().getAttribute("userTracksShown") >= SONGS_SHOWN) {
+					showTracks = TrackDAO.getTrackDAOInstance().getUserTracks(((User) request.getSession().getAttribute("showUser")).getId(),
+						(int) request.getSession().getAttribute("userTracksShown") - SONGS_SHOWN);
 					
-					request.getSession().setAttribute("userTracksShown", (int)request.getSession().getAttribute("userTracksShown") - SONGS_SHOWN * 2);
+					request.getSession().setAttribute("userTracksShown", (int)request.getSession().getAttribute("userTracksShown") - SONGS_SHOWN);
 					request.getSession().setAttribute("showTracks", showTracks);
 				}
 				

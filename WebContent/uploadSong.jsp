@@ -26,7 +26,7 @@
 					<label for="genre">Genre</label>
 					<select name="genre">
 						<%
-							List<String> allGenres = (new GenreDAO().getAllGenreNames());
+							List<String> allGenres = (GenreDAO.getGenreDAOInstance().getAllGenreNames());
 							request.setAttribute("allGenres", allGenres);
 						%>
 						<c:forEach var="genreName" items="#{allGenres}">
@@ -37,6 +37,7 @@
 					<div id="tags">
 						<input type="text" value="" placeholder="Add tags" />
 					</div>
+					
 					<!-- <input type="text" name="tags" placeholder="Add tags to describe the genre and mood of your track" /> -->
 					<label for="description">Description</label>
 					<textarea name="description" rows=5 cols=45 placeholder="Describe your track"></textarea>

@@ -17,11 +17,11 @@ public class LikeTrack extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(request.getParameter("like") != null) {
-			new TrackDAO().likeTrack(Integer.parseInt(request.getParameter("like")), 
+			TrackDAO.getTrackDAOInstance().likeTrack(Integer.parseInt(request.getParameter("like")), 
 					((User)request.getSession().getAttribute("currentUser")).getId());
 		} else {
 			if(request.getParameter("unlike") != null)
-				new TrackDAO().unlikeTrack(Integer.parseInt(request.getParameter("unlike")), 
+				TrackDAO.getTrackDAOInstance().unlikeTrack(Integer.parseInt(request.getParameter("unlike")), 
 						((User)request.getSession().getAttribute("currentUser")).getId());
 		}
 		

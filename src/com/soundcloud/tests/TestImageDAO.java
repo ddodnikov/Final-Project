@@ -11,7 +11,7 @@ public class TestImageDAO {
 	@Test
 	public void testGetImageURLById() {
 		
-		String url = new ImageDAO().getImageURLById(1);
+		String url = ImageDAO.getImageDAOInstance().getImageURLById(1);
 		assertNotNull(url);
 		
 	}
@@ -19,7 +19,7 @@ public class TestImageDAO {
 	@Test
 	public void testGetImageIdByURI() {
 		
-		int id = new ImageDAO().getImagIdByUri(new ImageDAO().getImageURLById(1));
+		int id = ImageDAO.getImageDAOInstance().getImagIdByUri(ImageDAO.getImageDAOInstance().getImageURLById(1));
 		assertEquals(1, id);
 		
 	}

@@ -1,6 +1,5 @@
 package com.soundcloud.model;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO implements IUserDAO {
+	
+	private static UserDAO userDAOInstance = null;
 	
 	private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
 	private static final String GET_USER_ID_BY_EMAIL_QUERY = "SELECT user_id FROM users where email = ?;";
@@ -21,6 +22,19 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
 			+ "t.track_id = ul.track_id INNER JOIN users u ON ul.user_id = u.user_id WHERE u.user_id = ?;";
 	private static final String SELECT_USER_BY_TRACK_ID = "SELECT * FROM users WHERE "
 			+ "user_id = (SELECT user_id FROM tracks WHERE track_id =?);";
+	
+	private UserDAO() {
+
+	}
+
+	public static UserDAO getUserDAOInstance() {
+		synchronized (TrackDAO.class) {
+			if (UserDAO.userDAOInstance == null) {
+				UserDAO.userDAOInstance = new UserDAO();
+			}
+		}
+		return UserDAO.userDAOInstance;
+	}
 	
 	public String getInitialDisplayName(String email) {
 		
@@ -76,8 +90,8 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
 				String biography = rs.getString(9);
 				result = new User(email, displayName, firstName, lastName, city, country, biography);
 				result.setId(rs.getInt(1));
-				result.setUserImageURI(new ImageDAO().getImageURLById(rs.getInt(10)));
-				result.setHeaderImageURI(new ImageDAO().getImageURLById(rs.getInt(11)));
+				result.setUserImageURI(ImageDAO.getImageDAOInstance().getImageURLById(rs.getInt(10)));
+				result.setHeaderImageURI(ImageDAO.getImageDAOInstance().getImageURLById(rs.getInt(11)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -157,7 +171,7 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
 			
 			int imgId = result.getInt(1);
 			
-			imgURL = new ImageDAO().getImageURLById(imgId);
+			imgURL = ImageDAO.getImageDAOInstance().getImageURLById(imgId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -276,7 +290,7 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
 			while (tracks.next()) {
 				Track track = new Track();
 				int genreId = tracks.getInt("genre_id");
-				GenreDAO genreDao = new GenreDAO();
+				GenreDAO genreDao = GenreDAO.getGenreDAOInstance();
 				String genreName = genreDao.getNameById(genreId);
 				track.setTrackURL(tracks.getString("track_uri"));
 				track.setDateAdded(tracks.getTimestamp("date_added"));
@@ -310,8 +324,8 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
 				user.setLastName(rs.getString("city"));
 				user.setLastName(rs.getString("country"));
 				user.setLastName(rs.getString("biography"));
-				user.setUserImageURI(new ImageDAO().getImageURLById(rs.getInt("user_img_id")));
-				user.setHeaderImageURI(new ImageDAO().getImageURLById(rs.getInt("header_img_id")));
+				user.setUserImageURI(ImageDAO.getImageDAOInstance().getImageURLById(rs.getInt("user_img_id")));
+				user.setHeaderImageURI(ImageDAO.getImageDAOInstance().getImageURLById(rs.getInt("header_img_id")));
 			}
 			return user;
 		} catch (SQLException e) {

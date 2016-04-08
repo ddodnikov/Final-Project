@@ -20,6 +20,23 @@
 		document.getElementById('p'+id).style.visibility = 'hidden';
 		document.getElementById(id).style.visibility = 'visible';
 	}
+	
+	function addToPlaylist(id1, id2) {
+		$.get("./addToPlaylist?trackId=" + id1 + "&playlistId=" + id2);
+		var buttons = document.getElementsByClassName('playlist'+id1);
+		var i;
+		for (i = 0; i < buttons.length; i++) { 
+		    buttons[i].style.visibility = 'hidden';
+		}
+	}
+	
+	function showPlaylists(id) {
+		var buttons = document.getElementsByClassName('playlist'+id);
+		var i;
+		for (i = 0; i < buttons.length; i++) { 
+		    buttons[i].style.visibility = 'visible';
+		}
+	}
 </script>
 <div class="player">
 	<div class="plays">
