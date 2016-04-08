@@ -18,7 +18,7 @@
     <div id="home" class="tab-pane fade in active">
       <h3>Top 50 most listened tracks</h3><br>
 		  <% 
-			List<Track> playedTracks = new TrackDAO().getMostPlayedTracks();
+			List<Track> playedTracks = TrackDAO.getTrackDAOInstance().getMostPlayedTracks();
 			request.setAttribute("playedTracks", playedTracks);
 		%>
       	<c:forEach var="track" items="${playedTracks}">
@@ -30,7 +30,7 @@
     <div id="menu1" class="tab-pane fade">
       <h3>Last uploaded tracks</h3><br>
      	 <% 
-			List<Track> latestTracks = new TrackDAO().getLatestTracks();
+			List<Track> latestTracks = TrackDAO.getTrackDAOInstance().getLatestTracks();
 			request.setAttribute("latestTracks", latestTracks);
 		%>
       	<c:forEach var="track" items="${latestTracks}">
@@ -42,7 +42,7 @@
     <div id="menu2" class="tab-pane fade">
       <h3>Most likes tracks</h3><br>
      	<% 
-			List<Track> likedTracks = new TrackDAO().getMostLikedTracks();
+			List<Track> likedTracks = TrackDAO.getTrackDAOInstance().getMostLikedTracks();
 			request.setAttribute("likedTracks", likedTracks);
 		%>
       	<c:forEach var="track" items="${likedTracks}">

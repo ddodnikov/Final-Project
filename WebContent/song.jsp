@@ -4,7 +4,7 @@
 <%@page import="com.soundcloud.model.Track"%>
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <link type="text/css" href="styles/song.css" rel="stylesheet" />
-<link type="text/css" rel="stylesheet" href="styles/audioPlayer.css"/>
+<link type="text/css" rel="stylesheet" href="styles/audioPlayer.css" />
 
 <script type="text/javascript">
 	function like(id) {
@@ -41,12 +41,44 @@
 <div class="player">
 	<div class="plays">
 		<div class="img">
-			<img src="./FetchTrackImage?trackId=${track.id}" alt="Servlet - Track picture not found" />
+			<img src="./FetchTrackImage?trackId=${track.id}"
+				alt="Servlet - Track picture not found" />
 		</div>
 		<div class="main_player">
+			<div class="top">
+				<h1 style="color: black;">${track.title}</h1>
+			</div>
 			<audio controls preload="none">
 				<source src="./FetchTrack?trackId=${track.id}" type="audio/mpeg" />
 			</audio>
+			<div id="likes">
+				<c:if test="${not empty sessionScope.currentUser}">
+					<c:if test="${track.isLikedByUser == false}">
+						<p id="p${track.id}">You haven't liked this track</p>
+						<button style="color: black" id="button${track.id}"
+							onclick="like(${track.id})">Like</button>
+						<p style="color: black; visibility: hidden" id="${track.id}">You
+							liked this track</p>
+					</c:if>
+	
+					<c:if test="${track.isLikedByUser == true}">
+						<p style="color: black" id="p${track.id}">You like this track</p>
+						<button style="color: black" id="button${track.id}"
+							onclick="unlike(${track.id})">Unlike</button>
+						<p style="color: black; visibility: hidden" id="${track.id}">You unliked this track</p>
+					</c:if>
+	
+					<button style="color: black" id="addToPlaylist${track.id}"
+						onclick="showPlaylists(${track.id})">Add to Playlist</button>
+	
+					<c:forEach var="playlist" items="${sessionScope.playlistsToDisplay}">
+						<c:set var="playlist" value="${playlist}" scope="request"></c:set>
+						<button style="color: black; visibility: hidden"
+							class="playlist${track.id}"
+							onclick="addToPlaylist(${track.id},${playlist.id})">${playlist.title}</button>
+					</c:forEach>
+				</c:if>
+			</div>
 		</div>
 	</div>
 	<div id="details">
@@ -55,7 +87,8 @@
 		<p>Date added: ${track.dateAdded}</p>
 		<form action="./index" method="get">
 			<p>
-				Uploaded by: <a type="submit" href="./home?showUserId=${track.user.id}">${track.user.displayName}</a>
+				Uploaded by: <a type="submit"
+					href="./home?showUserId=${track.user.id}">${track.user.displayName}</a>
 			</p>
 		</form>
 	</div>

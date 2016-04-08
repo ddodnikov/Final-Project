@@ -71,7 +71,7 @@
 				<div class="tab-content">
 					<div id="mostPlayedBlock" class="tab-pane fade in active">
 						<h3>Top 5 most played tracks</h3>
-						<% List<Track> mostPlayed = new TrackDAO().getMostPlayedTracks();
+						<% List<Track> mostPlayed = TrackDAO.getTrackDAOInstance().getMostPlayedTracks();
 							request.setAttribute("mostPlayedTracks", mostPlayed); %>
 						<c:forEach var="track" items="${mostPlayedTracks}">
 							<c:set var="track" value="${track}" scope="request"></c:set>
@@ -80,7 +80,7 @@
 					</div>
 					<div id="mostLikedBlock" class="tab-pane fade">
 						<h3>Top 5 most liked tracks</h3>
-						<% List<Track> mostLiked = new TrackDAO().getMostLikedTracks();
+						<% List<Track> mostLiked = TrackDAO.getTrackDAOInstance().getMostLikedTracks();
 							request.setAttribute("mostLikedTracks", mostLiked);%>
 						<c:forEach var="track" items="${mostLikedTracks}">
 							<c:set var="track" value="${track}" scope="request"></c:set>
@@ -89,7 +89,7 @@
 					</div>
 					<div id="lastAddedBlock" class="tab-pane face">
 						<h3>Last 5 uploaded tracks</h3>
-						<% List<Track> lastAdded = new TrackDAO().getLatestTracks();
+						<% List<Track> lastAdded = TrackDAO.getTrackDAOInstance().getLatestTracks();
 							request.setAttribute("lastAddedTracks", lastAdded);%>
 						<c:forEach var="track" items="${lastAddedTracks}">
 							<c:set var="track" value="${track}" scope="request"></c:set>
