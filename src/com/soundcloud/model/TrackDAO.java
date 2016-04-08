@@ -15,6 +15,7 @@ import com.mysql.jdbc.Statement;
 
 public class TrackDAO extends AbstractDAO implements ITrackDAO {
 
+	private static final String INSERT_TAG_WITH_TRACK_QUERY = "INSERT INTO tags_with_tracks VALUES (?, ?);";
 	private static final String IS_TRACK_LIKED = "SELECT * FROM liked_tracks WHERE track_id = ? AND user_id = ?";
 	private static final String GET_TRACK_IMAGE_URI = "SELECT * FROM tracks WHERE track_id = ?;";
 	private static final String FIND_TRACKS_QUERY = "SELECT * FROM tracks WHERE title LIKE ? OR "
@@ -52,13 +53,26 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 			addTrack.executeUpdate();
 			ResultSet newTrackResult = addTrack.getGeneratedKeys();
 			newTrackResult.next();
-			newTrackId = newTrackResult.getInt("track_id");
+			newTrackId = newTrackResult.getInt(1); //column track_id
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("NEW TRACK ID: " + newTrackId);
 		for (String tag : tags) {
-			addTag(tag);
+			int tagId = addTag(tag);
+			insertTagWithTrack(tagId, newTrackId);
 		}
+	}
+
+	private void insertTagWithTrack(int newTrackId, int tagId) {
+		try {
+			PreparedStatement ps = getCon().prepareStatement(INSERT_TAG_WITH_TRACK_QUERY);
+			ps.setInt(1, newTrackId);
+			ps.setInt(2, tagId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	@Override
@@ -359,7 +373,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	}
 	
 	@Override
-	public void addTag(String tag) {
+	public int addTag(String tag) {
 		int tagId = 0;
 		try {
 			// first we have to check if the tag is existing in the tags table
@@ -376,11 +390,13 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				// get the ID of the inserted tag
 				ResultSet newTagResult = insertTagStatement.getGeneratedKeys();
 				newTagResult.next();
-				tagId = newTagResult.getInt("tag_id");
+				tagId = newTagResult.getInt(1); // column tag_id
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("TAG ID: " + tagId);
+		return tagId;
 	}
 
 }

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/TagsServlet")
 public class TagsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private Set<String> trackTags;
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
@@ -23,9 +22,8 @@ public class TagsServlet extends HttpServlet {
     	int splitIndex = data.indexOf('=');
     	String currentTag = data.substring(splitIndex + 1, data.length());
     	System.out.println(currentTag);
-    	Set<String> trackTags = new HashSet<String>();
+    	Set<String> trackTags = (Set<String>) req.getSession().getAttribute("trackTags");
     	trackTags.add(currentTag);
-    	req.setAttribute("trackTags", trackTags);
+    	req.getSession().setAttribute("trackTags", trackTags);
     }
-
 }

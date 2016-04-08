@@ -27,21 +27,9 @@
 			<img src="./FetchTrackImage?trackId=${track.id}" alt="Servlet - Track picture not found" />
 		</div>
 		<div class="main_player">
-			<div class="top">
-				<h1 style="color: black;">${track.title}</h1>
-			</div>
-			<div class="progress">
-				<div class="proDone" id='progress'>
-					<div class="bgimg"></div>
-					<div class="time">00:00</div>
-				</div>
-			</div>
-			<div class="controls">
-				<a href="javascript:;" class="play"></a>
-				<!--<a href="javascript:;" class="prev"></a>
-				<a href="javascript:;" class="next"></a>-->
-				<a href="javascript:;" class="mute"></a>
-			</div>
+			<audio controls preload="none">
+				<source src="./FetchTrack?trackId=${track.id}" type="audio/mpeg" />
+			</audio>
 		</div>
 	</div>
 	<div id="details">
@@ -69,13 +57,15 @@
 		</div>--%>
 	</div>
 </div>
+
 <%-- <ul class="srcs">
 	<li data-src='./FetchTrack?trackId=${track.id}'></li>
-</ul>--%>
+</ul>
 <audio id="audioplayer" preload="none">
 	<source src="./FetchTrack?trackId=${track.id}" />
 </audio>
-<script type="text/javascript" src="scripts/loadPlayer.js"></script>
+
+<script type="text/javascript" src="scripts/loadPlayer.js"></script>--%>
 <script src="scripts/playOneSongAtATime.js"></script>
 <%-- <div id="songContainer">
 	<div>

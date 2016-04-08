@@ -70,9 +70,6 @@ public class EditProfile extends HttpServlet {
 		updateParameter(city, con, userId, UPDATE_USER_CITY_QUERY);
 		updateParameter(country, con, userId, UPDATE_USER_COUNTRY_QUERY);
 		updateParameter(biography, con, userId, UPDATE_USER_BIOGRAPHY_QUERY);
-		
-		User user = userDao.getUserById(userId);		
-		session.setAttribute("currentUser", user);
 
 		// check if the save directory exists - if not - create it
 		File imageSaveDir = new File(IMAGE_SAVE_DIR);
@@ -108,6 +105,8 @@ public class EditProfile extends HttpServlet {
 					}
 				}
 			}
+			User user = userDao.getUserById(userId);		
+			session.setAttribute("currentUser", user);
 			doGet(request, response);
 		}
 		// TODO: success page??

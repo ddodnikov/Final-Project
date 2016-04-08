@@ -12,7 +12,7 @@ $(function() { // DOM ready
 		},
 		keypress : function(e) {
 			var code = e.keyCode || e.which;
-			if (code == 44) { // on press comma
+			if (code == 44 || code == 32 || code == 188) { // on press comma, space
 				console.log($('#tags input:text').val());
 				$.ajax({
 					url : 'TagsServlet',

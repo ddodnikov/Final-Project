@@ -24,6 +24,7 @@ public class FetchPicture extends HttpServlet {
 			throws ServletException, IOException {
 
 		String imageURL = (String) ((User)request.getSession().getAttribute("currentUser")).getUserImageURI();
+//		String imageURL = (String) request.getSession().getAttribute("currentProfilePic");
 	
 		Path path = Paths.get(imageURL);
 		String mime = Files.probeContentType(path);

@@ -29,5 +29,5 @@ public interface ITrackDAO {
 	
 	String getTrackImageUri(int trackId);
 	
-	void addTag(String tag);
+	int addTag(String tag);
 }
