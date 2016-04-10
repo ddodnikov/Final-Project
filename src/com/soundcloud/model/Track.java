@@ -8,7 +8,20 @@ public class Track extends PieceOfMusic implements Serializable, Comparable<Trac
 	private static final long serialVersionUID = 1L;
 
 	private boolean isLikedByUser;
+	private boolean isUnlikedByUser;
 	
+	public void setLikedByUser(boolean isLikedByUser) {
+		this.isLikedByUser = isLikedByUser;
+	}
+
+	public boolean isUnlikedByUser() {
+		return isUnlikedByUser;
+	}
+
+	public void setUnlikedByUser(boolean isUnlikedByUser) {
+		this.isUnlikedByUser = isUnlikedByUser;
+	}
+
 	private List<String> comments;
 	
 	private int numberOfPlays;

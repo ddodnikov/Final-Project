@@ -19,7 +19,7 @@ public class Charts extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		TrackDAO trackDao = TrackDAO.getTrackDAOInstance();
-		List<Track> mostPlayedTracks = trackDao.getMostPlayedTracks(); // as json
+		List<Track> mostPlayedTracks = trackDao.getMostPlayedTracks();
 		request.setAttribute("mostPlayedTracks", mostPlayedTracks);
 		List<Track> mostLikedTracks = trackDao.getMostLikedTracks();
 		request.setAttribute("mostLikedTracks", mostLikedTracks);

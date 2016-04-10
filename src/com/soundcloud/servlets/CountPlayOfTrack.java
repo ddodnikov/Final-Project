@@ -7,15 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.soundcloud.model.PlaylistDAO;
+import com.soundcloud.model.TrackDAO;
 
-@WebServlet("/AddToPlaylist")
-public class AddToPlaylist extends HttpServlet {
+@WebServlet("/CountPlayOfTrack")
+public class CountPlayOfTrack extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int playlistId = Integer.parseInt(request.getParameter("playlistId"));
 		int trackId = Integer.parseInt(request.getParameter("trackId"));
-		PlaylistDAO.getPlaylistDAOInstance().addTrackToPlaylist(playlistId, trackId);	
+		TrackDAO trackDao = TrackDAO.getTrackDAOInstance();
+		trackDao.addPlayToTrack(trackId);
 	}
 }

@@ -22,9 +22,9 @@
 				<c:set var="track" value="${track}" scope="request"></c:set>
 				<jsp:include page="song.jsp"></jsp:include>		
 			</c:forEach>
-		<form action="NextPreviousTrackPage" method="get">
-			<button type="submit" name="nextSearchTracks">NEXT</button>
-			<button type="submit" name="previousSearchTracks">PREVIOUS</button>
+		<form action="./NextPreviousTrackPage" method="get" class="pages">
+			<button type="submit" name="previousSearchTracks" class="previousButton"></button>
+			<button type="submit" name="nextSearchTracks" class="nextButton"></button>
 		</form>
 		</c:otherwise>
 	</c:choose>

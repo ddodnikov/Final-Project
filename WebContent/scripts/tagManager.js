@@ -2,7 +2,7 @@ $(function() { // DOM ready
 	// ::: TAGS BOX
 	$("#tags input").on({
 		focusout : function() {
-			var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig, ''); // allowed characters
+			var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig, ''); // allowed characters for tag
 			if (txt)
 				$("<span/>", {
 					text : txt.toLowerCase(),
@@ -21,8 +21,8 @@ $(function() { // DOM ready
 					},
 					type : 'put',
 					cache : false,
-					success : function(data) {
-						console.log(data);
+					success : function() {
+						console.log("success");
 					},
 					error : function() {
 						console.log('error');
@@ -39,8 +39,16 @@ $(function() { // DOM ready
 		}
 	});
 	$('#tags').on('click', 'span', function() {
-		// confirmation for tag delete
+		// uncomment following line to activate confirmation for tag delete
 		// if (confirm("Remove " + $(this).text() + "?"))
+		$.ajax({
+			url : "TagsServlet",
+			data : {
+				spanText : $(this).text()
+			},
+			type : "delete"
+		});
 		$(this).remove();
+		
 	});
 });

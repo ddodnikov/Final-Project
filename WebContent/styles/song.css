@@ -33,6 +33,11 @@ audio {
 	justify-content: space-between;
 }
 
+	#likes p {
+		color: black;
+		font-size: 1.3em;
+	}
+
 .main_player {
 	display: flex !important;
 	flex-direction: column !important;
@@ -42,4 +47,54 @@ audio {
 .plays {
 	display: flex !important;
 	justify-content: space-between !important;
+}
+
+.playlistDropdown {
+	padding: 10px;
+	font-style: italic;
+	text-decoration: underline;
+	color: black;
+	font-weight: bold;
+	font-size: 1.6em;
+	padding: 10px;
+}
+
+.playlistDropdown:hover {
+	cursor: pointer;
+}
+
+.dropdown-menu.playlistSelect {
+	left: 100%;
+	top: -4px;
+}
+
+.dropdown-menu ul {
+	list-style: none;
+}
+
+.dropdown-menu ul li {
+	padding: 10px;
+	border-bottom: 1px solid black;
+}
+
+	.dropdown-menu ul li:last-child {
+		border-bottom: none;
+	}
+
+.dropdown-menu ul li a {
+	font-size: 1.4em;
+	font-weight: bold;
+	color: black;
+}
+
+	.dropdown-menu ul li:hover {
+		cursor: pointer;
+	}
+	
+		.dropdown-menu ul li:hover a {
+			color: #2b8e73;
+		}
+		
+.dropdown-menu ul li a:hover {
+	text-decoration: underline;
 }

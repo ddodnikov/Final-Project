@@ -22,8 +22,18 @@ public class TagsServlet extends HttpServlet {
     	int splitIndex = data.indexOf('=');
     	String currentTag = data.substring(splitIndex + 1, data.length());
     	System.out.println(currentTag);
-    	Set<String> trackTags = (Set<String>) req.getSession().getAttribute("trackTags");
+    	HashSet<String> trackTags = (HashSet<String>) req.getSession().getAttribute("trackTags");
     	trackTags.add(currentTag);
     	req.getSession().setAttribute("trackTags", trackTags);
+    }
+    
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+    	String spanText = br.readLine();
+    	int splitIndex = spanText.indexOf('=');
+    	String currentSpanText = spanText.substring(splitIndex + 1, spanText.length());
+    	HashSet<String> trackTags = (HashSet<String>) req.getSession().getAttribute("trackTags");
+    	trackTags.remove(currentSpanText);
     }
 }

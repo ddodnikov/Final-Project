@@ -10,12 +10,33 @@ import java.util.List;
 import java.util.Set;
 
 import com.mysql.jdbc.Statement;
+import com.soundcloud.exceptions.TrackAlreadyLikedException;
 
 public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	
-	private static final String REMOVE_LIKED_TRACK = "DELETE FROM liked_tracks WHERE track_id = ? AND user_id = ?;";
+	private static final String GET_TRACK_LIKES_COUNT_QUERY = "SELECT likes_count FROM tracks WHERE track_id = ?;";
 
-	private static final String ADD_LIKED_TRACK = "INSERT INTO liked_tracks (track_id , user_id) VALUES (?,?);";
+	private static final String INSERT_TAG_QUERY = "INSERT INTO tags VALUES (null, ?);";
+
+	private static final String CHECK_IF_TAG_IS_EXISTING_QUERY = "SELECT * FROM tags WHERE name = ?;";
+
+	private static final String INSERT_TRACK_INTO_UNLIKED_QUERY = "INSERT INTO unliked_tracks VALUES (?,?);";
+
+	private static final String DELETE_TRACK_FROM_LIKED_QUERY = "DELETE FROM liked_tracks WHERE track_id = ? AND user_id = ?;";
+
+	private static final String INSERT_TRACK_INTO_LIKED_QUERY = "INSERT INTO liked_tracks VALUES (?, ?);";
+
+	private static final String DELETE_TRACK_FROM_UNLIKED_QUERY = "DELETE FROM unliked_tracks WHERE track_id = ? AND user_id = ?;";
+
+	private static final String CHECK_IF_TRACK_HAS_BEEN_UNLIKED_BY_USER_QUERY = "SELECT * FROM unliked_tracks WHERE track_id = ? AND user_id = ?;";
+
+	private static final String CHECK_IF_TRACK_IS_LIKED_BY_USER_QUERY = "SELECT * FROM liked_tracks WHERE track_id = ? AND user_id = ?;";
+
+	private static final String INCREMENT_TRACK_LIKES_COUNT = "UPDATE tracks SET likes_count = likes_count + ? WHERE track_id = ?;";
+	
+	private static final String DECREMENT_TRACK_LIKES_COUNT = "UPDATE tracks SET likes_count = likes_count - ? WHERE track_id = ?;";
+
+	private static final String INCREMENT_TRACK_PLAYS_COUNT_BY_1 = "UPDATE tracks SET plays_count = plays_count + 1 WHERE track_id = ?;";
 
 	private static final String SELECT_PLAYLIST_TRACKS = "SELECT t.track_id FROM tracks t " +
 			"JOIN playlists_with_tracks pt ON (pt.track_id = t.track_id) " +
@@ -24,7 +45,6 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	private static TrackDAO trackDAOInstance = null;
 
 	private static final String INSERT_TAG_WITH_TRACK_QUERY = "INSERT INTO tags_with_tracks VALUES (?, ?);";
-	private static final String IS_TRACK_LIKED = "SELECT * FROM liked_tracks WHERE track_id = ? AND user_id = ?";
 	private static final String GET_TRACK_IMAGE_URI = "SELECT * FROM tracks WHERE track_id = ?;";
 	
 	private static final String INSERT_TRACK = "INSERT INTO tracks (title, genre_id, description, "
@@ -299,13 +319,11 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	}
 
 	@Override
-	public boolean isTrackLikedByUser(int track_id, int user_id) {
-
+	public boolean isTrackLikedByUser(int trackId, int userId) {
 		try {
-			PreparedStatement isTrackLiked = getCon().prepareStatement(IS_TRACK_LIKED);
-			isTrackLiked.setInt(1, track_id);
-			isTrackLiked.setInt(2, user_id);
-
+			PreparedStatement isTrackLiked = getCon().prepareStatement(CHECK_IF_TRACK_IS_LIKED_BY_USER_QUERY);
+			isTrackLiked.setInt(1, trackId);
+			isTrackLiked.setInt(2, userId);
 			ResultSet results = isTrackLiked.executeQuery();
 
 			if (results.next()) {
@@ -314,7 +332,22 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		return false;
+	}
+	
+	@Override
+	public boolean isTrackUnlikedByUser(int trackId, int userId) {
+		try {
+			PreparedStatement isTrackUnlikedPS = getCon().prepareStatement(CHECK_IF_TRACK_HAS_BEEN_UNLIKED_BY_USER_QUERY);
+			isTrackUnlikedPS.setInt(1, trackId);
+			isTrackUnlikedPS.setInt(2, userId);
+			ResultSet isTrackUnlikedResult = isTrackUnlikedPS.executeQuery();
+			if (isTrackUnlikedResult.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -353,39 +386,115 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	}
 
 	@Override
-	public void likeTrack(int track_id, int user_id) {
-		
+	public void incrementTrackLikesCount(int trackId, int userId) {
+		int incrementBy = 0;
 		try {
-			PreparedStatement likeTrack = getCon().prepareStatement(ADD_LIKED_TRACK);
-			likeTrack.setInt(1, track_id);
-			likeTrack.setInt(2, user_id);
-			
-			likeTrack.executeUpdate();
-			
-			setTrackLikes(track_id, 1);
-	
+			if (isTrackUnlikedByUser(trackId, userId)) {
+				incrementBy = 2;
+			} else {
+				incrementBy = 1;
+			}
+			PreparedStatement ps = getCon().prepareStatement(INCREMENT_TRACK_LIKES_COUNT);
+			ps.setInt(1, incrementBy);
+			ps.setInt(2, trackId);
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Override
-	public void unlikeTrack(int track_id, int user_id) {
-		
+	public void decrementTrackLikesCount(int trackId, int userId) {
+		int decrementBy = 0;
 		try {
-			PreparedStatement unlikeTrack = getCon().prepareStatement(REMOVE_LIKED_TRACK);
-			unlikeTrack.setInt(1, track_id);
-			unlikeTrack.setInt(2, user_id);
-			
-			unlikeTrack.executeUpdate();
-	
-			setTrackLikes(track_id, -1);
-			
+			if (isTrackLikedByUser(trackId, userId)) {
+				decrementBy = 2;
+			} else {
+				decrementBy = 1;
+			}
+			PreparedStatement ps = getCon().prepareStatement(DECREMENT_TRACK_LIKES_COUNT);
+			ps.setInt(1, decrementBy);
+			ps.setInt(2, trackId);
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	@Override
+	public void likeTrack(int trackId, int userId) throws TrackAlreadyLikedException {
+		try {
+			// check if the track is already liked by user
+			PreparedStatement checkIfTrackIsLikedPS = getCon().prepareStatement(CHECK_IF_TRACK_IS_LIKED_BY_USER_QUERY);
+			checkIfTrackIsLikedPS.setInt(1, trackId);
+			checkIfTrackIsLikedPS.setInt(2, userId);
+			ResultSet isTrackLikedResult = checkIfTrackIsLikedPS.executeQuery();
+			if (isTrackLikedResult.next()) {
+				// user has already liked this track
+				throw new TrackAlreadyLikedException("You have already liked this track!");
+			} else {
+				// check if user has previously unliked this track
+				PreparedStatement checkIfTrackHasBeenUnlikedPS = getCon().prepareStatement(CHECK_IF_TRACK_HAS_BEEN_UNLIKED_BY_USER_QUERY);
+				checkIfTrackHasBeenUnlikedPS.setInt(1, trackId);
+				checkIfTrackHasBeenUnlikedPS.setInt(2, userId);
+				ResultSet hasTrackBeenUnlikedResult = checkIfTrackHasBeenUnlikedPS.executeQuery();
+				if (hasTrackBeenUnlikedResult.next()) {
+					// user has previously unliked this track
+					// delete track from unliked
+					PreparedStatement deleteTrackFromUnlikedPS = getCon().prepareStatement(DELETE_TRACK_FROM_UNLIKED_QUERY);
+					deleteTrackFromUnlikedPS.setInt(1, trackId);
+					deleteTrackFromUnlikedPS.setInt(2, userId);
+					deleteTrackFromUnlikedPS.executeUpdate();
+				}
+				// insert the track into liked_tracks table
+				PreparedStatement insertTrackIntoLikedPS = getCon().prepareStatement(INSERT_TRACK_INTO_LIKED_QUERY);
+				insertTrackIntoLikedPS.setInt(1, trackId);
+				insertTrackIntoLikedPS.setInt(2, userId);
+				insertTrackIntoLikedPS.executeUpdate();
+				// increment track likes in tracks table
+				incrementTrackLikesCount(trackId, userId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void unlikeTrack(int trackId, int userId) throws TrackAlreadyLikedException {
+		// check if user has already unliked the track
+		try {
+			PreparedStatement checkIfTrackIsUnliked = getCon().prepareStatement(CHECK_IF_TRACK_HAS_BEEN_UNLIKED_BY_USER_QUERY);
+			checkIfTrackIsUnliked.setInt(1, trackId);
+			checkIfTrackIsUnliked.setInt(2, userId);
+			ResultSet isTrackUnlikedResult = checkIfTrackIsUnliked.executeQuery();
+			if (isTrackUnlikedResult.next()) {
+				// user has already unliked this track
+				throw new TrackAlreadyLikedException("You have already unliked this track!");
+			} else {
+				// check if user has previously liked this track
+				PreparedStatement checkIfTrackHasBeenLikedPS = getCon().prepareStatement(CHECK_IF_TRACK_IS_LIKED_BY_USER_QUERY);
+				checkIfTrackHasBeenLikedPS.setInt(1, trackId);
+				checkIfTrackHasBeenLikedPS.setInt(2, userId);
+				ResultSet hasTrackBeenLikedResult = checkIfTrackHasBeenLikedPS.executeQuery();
+				if (hasTrackBeenLikedResult.next()) {
+					// user has previously liked this tracks
+					// delete track from liked
+					PreparedStatement deleteTrackFromLikedPS = getCon().prepareStatement(DELETE_TRACK_FROM_LIKED_QUERY);
+					deleteTrackFromLikedPS.setInt(1, trackId);
+					deleteTrackFromLikedPS.setInt(2, userId);
+					deleteTrackFromLikedPS.executeUpdate();
+				}
+				// insert the track into unliked_tracks table
+				PreparedStatement insertTrackIntoUnlikedPS = getCon().prepareStatement(INSERT_TRACK_INTO_UNLIKED_QUERY);
+				insertTrackIntoUnlikedPS.setInt(1, trackId);
+				insertTrackIntoUnlikedPS.setInt(2, userId);
+				insertTrackIntoUnlikedPS.executeUpdate();
+				// decrement track likes in tracks table
+				decrementTrackLikesCount(trackId, userId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -413,14 +522,14 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 		int tagId = 0;
 		try {
 			// first we have to check if the tag is existing in the tags table
-			PreparedStatement ps = getCon().prepareStatement("SELECT * FROM tags WHERE name = ?;");
+			PreparedStatement ps = getCon().prepareStatement(CHECK_IF_TAG_IS_EXISTING_QUERY);
 			ps.setString(1, tag);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				tagId = rs.getInt("tag_id");
 			} else {
 				// if the tag is not existing, we create it and insert it into tags table
-				PreparedStatement insertTagStatement = getCon().prepareStatement("INSERT INTO tags VALUES (null, ?);", Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement insertTagStatement = getCon().prepareStatement(INSERT_TAG_QUERY, Statement.RETURN_GENERATED_KEYS);
 				insertTagStatement.setString(1, tag);
 				insertTagStatement.executeUpdate();
 				// get the ID of the inserted tag
@@ -431,7 +540,6 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return tagId;
 	}
 	
@@ -481,25 +589,31 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 		return playlistTracks;
 	}
 	
-	public void setTrackLikes(int trackId, int like) {
-		
+	@Override
+	public void addPlayToTrack(int trackId) {
 		try {
-			
-			PreparedStatement getTrackLikes = getCon().prepareStatement("SELECT likes_count FROM tracks WHERE track_id = ?;");
-			getTrackLikes.setInt(1, trackId);
-			ResultSet likesCount = getTrackLikes.executeQuery();
-			likesCount.next();
-			int count = likesCount.getInt(1);
-			int newCount = count + like;
-			
-			PreparedStatement setTrackLikes = getCon().prepareStatement("UPDATE tracks SET likes_count = ? WHERE track_id = ?;");
-			setTrackLikes.setInt(1, newCount);
-			setTrackLikes.setInt(2, trackId);
-			setTrackLikes.executeUpdate();
+			PreparedStatement ps = getCon().prepareStatement(INCREMENT_TRACK_PLAYS_COUNT_BY_1);
+			ps.setInt(1, trackId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
 	
+	@Override
+	public int getTrackLikes(int trackId) {
+		int trackLikes = 0;
+		try {
+			PreparedStatement ps = getCon().prepareStatement(GET_TRACK_LIKES_COUNT_QUERY);
+			ps.setInt(1, trackId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				trackLikes = rs.getInt("likes_count");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return trackLikes;
 	}
 
 }

@@ -1,5 +1,5 @@
 .player {
-	background-color: rgba(255, 255, 255, 0.3);
+	background-color: rgba(0, 0, 0, 0.1);
 	-webkit-border-radius: 15px;
 	position: relative;
 	-moz-border-radius: 15px;
@@ -16,7 +16,7 @@
 
 .plays {
 	padding: 20px 15px 10px 15px;
-	width: 620px;
+	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -24,7 +24,6 @@
 	-webkit-border-radius: 15px 0px 0px 15px;
 	-moz-border-radius: 15px 0px 0px 15px;
 	border-radius: 15px 0px 0px 15px;
-	z-index: 2;
 }
 
 .player>div, .player>div>div {
@@ -54,8 +53,7 @@
 }
 
 .player .main_player {
-	margin-left: 50px;
-	width: 355px;
+	width: 600px;
 	font-family: 'Droid Serif', serif;
 	color: #ffffff;
 	font-style: italic;
@@ -159,7 +157,7 @@ a {
 
 .thumbsU {
 	color: white;
-	font-size: 1.4em;
+	font-size: 1.6em;
 }
 
 #details {
@@ -167,7 +165,7 @@ a {
 	flex-direction: column;
 	justify-content: space-around;
 	border-left: 1px solid black;
-	padding-left: 20px;
+	padding: 0 20px;
 }
 
 #details p {
@@ -195,6 +193,7 @@ a:hover {
 }
 
 .likes {
+	padding: 25px 0 !important;
 	background: #2b8e73;
 	border-top-right-radius: 14px;
 	border-bottom-right-radius: 14px;
@@ -203,6 +202,9 @@ a:hover {
 	width: 80px;
 	text-align: center;
 	height: 210px;
+	display: flex !important;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .likes>div {
@@ -210,8 +212,6 @@ a:hover {
 }
 
 .likes a {
-	top: 32%;
-    position: absolute;
     display: block;
 	padding: 10px 0px;
 	font-family: 'Oswald', sans-serif;
@@ -224,14 +224,25 @@ a:hover {
 	border-radius: 0px 15px 0px 0px;
 }
 
+	.likes a:hover {
+		cursor: pointer;
+	}
+
 .likes a.thumbsDown {
-	border-top: 1px solid #ccc;
 	color: #f01515;
 	border-bottom: none;
-	background: #e6e6e6;
 	-webkit-border-radius: 0px 0px 15px 0px;
 	-moz-border-radius: 0px 0px 15px 0px;
 	border-radius: 0px 0px 15px 0px;
+}
+
+	.likes a:hover img {
+		opacity: 0.9 !important;
+	}
+	
+button {
+	background: none;
+	border: none;
 }
 
 .player * {

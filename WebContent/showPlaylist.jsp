@@ -33,9 +33,9 @@
 			<c:if test="${empty sessionScope.playlistTracks}">
 				<p> You have no tracks in the playlist</p>
 			</c:if>
-			<form action="./NextPreviousTrackPage" method="get">
-				<button type="submit" name="nextTracks">NEXT</button>
-				<button type="submit" name="previousTracks">PREVIOUS</button>
+			<form action="./NextPreviousTrackPage" method="get" class="pages">
+				<button type="submit" name="previousTracks" class="previousButton"></button>
+				<button type="submit" name="nextTracks" class="nextButton"></button>
 			</form>
 		</div>
 	</div>

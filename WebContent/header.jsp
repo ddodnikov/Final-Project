@@ -1,10 +1,8 @@
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
 <link rel="stylesheet" href="styles/bootstrap.min.css" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <header>
 	<nav>
@@ -33,10 +31,10 @@
 						<span id="smallUserPic">
 							<c:choose>
 								<c:when test="${sessionScope.currentUser.userImageID > 0}">
-									<img src="./FetchPicture?imageId=${sessionScope.currentUser.userImageID}" alt="Profile pic not found" id="headerPic" />
+									<a href="./Home"><img src="./FetchPicture?imageId=${sessionScope.currentUser.userImageID}" alt="Profile pic not found" id="headerPic" /></a>
 								</c:when>
 								<c:otherwise>
-									<img src="./images/defaultProfilePic.jpg" id="headerPic" />
+									<a href="./Home"><img src="./images/defaultProfilePic.jpg" /></a>
 								</c:otherwise>
 							</c:choose>
 						</span>

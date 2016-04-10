@@ -24,8 +24,8 @@ public class FetchPicture extends HttpServlet {
 			throws ServletException, IOException {
 		
 		String imageId = request.getParameter("imageId");
-		int img_id = Integer.parseInt(imageId);
-		String imageURL = ImageDAO.getImageDAOInstance().getImageURLById(img_id);
+		int imgId = Integer.parseInt(imageId);
+		String imageURL = ImageDAO.getImageDAOInstance().getImageURLById(imgId);
 		
 		Path path = Paths.get(imageURL);
 		String mime = Files.probeContentType(path);

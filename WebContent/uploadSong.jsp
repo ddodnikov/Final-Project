@@ -16,8 +16,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="scripts/tagManager.js"></script>
 <link type="text/css" rel="stylesheet" href="styles/global.css" />
 <link type="text/css" rel="stylesheet" href="styles/uploadSong.css" />
@@ -29,12 +28,11 @@
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
 			<h1>Upload track</h1>
-			<form method="post" action="./UploadSong"
-				enctype="multipart/form-data">
+			<form method="post" action="./UploadSong" enctype="multipart/form-data">
 				<div id="left">
-					<input type="file" name="songUpload" accept=".mp3" /> <label
-						for="title">Title (required)</label> <input type="text"
-						name="title" placeholder="Name your track" /> <label for="genre">Genre</label>
+					<input type="file" name="songUpload" accept=".mp3" /> <label for="title">Title (required)</label>
+					<input type="text" name="title" placeholder="Name your track" />
+					<label for="genre">Genre</label>
 					<select name="genre">
 						<%
 							List<String> allGenres = (GenreDAO.getGenreDAOInstance().getAllGenreNames());
@@ -43,23 +41,21 @@
 						<c:forEach var="genreName" items="#{allGenres}">
 							<option value="${genreName}">${genreName}</option>
 						</c:forEach>
-					</select> <label for="tags">Tags - describe the genre and mood of
-						your track</label>
+					</select>
+					<label for="tags">Tags - describe the genre and mood of your track</label>
 					<div id="tags">
 						<input type="text" value="" placeholder="Add tags" />
 					</div>
-
+					
 					<!-- <input type="text" name="tags" placeholder="Add tags to describe the genre and mood of your track" /> -->
 					<label for="description">Description</label>
-					<textarea name="description" rows=5 cols=45
-						placeholder="Describe your track"></textarea>
+					<textarea name="description" rows=5 cols=45 placeholder="Describe your track"></textarea>
 				</div>
 				<div id="right">
 					<div id="trackPic">
-						<label for="currentProfile">Track picture:</label> <img
-							src="./images/defaultSongImage.jpg" id="outImage" /> <input
-							name="uploadTrackPic" type="file" id="picField"
-							accept="image/jpeg" />
+						<label for="currentProfile">Track picture:</label>
+						<img src="./images/defaultSongImage.jpg" id="outImage" />
+						<input name="uploadTrackPic" type="file" id="picField" accept="image/jpeg" />
 						<script src="scripts/dynamicTrackPicLoad.js"></script>
 					</div>
 					<input type="submit" value="Upload">

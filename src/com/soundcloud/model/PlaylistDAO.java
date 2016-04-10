@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.soundcloud.exceptions.TrackAlreadyExistsException;
+
 public class PlaylistDAO extends AbstractDAO implements IPlaylistDAO {
 
 	private static final String INSERT_INTO_PLAYLISTS_WITH_TRACKS = "INSERT INTO playlists_with_tracks (playlist_id, track_id) VALUES (?,?);";
@@ -134,30 +136,55 @@ public class PlaylistDAO extends AbstractDAO implements IPlaylistDAO {
 	}
 
 	@Override
-	public void addToPlaylist(int track_id, int playlist_id) {
+	public void addTrackToPlaylist(int playlistId, int trackId) {
 		
 		try {
-			PreparedStatement ps = getCon().prepareStatement(INSERT_INTO_PLAYLISTS_WITH_TRACKS);
-			ps.setInt(1, playlist_id);
-			ps.setInt(2, track_id);
-			ps.executeUpdate();
-			
-			PreparedStatement getcount = getCon().prepareStatement(GET_TRACK_COUNT);
-			getcount.setInt(1, playlist_id);
-			ResultSet count = getcount.executeQuery();
-			count.next();
-			
-			int newCount = count.getInt(1) + 1;
-			
-			PreparedStatement setcount = getCon().prepareStatement(INCREASE_TRACK_COUNT);
-			setcount.setInt(1, newCount);
-			setcount.setInt(2, playlist_id);
-			setcount.execute();
-			
-
+			// check if song already exists in the playlist
+			PreparedStatement checkIfTrackExistsInPlaylist = getCon().prepareStatement("SELECT * FROM playlists_with_tracks WHERE playlist_id = ? AND track_id = ?;");
+			checkIfTrackExistsInPlaylist.setInt(1, playlistId);
+			checkIfTrackExistsInPlaylist.setInt(2, trackId);
+			ResultSet doesTrackExistResult = checkIfTrackExistsInPlaylist.executeQuery();
+			if (doesTrackExistResult.next()) {
+				// track exists in this playlist
+				throw new TrackAlreadyExistsException("Track already exists in playlist!");
+			} else {
+				// insert track into playlist
+				PreparedStatement ps = getCon().prepareStatement(INSERT_INTO_PLAYLISTS_WITH_TRACKS);
+				ps.setInt(1, playlistId);
+				ps.setInt(2, trackId);
+				ps.executeUpdate();
+				// increment playlist's tracks count
+				incrementPlaylistTracksCount(playlistId);
+			}
+		} catch (SQLException | TrackAlreadyExistsException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	@Override
+	public void incrementPlaylistTracksCount(int playlistId) {
+		try {
+			PreparedStatement updatePlaylistPS = getCon().prepareStatement("UPDATE playlists SET tracks_count = tracks_count + 1;");
+			updatePlaylistPS.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public boolean isTrackInPlaylist(int playlistId, int trackId) {
+		try {
+			PreparedStatement checkIfTrackIsInPlaylistPS = getCon().prepareStatement("SELECT * FROM playlists_with_tracks WHERE playlist_id = ? AND track_id = ?;");
+			checkIfTrackIsInPlaylistPS.setInt(1, playlistId);
+			checkIfTrackIsInPlaylistPS.setInt(2, trackId);
+			ResultSet isTrackInPlaylistResult = checkIfTrackIsInPlaylistPS.executeQuery();
+			if (isTrackInPlaylistResult.next()) {
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
+		return false;
 	}
 }

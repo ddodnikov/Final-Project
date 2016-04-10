@@ -28,9 +28,9 @@
 			<c:set var="track" value="${track}" scope="request"></c:set>
 			<jsp:include page="song.jsp"></jsp:include>
 		</c:forEach>
-		<form action="./NextPreviousTrackPage" method="get">
-			<button type="submit" name="nextUserTracks">NEXT</button>
-			<button type="submit" name="previousUserTracks">PREVIOUS</button>
+		<form action="./NextPreviousTrackPage" method="get" class="pages">
+			<button type="submit" name="previousUserTracks" class="previousButton"></button>
+			<button type="submit" name="nextUserTracks" class="nextButton"></button>
 		</form>
 		<c:if test="${empty sessionScope.showTracks}">
 			<p> No tracks </p>
@@ -48,9 +48,6 @@
 			<p> No playlists </p>
 		</c:if>
       
-		<button type="submit" name="nextUserTracks">NEXT</button>
-		<button type="submit" name="previousUserTracks">PREVIOUS</button>
-
     </div>
 
   </div>

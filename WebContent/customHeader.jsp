@@ -33,9 +33,9 @@
 		<c:if test="${empty sessionScope.tracksToDisplay}">
 			<p> You have no tracks </p>
 		</c:if>
-		<form action="./NextPreviousTrackPage" method="get">
-			<button type="submit" name="nextTracks">NEXT</button>
-			<button type="submit" name="previousTracks">PREVIOUS</button>
+		<form action="./NextPreviousTrackPage" method="get" class="pages">
+			<button type="submit" name="previousTracks" class="previousButton"></button>
+			<button type="submit" name="nextTracks" class="nextButton"></button>
 		</form>
     </div>
     
@@ -48,10 +48,6 @@
 		<c:if test="${empty sessionScope.playlistsToDisplay}">
 			<p> You have no playlists </p>
 		</c:if>
-		
-			<button type="submit" name="nextPlaylists">NEXT</button>
-			<button type="submit" name="previousPlaylists">PREVIOUS</button>
-
     </div>
     
     <div id="menu2" class='tab-pane fade <c:if test="${sessionScope.activeTab == 'alllikes'}">in active</c:if>'>
@@ -63,9 +59,9 @@
 		<c:if test="${empty sessionScope.likedTracksToDisplay}">
 			<p> You haven't liked any tracks </p>
 		</c:if>
-		<form action="./NextPreviousTrackPage" method="get">
-			<button type="submit" name="nextLikedTracks">NEXT</button>
-			<button type="submit" name="previousLikedTracks">PREVIOUS</button>
+		<form action="./NextPreviousTrackPage" method="get" class="pages">
+			<button type="submit" name="previousLikedTracks" class="previousButton"></button>
+			<button type="submit" name="nextLikedTracks" class="nextButton"></button>
 		</form>
     </div>
   </div>
