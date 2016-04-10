@@ -30,11 +30,10 @@ public class CreatePlaylist extends HttpServlet {
 			
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getSession().getAttribute("currentUser") != null) {
-			request.getRequestDispatcher("./createPlaylist.jsp").forward(request, response);
-		}
-		else {
+		if(request.getSession(false) == null || request.getSession(false).getAttribute("currentUser") == null) {
 			response.sendRedirect("./");
+		} else {
+			request.getRequestDispatcher("./createPlaylist.jsp").forward(request, response);
 		}
 	}
 

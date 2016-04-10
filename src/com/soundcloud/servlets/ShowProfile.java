@@ -24,7 +24,9 @@ public class ShowProfile extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if (request.getSession(false).getAttribute("currentUser") != null) {
+		if (request.getSession(false) == null || request.getSession(false).getAttribute("currentUser") == null) {
+			response.sendRedirect("./");
+		} else {
 
 			String id = request.getParameter("showUserId");
 			int user_id = Integer.parseInt(id);
@@ -47,9 +49,6 @@ public class ShowProfile extends HttpServlet {
 
 			request.getRequestDispatcher("./showUserInfo.jsp").forward(request, response);
 		
-		} else {
-			response.sendRedirect("./Login");
-		}
-			
+		}		
 	}
 }

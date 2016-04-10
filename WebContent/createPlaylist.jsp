@@ -4,6 +4,10 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix='c' uri="http://java.sun.com/jsp/jstl/core"%>
 <% 
+	response.setHeader("Cache-Control", "no-cache");
+	response.setHeader("Cache-Control", "no-store");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
 	if(request.getSession().getAttribute("currentUser") == null)
 		response.sendRedirect("./login.jsp");
 %>

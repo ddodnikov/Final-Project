@@ -22,7 +22,7 @@ public class Home extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getSession(false) == null) {
+		if (request.getSession(false) == null || request.getSession(false).getAttribute("currentUser") == null) {
 			response.sendRedirect("./");
 		} else {
 
