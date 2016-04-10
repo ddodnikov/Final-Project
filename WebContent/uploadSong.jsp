@@ -28,10 +28,13 @@
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
 			<h1>Upload track</h1>
+			<c:if test="${not empty songErrorMessage}">
+				<p class="message">Your track was successfully uploaded!</p>
+			</c:if>
 			<form method="post" action="./UploadSong" enctype="multipart/form-data">
 				<div id="left">
 					<input type="file" name="songUpload" accept=".mp3" /> <label for="title">Title (required)</label>
-					<input type="text" name="title" placeholder="Name your track" />
+					<input type="text" name="title" placeholder="Name your track" required />
 					<label for="genre">Genre</label>
 					<select name="genre">
 						<%
@@ -61,9 +64,6 @@
 					<input type="submit" value="Upload">
 				</div>
 			</form>
-			<c:if test="${not empty songErrorMessage}">
-				<p id="message">${songErrorMessage}</p>
-			</c:if>
 		</div>
 	</div>
 	<jsp:include page="footer.jsp"></jsp:include>

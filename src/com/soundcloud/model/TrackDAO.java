@@ -58,6 +58,9 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	private static final String SELECT_LATEST_TRACKS = "SELECT * FROM tracks order by date_added desc limit 5;";
 	private static final String SELECT_MOST_PLAYED_TRACKS = "SELECT * FROM tracks order by plays_count desc limit 5;";
 	private static final String SELECT_MOST_LIKED_TRACKS = "SELECT * FROM tracks order by likes_count desc limit 5;";
+	
+	private static final String SELECT_TRACK_TAGS = "SELECT t.name FROM tags t JOIN tags_with_tracks tt" + 
+							" ON t.tag_id = tt.tag_id WHERE track_id = ?;";
 
 	public static final int NUMBER_OF_TRACKS_PER_PAGE = 5;
 	
@@ -115,18 +118,6 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 	}
 
 	@Override
-	public void deleteTrack() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void getTrack() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public List<Track> getAllTracks() {
 
 		List<Track> tracks = new ArrayList<Track>();
@@ -157,6 +148,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				track.setDescription(resultTracks.getString("description"));
 				track.setNumberOfLikes(resultTracks.getInt("likes_count"));
 				track.setNumberOfPlays(resultTracks.getInt("plays_count"));
+				track.setTags(getTrackTags(track_id));
 
 				tracks.add(track);
 			}
@@ -214,6 +206,8 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				track.setNumberOfLikes(resultTracks.getInt("likes_count"));
 				track.setNumberOfPlays(resultTracks.getInt("plays_count"));
 				track.setImageID(resultTracks.getInt("img_id"));
+				
+				track.setTags(getTrackTags(track_id));
 
 				tracks.add(track);
 			}
@@ -265,6 +259,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				track.setNumberOfLikes(results.getInt("likes_count"));
 				track.setNumberOfPlays(results.getInt("plays_count"));
 				track.setImageID(results.getInt("img_id"));
+				track.setTags(getTrackTags(trackId));
 
 				track.setUser(UserDAO.getUserDAOInstance().selectUserByTrackId(trackId));
 
@@ -307,6 +302,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 				track.setNumberOfLikes(results.getInt("likes_count"));
 				track.setNumberOfPlays(results.getInt("plays_count"));
 				track.setImageID(results.getInt("img_id"));
+				track.setTags(getTrackTags(track.getId()));
 
 				track.setUser(UserDAO.getUserDAOInstance().selectUserByTrackId(track.getId()));
 
@@ -378,6 +374,7 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 					track.setNumberOfPlays(rs.getInt("plays_count"));
 					track.setDateAdded(rs.getTimestamp("date_added"));
 					track.setImageID(rs.getInt("img_id"));
+					track.setTags(getTrackTags(trackId));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -614,6 +611,25 @@ public class TrackDAO extends AbstractDAO implements ITrackDAO {
 			e.printStackTrace();
 		}
 		return trackLikes;
+	}
+	
+	private List<String> getTrackTags(int trackId) {
+		
+		List<String> tags = new ArrayList<String>();
+		
+		try {
+			PreparedStatement ps = getCon().prepareStatement(SELECT_TRACK_TAGS);
+			ps.setInt(1, trackId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				tags.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return tags;
+		
 	}
 
 }

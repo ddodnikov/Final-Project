@@ -125,3 +125,13 @@ button:focus {
 ul {
 	margin-bottom: 0 !important;
 }
+
+.message {
+	font-size: 1.8em;
+	text-align: center;
+	color: black;
+}
+
+	.message.error {
+		color: red;
+	}

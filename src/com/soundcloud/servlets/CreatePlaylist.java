@@ -31,7 +31,7 @@ public class CreatePlaylist extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession(false) == null || request.getSession(false).getAttribute("currentUser") == null) {
-			response.sendRedirect("./");
+			response.sendRedirect("./Login");
 		} else {
 			request.getRequestDispatcher("./createPlaylist.jsp").forward(request, response);
 		}
@@ -50,20 +50,17 @@ public class CreatePlaylist extends HttpServlet {
 		String imageDir = SAVE_DIR + email + IMAGES + imageName;
 		
 		
-			if(title.equals("")) {
-				request.setAttribute("songErrorMessage", "The field title is required!");
-			} else {
-				if(image.getSize() > MAX_FILE_SIZE) {
-					request.setAttribute("songErrorMessage", "Image exceeds maximum size limit of 50MB!");
-				} else {
-					int userId = (int) ((User)request.getSession().getAttribute("currentUser")).getId();
-					image.write(imageDir);
-					ImageDAO.getImageDAOInstance().addImage(imageDir);
-					int img_id = ImageDAO.getImageDAOInstance().getImagIdByUri(imageDir);
-					PlaylistDAO.getPlaylistDAOInstance().addPlaylist(img_id, title, userId);
-					request.setAttribute("songErrorMessage", "Your playlist was successfully created!");
-				}
-			}
+		if(image.getSize() > MAX_FILE_SIZE) {
+			request.setAttribute("songErrorMessage", "Image exceeds maximum size limit of 50MB!");
+		} else {
+			int userId = (int) ((User)request.getSession().getAttribute("currentUser")).getId();
+			image.write(imageDir);
+			ImageDAO.getImageDAOInstance().addImage(imageDir);
+			int img_id = ImageDAO.getImageDAOInstance().getImagIdByUri(imageDir);
+			PlaylistDAO.getPlaylistDAOInstance().addPlaylist(img_id, title, userId);
+			request.setAttribute("songErrorMessage", "Your playlist was successfully created!");
+		}
+			
 		
 		getServletContext().getRequestDispatcher("/createPlaylist.jsp").forward(request, response);
 

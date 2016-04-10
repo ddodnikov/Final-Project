@@ -8,10 +8,6 @@ import com.soundcloud.exceptions.TrackAlreadyLikedException;
 public interface ITrackDAO {
 
 	public void addTrack(String title, int genreId, String description, String uri, int userId, Set<String> tags);
-
-	public void deleteTrack();
-	
-	public void getTrack();
 	
 	public List<Track> getAllTracks();
 	

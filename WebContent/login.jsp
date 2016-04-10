@@ -31,7 +31,7 @@
 					</tr>
 				</table>
 				<c:if test="${not empty wrongUser}">
-					<p style="color: red">${wrongUser}</p>
+					<p class="message error">${wrongUser}</p>
 				</c:if>
 			</form>
 		</div>

@@ -27,9 +27,12 @@
 		<jsp:include page="header.jsp"></jsp:include>
 		<div id="wrapper">
 			<h1>Create Playlist</h1>
+			<c:if test="${not empty songErrorMessage}">
+				<p class="message">${songErrorMessage}</p>
+			</c:if>
 			<form method="post" action="./CreatePlaylist" enctype="multipart/form-data">
 				<div id="left">
-					<input type="text" name="title" placeholder="Name your playlist" />
+					<input type="text" name="title" placeholder="Name your playlist" required />
 					<div id="trackPic">
 						<label for="currentProfile">Playlist picture:</label>
 						<img src="./images/defaultSongImage.jpg" id="outImage"/>
@@ -39,9 +42,6 @@
 					<input type="submit" value="Create">
 				</div>
 			</form>
-			<c:if test="${not empty songErrorMessage}">
-				<p id="message">${songErrorMessage}</p>
-			</c:if>
 		</div>
 	</div>
 	<jsp:include page="footer.jsp"></jsp:include>

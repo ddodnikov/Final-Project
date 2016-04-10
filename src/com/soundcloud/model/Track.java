@@ -1,6 +1,7 @@
 package com.soundcloud.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Track extends PieceOfMusic implements Serializable, Comparable<Track> {
@@ -9,6 +10,7 @@ public class Track extends PieceOfMusic implements Serializable, Comparable<Trac
 
 	private boolean isLikedByUser;
 	private boolean isUnlikedByUser;
+	private List<String> tags = new ArrayList<String>();
 	
 	public void setLikedByUser(boolean isLikedByUser) {
 		this.isLikedByUser = isLikedByUser;
@@ -66,4 +68,14 @@ public class Track extends PieceOfMusic implements Serializable, Comparable<Trac
 	public void setTrackURL(String trackURL) {
 		this.trackURL = trackURL;
 	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+	
+	
 }

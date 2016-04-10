@@ -10,6 +10,8 @@ import com.soundcloud.exceptions.TrackAlreadyExistsException;
 
 public class PlaylistDAO extends AbstractDAO implements IPlaylistDAO {
 
+	private static final String CHECK_IF_TRACK_EXISTS_IN_PLAYLIST_QUERY = "SELECT * FROM playlists_with_tracks WHERE playlist_id = ? AND track_id = ?;";
+
 	private static final String INSERT_INTO_PLAYLISTS_WITH_TRACKS = "INSERT INTO playlists_with_tracks (playlist_id, track_id) VALUES (?,?);";
 
 	private static final String SELECT_PLAYLIST_BY_ID = "SELECT * FROM playlists WHERE playlist_id = ?";
@@ -140,7 +142,7 @@ public class PlaylistDAO extends AbstractDAO implements IPlaylistDAO {
 		
 		try {
 			// check if song already exists in the playlist
-			PreparedStatement checkIfTrackExistsInPlaylist = getCon().prepareStatement("SELECT * FROM playlists_with_tracks WHERE playlist_id = ? AND track_id = ?;");
+			PreparedStatement checkIfTrackExistsInPlaylist = getCon().prepareStatement(CHECK_IF_TRACK_EXISTS_IN_PLAYLIST_QUERY);
 			checkIfTrackExistsInPlaylist.setInt(1, playlistId);
 			checkIfTrackExistsInPlaylist.setInt(2, trackId);
 			ResultSet doesTrackExistResult = checkIfTrackExistsInPlaylist.executeQuery();
@@ -164,7 +166,8 @@ public class PlaylistDAO extends AbstractDAO implements IPlaylistDAO {
 	@Override
 	public void incrementPlaylistTracksCount(int playlistId) {
 		try {
-			PreparedStatement updatePlaylistPS = getCon().prepareStatement("UPDATE playlists SET tracks_count = tracks_count + 1;");
+			PreparedStatement updatePlaylistPS = getCon().prepareStatement(INCREASE_TRACK_COUNT);
+			updatePlaylistPS.setInt(1, playlistId);
 			updatePlaylistPS.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -174,7 +177,7 @@ public class PlaylistDAO extends AbstractDAO implements IPlaylistDAO {
 	@Override
 	public boolean isTrackInPlaylist(int playlistId, int trackId) {
 		try {
-			PreparedStatement checkIfTrackIsInPlaylistPS = getCon().prepareStatement("SELECT * FROM playlists_with_tracks WHERE playlist_id = ? AND track_id = ?;");
+			PreparedStatement checkIfTrackIsInPlaylistPS = getCon().prepareStatement(CHECK_IF_TRACK_EXISTS_IN_PLAYLIST_QUERY);
 			checkIfTrackIsInPlaylistPS.setInt(1, playlistId);
 			checkIfTrackIsInPlaylistPS.setInt(2, trackId);
 			ResultSet isTrackInPlaylistResult = checkIfTrackIsInPlaylistPS.executeQuery();

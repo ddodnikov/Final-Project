@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+#developers {
+	display: flex;
+	justify-content : space-around;
+	margin-top : 20px;
+}
+
+.we img {
+	width : 200px;
+	border-radius : 10px;
+}
+
+.we p {
+	font-size : 15px;
+}
+
+h2 {
+	font-size : 20px;
+}
+
+.we {
+	text-align : center;
+}
+
+.we * {
+	margin : 15px 0;
+}

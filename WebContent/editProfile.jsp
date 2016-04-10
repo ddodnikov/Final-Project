@@ -8,6 +8,7 @@
 	response.setDateHeader("Expires", 0);
 	if (request.getSession().getAttribute("currentUser") == null) {
 		response.sendRedirect("./login.jsp");
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -29,7 +30,7 @@
 				<div id="top">
 					<div class="leftColumn">
 						<label for="displayName">Display name:</label> 
-						<input name="displayName" value="${sessionScope.currentUser.displayName}" type="text" placeholder="Enter new display name"/>
+						<input name="displayName" value="${sessionScope.currentUser.displayName}" type="text" placeholder="Enter new display name" required/>
 						<label for="firstName">First name:</label> 
 						<input name="firstName" value="${sessionScope.currentUser.firstName}" type="text" placeholder="Enter your first name"/> 
 						<label for="lastName">Last name:</label> 

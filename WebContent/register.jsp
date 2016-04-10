@@ -22,60 +22,29 @@
 				<table cellpadding="10">
 					<tr>
 						<td colspan=2><label for="email">Email:</label></br> <input
-							type="email" name="email" /></td>
+							type="email" name="email" required/></td>
 					</tr>
 					<tr>
 						<td><label for="password1">Choose password:</label></br> <input
-							type="password" name="password1" /></td>
+							type="password" name="password1" required/></td>
 						<td><label for="password2">Repeat password:</label></br> <input
-							type="password" name="password2" /></td>
+							type="password" name="password2" required/></td>
 					</tr>
 					<tr>
 						<td colspan=2><input type="submit" value="Register!" /></td>
 					</tr>
 				</table>
-
-				<!--<c:if test="${not empty usedEmailError}">
-					<p style="color:red" > <c:out value="${usedEmailError}"></c:out>
-				</c:if>
-				
-				<c:if test="${not empty shortPassword}">
-					<p style="color:red" > <c:out value="${shortPassword}"></c:out>
-				</c:if>
-				
-				<c:if test="${not empty differentPasswords}">
-					<p style="color:red" > <c:out value="${differentPasswords}"></c:out>
-				</c:if>-->
-
-				<%
-					if (request.getAttribute("usedEmailError") != null) {
-				%>
-				<p style="color: red">
-					<%=request.getAttribute("usedEmailError")%>
-					<%
-						}
-					%>
-
-					<%
-						if (request.getAttribute("shortPassword") != null) {
-					%>
-				
-				<p style="color: red">
-					<%=request.getAttribute("shortPassword")%>
-					<%
-						}
-					%>
-
-					<%
-						if (request.getAttribute("differentPasswords") != null) {
-					%>
-				
-				<p style="color: red">
-					<%=request.getAttribute("differentPasswords")%>
-					<%
-						}
-					%>
-				
+				<p class="message error">
+					<c:if test="${not empty usedEmailError}">
+						${usedEmailError}
+					</c:if>
+					<c:if test="${not empty shortPassword}">
+						${shortPassword}
+					</c:if>
+					<c:if test="${not empty differentPasswords}">
+						${differentPasswords}
+					</c:if>
+				</p>		
 			</form>
 		</div>
 		<jsp:include page="footer.jsp"></jsp:include>

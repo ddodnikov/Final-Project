@@ -25,7 +25,7 @@ public class ShowProfile extends HttpServlet {
 			throws ServletException, IOException {
 
 		if (request.getSession(false) == null || request.getSession(false).getAttribute("currentUser") == null) {
-			response.sendRedirect("./");
+			response.sendRedirect("./Login");
 		} else {
 
 			String id = request.getParameter("showUserId");

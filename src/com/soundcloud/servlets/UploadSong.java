@@ -36,7 +36,7 @@ public class UploadSong extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession(false) == null || request.getSession(false).getAttribute("currentUser") == null) {
-			response.sendRedirect("./");
+			response.sendRedirect("./Login");
 		} else {
 			Set<String> trackTags = new HashSet<String>();
 			request.getSession().setAttribute("trackTags", trackTags);

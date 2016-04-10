@@ -66,12 +66,24 @@
 <div class="player">
 	<div class="plays">
 		<div class="img">
-			<img src="./FetchPicture?imageId=${track.imageID}"
+			<c:choose>
+				<c:when test="${track.imageID > 0}">
+					<img src="./FetchPicture?imageId=${track.imageID}"
 				alt="Servlet - Track picture not found" />
+				</c:when>
+				<c:otherwise>
+					<img src="./images/defaultSongImage.jpg" />
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div class="main_player">
 			<div class="top">
 				<h1 style="color: black;">${track.title}</h1>
+				<ul class="trackTags">
+					<c:forEach var="tag" items="${track.tags}">
+						<li>#${tag}</li>
+					</c:forEach>
+				</ul>
 			</div>
 			<audio controls preload="none" onended="callServlet(${track.id})">
 				<source src="./FetchTrack?trackId=${track.id}" type="audio/mpeg" />

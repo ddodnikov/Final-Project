@@ -27,9 +27,8 @@ public class EditProfile extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession();
 		if (request.getSession(false) == null || request.getSession(false).getAttribute("currentUser") == null) {
-			response.sendRedirect("./");
+			response.sendRedirect("./Login");
 			return;
 		}
 		RequestDispatcher rd = request.getRequestDispatcher("./editProfile.jsp");
@@ -92,9 +91,8 @@ public class EditProfile extends HttpServlet {
 			}
 			User user = userDao.getUserById(userId);		
 			session.setAttribute("currentUser", user);
-			doGet(request, response);
+			response.sendRedirect("./Home");
 		}
-		// TODO: success page??
 	}
 
 }

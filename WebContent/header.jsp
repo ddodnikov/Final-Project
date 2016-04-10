@@ -51,7 +51,7 @@
 				<c:otherwise>
 					<li><a href="./Login">Log in</a></li>
 					<li><a href="./Register">Register</a></li>
-					<li><a href="./#">About Us</a></li>
+					<li><a href="./about.jsp">About Us</a></li>
 				</c:otherwise>
 			</c:choose>			
 		</ul>
