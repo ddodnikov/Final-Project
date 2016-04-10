@@ -1,0 +1,45 @@
+@CHARSET "ISO-8859-1";
+
+#songContainer {
+	display: flex;
+	align-items: flex-start;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 20px;
+	margin-bottom: 20px;
+	/*background-color: #141414;*/
+	background-color: rgba(255,255,255,0.5);
+}
+
+#songContainer img {
+	width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 30px;
+    border-radius: 10px;   
+}
+
+#songContainer #details p {
+	font-size: 1.4em;
+	color: black;
+}
+
+audio {
+	width: 100%;
+}
+
+#likes {
+	display: flex;
+	justify-content: space-between;
+}
+
+.main_player {
+	display: flex !important;
+	flex-direction: column !important;
+	justify-content: space-between !important;
+}
+
+.plays {
+	display: flex !important;
+	justify-content: space-between !important;
+}

@@ -1,0 +1,54 @@
+@CHARSET "ISO-8859-1";
+
+form label, form input, form textarea {
+	font-size: 1.4em;
+	margin: 10px;
+}
+
+input, textarea {
+	display: block;
+	width: 277px;
+}
+
+input[type="file"] {
+	padding: 0 !important;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	padding-top: 10px;
+}
+
+#top, #bottom {
+	display: flex;
+	justify-content: space-around;
+}
+
+#personalPics {
+	display: flex;
+	flex-direction: column;
+}
+
+#bottom div input {
+	border: none;
+}
+
+#bottom div img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	display: block;
+	border-radius: 10px;
+}
+
+input[type="submit"] {
+	display: block;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+
+#outHeader {
+	width: 500px !important;
+	
+}

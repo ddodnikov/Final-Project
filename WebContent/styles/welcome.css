@@ -1,0 +1,101 @@
+@CHARSET "UTF-8";
+@font-face {
+	font-family: Bauhaus;
+    src: url(../fonts/bauhaus93.ttf);
+}
+
+.container {
+	width: 100%;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+
+#headerImage {
+	position: relative;
+	margin-bottom: 20px;
+}
+
+#headerImage img {
+	width: 1100px;
+}
+
+#headerImage #titles {
+	position: absolute;
+	color: white;
+	text-shadow: 2px 2px 3px black;
+	text-align: center;
+	top: 30px;
+	left: 220px;
+}
+
+	#headerImage #titles p {
+		font-size: 3em;
+		font-weight: bold;
+	}
+
+#headerImage #bigTitle {
+	font-family: Bauhaus, Arial, sans-serif;
+	font-size: 6em !important;
+}
+
+#charts {
+	display: flex;
+	flex-direction: column;
+	width: 100% !important;
+}
+
+#charts ul {
+	display: flex;
+	justify-content: space-between;
+}
+
+#charts section {
+	width: 300px;
+	height: 300px;
+	border: 1px solid black;
+	border-radius: 10px;
+	position: relative;
+}
+
+#charts section img {
+	border-radius: 8px;
+	object-fit: cover;
+	width: 298px;
+	height: 298px;
+}
+
+#charts section .chartType {
+	background-color: black;
+	color: white;
+	height: 85px;
+	bottom: 0;
+	width: inherit !important;
+	position: absolute;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	text-align: center;
+	transition: background-color 1s, color 1s;
+	width: 298px !important;
+}
+
+	#charts section .chartType p {
+		font-size: 2em;
+		font-family: 'Odin Rounded Bold', Arial, sans-serif;
+		margin-top: 25px;
+	}
+	
+#charts a:hover section .chartType {
+	background-color: white;
+	color: black;
+	transition: background-color 1s, color 1s;
+}
+
+.nav-pills > li > a {
+	background-color: transparent !important;
+	padding: 0 !important;
+}
+
+.tab-content > div {
+	margin-top: 20px;
+}
