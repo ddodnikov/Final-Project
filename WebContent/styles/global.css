@@ -92,6 +92,11 @@ a:hover, img:hover {
 	justify-content: center;
 }
 
+	.pages button {
+		background-color: transparent !important;
+		border: none !important;
+	}
+
 .previousButton {
 	background-image: url(../images/backBtn.png);
 	width: 150px;

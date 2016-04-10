@@ -48,7 +48,7 @@ public class ShowProfile extends HttpServlet {
 			request.getRequestDispatcher("./showUserInfo.jsp").forward(request, response);
 		
 		} else {
-			response.sendRedirect("./");
+			response.sendRedirect("./Login");
 		}
 			
 	}

@@ -29,7 +29,7 @@ public class EditProfile extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if (session.getAttribute("currentUser") == null) {
-			response.sendRedirect("./");
+			response.sendRedirect("./Login");
 			return;
 		}
 		RequestDispatcher rd = request.getRequestDispatcher("./editProfile.jsp");

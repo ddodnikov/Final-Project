@@ -102,7 +102,6 @@
 											success : function(response) {
 												if (response == "trackExists") { // the track exists in this playlist
 													// hide the playlist list item - the user can't add the track to the same playlist twice
-													console.log("success " + response + "track Id ${track.id} playlist id ${playlist.id}");
 													$("#li${playlist.id}-${track.id}").css("display", "none");
 												}
 											},

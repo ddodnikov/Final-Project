@@ -25,17 +25,17 @@
 				<div id="top">
 					<div class="leftColumn">
 						<label for="displayName">Display name:</label> 
-						<input name="displayName" value="${sessionScope.currentUser.displayName}" type="text"/>
+						<input name="displayName" value="${sessionScope.currentUser.displayName}" type="text" placeholder="Enter new display name"/>
 						<label for="firstName">First name:</label> 
-						<input name="firstName" value="${sessionScope.currentUser.firstName}" type="text"/> 
+						<input name="firstName" value="${sessionScope.currentUser.firstName}" type="text" placeholder="Enter your first name"/> 
 						<label for="lastName">Last name:</label> 
-						<input type="text" name="lastName" value="${sessionScope.currentUser.lastName}" />
+						<input type="text" name="lastName" value="${sessionScope.currentUser.lastName}" placeholder="Enter your last name" />
 					</div>
 					<div class="rightColumn">
 						<label for="city">City:</label> 
-						<input type="text" name="city" value="${sessionScope.currentUser.city}"/> 
+						<input type="text" name="city" value="${sessionScope.currentUser.city}" placeholder="Enter your city"/> 
 						<label for="country">Country:</label>
-						<input type="text" name="country" value="${sessionScope.currentUser.country}"/>
+						<input type="text" name="country" value="${sessionScope.currentUser.country}" placeholder="Enter your country"/>
 						<label for="biography">Biography:</label><br />
 						<textarea name="biography" rows=5 cols=30>${sessionScope.currentUser.biography}</textarea>
 					</div>
