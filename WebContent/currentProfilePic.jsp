@@ -1,1 +1,0 @@
-<img src="${pageContext.request.contextPath}/userProfilePics/${sessionScope.currentProfilePic}" alt="currentProfilePic" />
